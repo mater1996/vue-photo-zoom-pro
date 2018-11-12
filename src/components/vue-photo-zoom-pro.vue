@@ -30,7 +30,9 @@
         },
         imgInfo: {},
         hideOutShow: true,
-        imgLoadedFlag: false
+        imgLoadedFlag: false,
+        screenWidth: document.body.clientWidth,
+        timer: null
       };
     },
     props: {
@@ -73,6 +75,16 @@
       },
       url() {
         this.imgLoadedFlag = false;
+      },
+      screenWidth(val) {
+        if (!this.timer) {
+          this.screenWidth = val;
+          this.timer = setTimeout(() => {
+            this.imgLoaded();
+            clearTimeout(this.timer);
+            this.timer = null;
+          }, 400);
+        }
       }
     },
     computed: {
@@ -121,17 +133,19 @@
     },
     methods: {
       imgLoaded() {
+        let imgInfo = this.$refs['img'].getBoundingClientRect();
+        if (JSON.stringify(this.imgInfo) == JSON.stringify(imgInfo)) {
+          return;
+        }
         this.imgLoadedFlag = true;
-        let {width, height, left, top} = (this.imgInfo = this.$refs[
-          'img'
-          ].getBoundingClientRect());
+        let {width, height, left, top} = (this.imgInfo = imgInfo);
         let selector = this.selector;
         let {width: selectorWidth, halfWidth: selectorHalfWidth} = selector;
         Object.assign(selector, {
-          absoluteLeft: left + selectorHalfWidth,
+          absoluteLeft: left + selectorHalfWidth, // 选择器相对于文档左上角的位置
           absoluteTop:
             top + selectorHalfWidth + document.documentElement.scrollTop,
-          rightBound: width - selectorWidth,
+          rightBound: width - selectorWidth, // 相对于图片左上角的边界值
           bottomBound: height - selectorWidth
         });
       },
@@ -145,6 +159,7 @@
       },
       mouseMove(e) {
         if (!this.hideZoom && this.imgLoadedFlag) {
+          this.imgLoaded();
           let {pageX, pageY} = e;
           let {scale, selector} = this;
           let {
@@ -154,16 +169,16 @@
             rightBound,
             bottomBound
           } = selector;
-          let x = pageX - absoluteLeft;
-          let y = pageY - absoluteTop;
+          let x = pageX - absoluteLeft; // 选择器的x坐标 相对于图片
+          let y = pageY - absoluteTop; // 选择器的y坐标
           if (this.outShow) {
             halfWidth = 0;
             this.hideOutShow = false;
           }
           Object.assign(selector, {
-            top: y > 0 ? (y < bottomBound ? y : bottomBound) : 0,
+            top: y > 0 ? (y < bottomBound ? y : bottomBound) : 0, // 超出边界重置
             left: x > 0 ? (x < rightBound ? x : rightBound) : 0,
-            bgLeft: halfWidth - (halfWidth + x) * scale,
+            bgLeft: halfWidth - (halfWidth + x) * scale, // 选择器图片的坐标位置
             bgTop: halfWidth - (halfWidth + y) * scale
           });
         }
