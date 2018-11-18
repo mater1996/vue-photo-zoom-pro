@@ -2,7 +2,7 @@
   "name": "vue-photo-zoom-pro",
   "description": "Vue(2.x) 图片放大器",
   "main": "dist/vue-photo-zoom-pro.js",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "author": "xhb <xb864083144@outlook.com>",
   "license": "MIT",
   "private": false,
