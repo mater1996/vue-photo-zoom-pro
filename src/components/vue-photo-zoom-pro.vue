@@ -2,10 +2,8 @@
   <div class="pic-img">
     <div class="img-container" @mousemove="!moveEvent && mouseMove($event)" @mouseleave="!leaveEvent && mouseLeave($event)">
       <img ref="img" @load="imgLoaded" :src="url" style="width:100%"></img>
-      <div v-if="!hideZoom && imgLoadedFlag &&!hideSelector" :class="['img-selector',{'circle':type === 'circle'}]" :style="[imgSelectorSize,imgSelectorPosition,!outShow && imgSelectorBg ,!outShow && imgBgPosition]">
-
-      </div>
-      <div v-if="outShow" v-show="!hideOutShow" class="img-out-show" :style="[imgOutShowSize,imgSelectorBg,imgBgPosition]">
+      <div v-if="!hideZoom && imgLoadedFlag &&!hideSelector" :class="['img-selector',{'circle':type === 'circle'}]" :style="[imgSelectorSize,imgSelectorPosition,!outShow && imgSelectorBgSize ,!outShow && imgBgPosition]"></div>
+      <div v-if="outShow" v-show="!hideOutShow" class="img-out-show" :style="[imgOutShowSize,imgOutShowPosition,imgSelectorBgSize,imgBgPosition]">
         <div class="img-selector-point"></div>
       </div>
     </div>
@@ -32,6 +30,8 @@ export default {
       imgInfo: {},
       $img: null,
       hideOutShow: true,
+      outShowInitTop: 0,
+      outShowTop: 0,
       imgLoadedFlag: false,
       screenWidth: document.body.clientWidth,
       timer: null,
@@ -115,7 +115,13 @@ export default {
         height: `${width * scale}px`
       };
     },
-    imgSelectorBg() {
+    imgOutShowPosition() {
+      return {
+        top: `${this.outShowTop}px`,
+        right: `${-10}px`
+      };
+    },
+    imgSelectorBgSize() {
       let {
         scale,
         url,
@@ -153,6 +159,7 @@ export default {
       selector.bottomBound = height - selectorWidth;
       selector.absoluteLeft = left + selectorHalfWidth + scrollLeft;
       selector.absoluteTop = top + selectorHalfWidth + scrollTop;
+      this.outShowInitTop = 0;
     },
     reset() {
       Object.assign(this.selector, {
@@ -165,8 +172,12 @@ export default {
     mouseMove(e) {
       if (!this.hideZoom && this.imgLoadedFlag) {
         this.imgLoaded();
-        let { pageX, pageY } = e;
-        let { scale, selector } = this;
+        let { pageX, pageY, clientY } = e;
+        let { scale, selector, outShowInitTop } = this;
+        let scrollTop = pageY - clientY;
+        if (!outShowInitTop) {
+          this.outShowInitTop = scrollTop + this.imgInfo.top;
+        }
         let {
           halfWidth,
           absoluteLeft,
@@ -178,6 +189,9 @@ export default {
         let y = pageY - absoluteTop; // 选择器的y坐标
         if (this.outShow) {
           halfWidth = 0;
+          this.hideOutShow = false;
+          this.outShowTop =
+            scrollTop > outShowInitTop ? scrollTop - outShowInitTop : 0;
           this.hideOutShow = false;
         }
         this.hideSelector = false;
@@ -216,8 +230,6 @@ export default {
 
 .img-out-show {
   position: absolute;
-  top: 0;
-  right: 0;
   background-repeat: no-repeat;
   transform: translate(100%, 0);
   border: 1px solid rgba(0, 0, 0, 0.1);

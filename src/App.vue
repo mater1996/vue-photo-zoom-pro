@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <vue-photo-zoom-pro :url="url" :type="type" :scale="scale" :out-show="showType"></vue-photo-zoom-pro>
+    <div style="width:60%">
+      <vue-photo-zoom-pro :url="url" :type="type" :scale="scale" :out-show="showType"></vue-photo-zoom-pro>
+    </div>
     <p>当前放大倍数：{{scale}}</p>
     <button @click="addScale">增加放大倍数</button>
     <button @click="subScale">减小放大倍数</button>
