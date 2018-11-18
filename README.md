@@ -26,7 +26,7 @@ npm install vue-photo-zoom-pro
 | ------------ | ------------ |
 |init|重置放大镜位置(reset zoom position)|
 
-|Event|Note|e||
+|Event|Note|e|
 | ------------ | ------------ |------------ |
 |created|图片放大镜创建(photo-zoom created)|图片属性(photo prop)(top,left,width,height)|
 
