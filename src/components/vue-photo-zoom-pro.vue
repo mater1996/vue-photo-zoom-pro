@@ -13,16 +13,16 @@
       ></img>
       <div
         v-if="!hideZoom && imgLoadedFlag &&!hideSelector"
-        :class="['img-selector',{'circle': type === 'circle'}]"
-        :style="[imgSelectorStyle,imgSelectorSize,imgSelectorPosition,!outShow && imgSelectorBgSize ,!outShow && imgBgPosition]"
+        :class="['img-selector', {'circle': type === 'circle'}]"
+        :style="[imgSelectorStyle, imgSelectorSize, imgSelectorPosition, !outShow && imgBg, !outShow && imgBgSize, !outShow && imgBgPosition]"
       >
         <slot></slot>
       </div>
       <div
         v-if="outShow"
         v-show="!hideOutShow"
-        :class="['img-out-show',{'base-line': baseline}]"
-        :style="[imgOutShowSize,imgOutShowPosition,imgSelectorBgSize,imgBgPosition]"
+        :class="['img-out-show', {'base-line': baseline}]"
+        :style="[imgOutShowSize, imgOutShowPosition, imgBg, imgBgSize, imgBgPosition]"
       >
         <div
           v-if="pointer"
@@ -171,15 +171,17 @@ export default {
         right: `${-8}px`
       };
     },
-    imgSelectorBgSize() {
+    imgBg() {
+      return {
+        backgroundImage: `url(${this.highUrl || this.url})`
+      };
+    },
+    imgBgSize() {
       let {
         scale,
-        url,
-        highUrl,
         imgInfo: { height, width }
       } = this;
       return {
-        backgroundImage: `url(${highUrl || url})`,
         backgroundSize: `${width * scale}px ${height * scale}px`
       };
     },

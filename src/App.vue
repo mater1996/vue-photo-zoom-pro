@@ -15,7 +15,7 @@
       </vue-photo-zoom-pro>
     </div>
     <p>当前放大倍数：{{scale}}</p>
-    <p>当前放大镜宽度：{{scale}}</p>
+    <p>当前放大镜宽度：{{width}}</p>
     <button @click="addSelectorWidth">增加放大器宽度(add width of magnifying glass)</button>
     <button @click="subSelectorWidth">减小放大器宽度(cut width of magnifying glass)</button>
     <button @click="changeImgPosition = !changeImgPosition">改变图片位置(change position of image)</button>
