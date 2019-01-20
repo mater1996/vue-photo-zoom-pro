@@ -2,9 +2,11 @@
 
 > Vue(2.x) 图片放大器(Photoloupe)
 
+![example](https://github.com/xbup/vue-photo-zoom-pro/blob/master/example.png)
+
 [demo](https://codepen.io/xbup/project/editor/AjnEgE)
 
-## Get Start
+## Usage example
 
 ```js
 
@@ -12,13 +14,22 @@ npm install vue-photo-zoom-pro
 
 ```
 
+main.js
+
 ```js
 import VuePhotoZoomPro from 'vue-photo-zoom-pro'
 
 Vue.use(VuePhotoZoomPro)
 ```
 
-## Settings
+*.vue
+
+```html
+<vue-photo-zoom-pro url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true"
+></vue-photo-zoom-pro>
+```
+
+### Settings
 
 | Prop          | Type              | Default | Note                                                                                                                                             |
 | ------------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -35,13 +46,19 @@ Vue.use(VuePhotoZoomPro)
 | move-event    | Object/mouseEvent | null    | 当需要在外部监听移动事件时,请通过该字段传入事件（必须包含 pageX,pageY,clientY）(When you need to listen for moving events outside the component) |
 | leave-event   | Object/mouseEvent | null    | 当需要在外部监听离开事件时，请通过该字段传入事件(When you need to listen for leaving events outside the component)                               |
 
+---
+
 | Slot | Note                                                               |
 | ---- | ------------------------------------------------------------------ |
 |      | 内容将会在放大镜内部显示(content will display in magnifying glass) |
 
+---
+
 | Method | Note                                |
 | ------ | ----------------------------------- |
 | reset  | 重置放大镜位置(reset zoom position) |
+
+---
 
 | Event   | Note                               | event                                       |
 | ------- | ---------------------------------- | ------------------------------------------- |

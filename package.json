@@ -2,7 +2,7 @@
   "name": "vue-photo-zoom-pro",
   "description": "Vue(2.x) 图片放大器",
   "main": "dist/vue-photo-zoom-pro.js",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "author": "xhb <xb864083144@outlook.com>",
   "license": "MIT",
   "private": false,
@@ -34,5 +34,6 @@
     "vue-template-compiler": "^2.4.4",
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
-  }
+  },
+  "keywords": ['vue','photozoom','magnifying']
 }
