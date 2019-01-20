@@ -35,5 +35,5 @@
     "webpack": "^3.6.0",
     "webpack-dev-server": "^2.9.1"
   },
-  "keywords": ['vue','photozoom','magnifying']
+  "keywords": ["vue","photozoom","magnifying"]
 }
