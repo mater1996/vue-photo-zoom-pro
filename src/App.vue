@@ -11,6 +11,7 @@
         :type="type"
         :scale="scale"
         :out-show="showType"
+        lazyload
       >
       </vue-photo-zoom-pro>
     </div>

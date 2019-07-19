@@ -7,8 +7,8 @@
     >
       <img
         ref="img"
-        @load="imgLoaded"
-        :src="url"
+        @load="!lazyload && imgLoaded"
+        :src="!lazyload ? url : (imgLoadedFlag && url)"
         style="width:100%"
       ></img>
       <div
@@ -61,6 +61,10 @@ export default {
       type: Number,
       default: 3
     },
+    lazyload: {
+      type: Boolean,
+      default: false
+    },
     moveEvent: {
       type: [Object, MouseEvent],
       default: null
@@ -106,7 +110,8 @@ export default {
       outShowTop: 0,
       hideOutShow: true,
       imgLoadedFlag: false,
-      hideSelector: false,
+      highImgLoadedFlag: false,
+      hideSelector: true,
       timer: null
     };
   },
@@ -118,7 +123,7 @@ export default {
       this.mouseLeave(e);
     },
     url() {
-      this.imgLoadedFlag = false;
+      this.handlerUrlChange();
     },
     width(n) {
       this.initSelectorProperty(n);
@@ -192,10 +197,26 @@ export default {
       };
     }
   },
+  created() {
+    this.url && this.lazyload && this.handlerUrlChange();
+  },
   mounted() {
     this.$img = this.$refs["img"];
   },
   methods: {
+    handlerUrlChange() {
+      this.imgLoadedFlag = false;
+      this.lazyload &&
+        this.loadImg(this.url).then(this.imgLoaded, err => console.error(err));
+    },
+    loadImg(url) {
+      return new Promise((resolve, reject) => {
+        const img = document.createElement("img");
+        img.addEventListener("load", resolve);
+        img.addEventListener("error", reject);
+        img.src = url;
+      });
+    },
     imgLoaded() {
       let imgInfo = this.$img.getBoundingClientRect();
       if (JSON.stringify(this.imgInfo) != JSON.stringify(imgInfo)) {
@@ -238,6 +259,7 @@ export default {
       const selector = this.selector;
       const { width, height, left, top } = this.imgInfo;
       const { scrollLeft, scrollTop } = document.documentElement;
+      console.log(selector);
       selector.width = selectorWidth;
       selector.rightBound = width - selectorWidth;
       selector.bottomBound = height - selectorWidth;
