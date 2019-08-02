@@ -10,7 +10,7 @@
         @load="!lazyload && imgLoaded"
         :src="!lazyload ? url : (imgLoadedFlag && url)"
         style="width:100%"
-      ></img>
+      />
       <div
         v-if="!hideZoom && imgLoadedFlag &&!hideSelector"
         :class="['img-selector', {'circle': type === 'circle'}]"
@@ -24,14 +24,10 @@
         :class="['img-out-show', {'base-line': baseline}]"
         :style="[imgOutShowSize, imgOutShowPosition, imgBg, imgBgSize, imgBgPosition]"
       >
-        <div
-          v-if="pointer"
-          class="img-selector-point"
-        ></div>
+        <div v-if="pointer" class="img-selector-point"></div>
       </div>
     </div>
   </div>
-
 </template>
 <script>
 export default {
@@ -46,13 +42,13 @@ export default {
     type: {
       type: String,
       default: "square",
-      validator: function(value) {
+      validator: function (value) {
         return ["circle", "square"].indexOf(value) !== -1;
       }
     },
     selectorStyle: {
       type: Object,
-      default() {
+      default () {
         return {};
       }
     },
@@ -90,7 +86,7 @@ export default {
       default: false
     }
   },
-  data() {
+  data () {
     return {
       selector: {
         width: this.width,
@@ -116,19 +112,19 @@ export default {
     };
   },
   watch: {
-    moveEvent(e) {
+    moveEvent (e) {
       this.mouseMove(e);
     },
-    leaveEvent(e) {
+    leaveEvent (e) {
       this.mouseLeave(e);
     },
-    url() {
+    url () {
       this.handlerUrlChange();
     },
-    width(n) {
+    width (n) {
       this.initSelectorProperty(n);
     },
-    screenWidth(val) {
+    screenWidth (val) {
       if (!this.timer) {
         this.screenWidth = val;
         this.timer = setTimeout(() => {
@@ -140,27 +136,27 @@ export default {
     }
   },
   computed: {
-    addWidth() {
+    addWidth () {
       return !this.outShow ? (this.width / 2) * (1 - this.scale) : 0;
     },
-    imgSelectorPosition() {
+    imgSelectorPosition () {
       let { top, left } = this.selector;
       return {
         top: `${top}px`,
         left: `${left}px`
       };
     },
-    imgSelectorSize() {
+    imgSelectorSize () {
       let width = this.selector.width;
       return {
         width: `${width}px`,
         height: `${width}px`
       };
     },
-    imgSelectorStyle() {
+    imgSelectorStyle () {
       return this.selectorStyle;
     },
-    imgOutShowSize() {
+    imgOutShowSize () {
       let {
         scale,
         selector: { width }
@@ -170,18 +166,18 @@ export default {
         height: `${width * scale}px`
       };
     },
-    imgOutShowPosition() {
+    imgOutShowPosition () {
       return {
         top: `${this.outShowTop}px`,
         right: `${-8}px`
       };
     },
-    imgBg() {
+    imgBg () {
       return {
         backgroundImage: `url(${this.highUrl || this.url})`
       };
     },
-    imgBgSize() {
+    imgBgSize () {
       let {
         scale,
         imgInfo: { height, width }
@@ -190,26 +186,26 @@ export default {
         backgroundSize: `${width * scale}px ${height * scale}px`
       };
     },
-    imgBgPosition() {
+    imgBgPosition () {
       let { bgLeft, bgTop } = this.selector;
       return {
         backgroundPosition: `${bgLeft}px ${bgTop}px`
       };
     }
   },
-  created() {
+  created () {
     this.url && this.lazyload && this.handlerUrlChange();
   },
-  mounted() {
+  mounted () {
     this.$img = this.$refs["img"];
   },
   methods: {
-    handlerUrlChange() {
+    handlerUrlChange () {
       this.imgLoadedFlag = false;
       this.lazyload &&
         this.loadImg(this.url).then(this.imgLoaded, err => console.error(err));
     },
-    loadImg(url) {
+    loadImg (url) {
       return new Promise((resolve, reject) => {
         const img = document.createElement("img");
         img.addEventListener("load", resolve);
@@ -217,7 +213,7 @@ export default {
         img.src = url;
       });
     },
-    imgLoaded() {
+    imgLoaded () {
       let imgInfo = this.$img.getBoundingClientRect();
       if (JSON.stringify(this.imgInfo) != JSON.stringify(imgInfo)) {
         this.imgInfo = imgInfo;
@@ -229,7 +225,7 @@ export default {
         this.$emit("created", imgInfo);
       }
     },
-    mouseMove(e) {
+    mouseMove (e) {
       if (!this.hideZoom && this.imgLoadedFlag) {
         this.imgLoaded();
         const { pageX, pageY, clientY } = e;
@@ -254,25 +250,25 @@ export default {
         selector.bgTop = addWidth - y * scale;
       }
     },
-    initSelectorProperty(selectorWidth) {
+    initSelectorProperty (selectorWidth) {
       const selectorHalfWidth = selectorWidth / 2;
       const selector = this.selector;
       const { width, height, left, top } = this.imgInfo;
-      const { scrollLeft, scrollTop } = document.documentElement;
-      console.log(selector);
+      const scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+      const scrollLeft = document.documentElement.scrollLeft || window.pageXOffset || document.body.scrollLeft;
       selector.width = selectorWidth;
       selector.rightBound = width - selectorWidth;
       selector.bottomBound = height - selectorWidth;
       selector.absoluteLeft = left + selectorHalfWidth + scrollLeft;
       selector.absoluteTop = top + selectorHalfWidth + scrollTop;
     },
-    mouseLeave() {
+    mouseLeave () {
       this.hideSelector = true;
       if (this.outShow) {
         this.hideOutShow = true;
       }
     },
-    reset() {
+    reset () {
       Object.assign(this.selector, {
         top: 0,
         left: 0,
@@ -281,7 +277,7 @@ export default {
       });
       this.resetOutShowInitPosition();
     },
-    resetOutShowInitPosition() {
+    resetOutShowInitPosition () {
       this.outShowInitTop = 0;
     }
   }
@@ -325,7 +321,7 @@ export default {
 .img-out-show.base-line::after {
   position: absolute;
   box-sizing: border-box;
-  content: "";
+  content: '';
   width: 1px;
   border: 1px dashed rgba(0, 0, 0, 0.36);
   top: 0;
@@ -337,7 +333,7 @@ export default {
 .img-out-show.base-line::before {
   position: absolute;
   box-sizing: border-box;
-  content: "";
+  content: '';
   height: 1px;
   border: 1px dashed rgba(0, 0, 0, 0.36);
   left: 0;
