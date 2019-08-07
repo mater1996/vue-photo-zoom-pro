@@ -2,7 +2,7 @@
 
 > Vue(2.x) 图片放大器(Photoloupe)
 
-![example](example.png)
+![example](https://github.com/Mater1996/vue-photo-zoom-pro/blob/master/example.png)
 
 [demo](https://codepen.io/xbup/project/editor/AjnEgE)
 
