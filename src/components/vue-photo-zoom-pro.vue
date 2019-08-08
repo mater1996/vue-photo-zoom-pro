@@ -7,7 +7,7 @@
     >
       <img
         ref="img"
-        @load="!lazyload && imgLoaded"
+        @load="!lazyload && imgLoaded($event)"
         :src="!lazyload ? url : (imgLoadedFlag && url)"
         style="width:100%"
       />
