@@ -4,6 +4,8 @@
 
 ![example](https://raw.githubusercontent.com/Mater1996/vue-photo-zoom-pro/master/example.png)
 
+## DEMO
+
 [demo](https://codepen.io/xbup/project/editor/AjnEgE)
 
 ## Usage example
@@ -17,52 +19,59 @@ npm install vue-photo-zoom-pro
 main.js
 
 ```js
-import VuePhotoZoomPro from 'vue-photo-zoom-pro'
+import VuePhotoZoomPro from "vue-photo-zoom-pro";
 
-Vue.use(VuePhotoZoomPro)
+Vue.use(VuePhotoZoomPro);
 ```
 
-*.vue
+\*.vue
 
 ```html
-<vue-photo-zoom-pro url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true"
+<vue-photo-zoom-pro
+  url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true"
 ></vue-photo-zoom-pro>
 ```
 
 ### Settings
 
-| Prop          | Type              | Default | Note                                                                                                                                             |
-| ------------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| url           | String            |         | 图片地址(photo url)                                                                                                                              |
-| high-url      | String            |         | 更清晰的图片,若不提供会采用 url(more detailed photo url)                                                                                         |
-| scale         | Number            | 3       | 放大倍数(scale)                                                                                                                                  |
-| width         | Number            | 166     | 放大镜宽度(width of magnifying glass)                                                                                                            |
-| selectorStyle | Object            | {}      | 放大镜样式(style of magnifying glass)                                                                                                            |
-| type          | String            | square  | 放大镜类型(circle,square)(magnifying glass type (circle,square))                                                                                 |
-| hide-zoom     | Boolean           | false   | 隐藏放大镜，图像加载时不会显示放大镜(hide magnifying)                                                                                            |
-| out-show      | Boolean           | true    | 图片展示区域会在图片外部(image will be displayed on the outside)                                                                                 |
-| pointer       | Boolean           | false   | 外部区域的中心点 (The center of an external area)                                                                                                |
-| baseline      | Boolean           | false   | 外部区域的基线 (The baseline of the external area)                                                                                               |
-| move-event    | Object/mouseEvent | null    | 当需要在外部监听移动事件时,请通过该字段传入事件（必须包含 pageX,pageY,clientY）(When you need to listen for moving events outside the component) |
-| leave-event   | Object/mouseEvent | null    | 当需要在外部监听离开事件时，请通过该字段传入事件(When you need to listen for leaving events outside the component)                               |
+#### props
 
----
+| Prop        | Type              | Default | Note                                                                                                                                             |
+| ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| url         | String            |         | 图片地址(photo url)                                                                                                                              |
+| high-url    | String            |         | 更清晰的图片,若不提供会采用 url(more detailed photo url)                                                                                         |
+| scale       | Number            | 3       | 放大倍数(scale number)                                                                                                                                  |
+| width       | Number            | 166     | 内部放大区域宽度(width of internal amplification region)                                                                                                            |
+| type        | String            | square  | 放大镜类型(circle,square)(magnifying glass type (circle,square))                                                                                 |
+| zoom-style  | Object            | {}      | 内部放大区域样式(style of internal amplification region)                                                                                                            |
+| out-zoom-style  | Object            | {}  | 外部放大区域样式(style of external amplification region)                                                                                                            |
+| hide-zoom   | Boolean           | false   | 隐藏放大镜(hide magnifying)                                                                                            |
+| out-zoom    | Boolean           | true    | 图片展示区域会在图片外部(amplification region will be displayed on the outside)                                                                                 |
+| pointer     | Boolean           | false   | 外部区域的中心点 (the center of an external area)                                                                                                |
+| baseline    | Boolean           | false   | 外部区域的基线 (the baseline of the external area)                                                                                               |
+| move-event  | Object/mouseEvent | null    | 当需要在外部监听移动事件时,请通过该字段传入事件（必须包含 pageX,pageY,clientY），这将禁用内部移动监听(when you need to listen for moving events outside the component) |
+| leave-event | Object/mouseEvent | null    | 当需要在外部监听离开事件时，请通过该字段传入事件(When you need to listen for leaving events outside the component)                               |
+| disabled-reactive| Boolean | false    | 禁用响应式，不会轮询图像的位置,在确定不改变布局的情况下使用可以提升性能 |
+
+#### Slot
 
 | Slot | Note                                                               |
 | ---- | ------------------------------------------------------------------ |
 |      | 内容将会在放大镜内部显示(content will display in magnifying glass) |
 
----
+#### Method
 
 | Method | Note                                |
 | ------ | ----------------------------------- |
 | reset  | 重置放大镜位置(reset zoom position) |
 
----
+#### Event
 
 | Event   | Note                               | event                                       |
 | ------- | ---------------------------------- | ------------------------------------------- |
-| created | 图片放大镜创建(photo-zoom created) | 图片属性(photo prop)(top,left,width,height) |
+| created | 图片放大镜创建(photo-zoom created) | 图像属性(img rect{top,left,width,height}),图像元素(img element) |
+| mousemove | 鼠标移出事件 |  |
+| mouseleave | 鼠标移入事件 |  |
 
 ## Build Setup
 
@@ -81,4 +90,4 @@ npm run build
 
 [MIT](https://opensource.org/licenses/MIT)
 
-Copyright (c) 2018-present, xbup
+Copyright (c) 2018-present, Mater1996
