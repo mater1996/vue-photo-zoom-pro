@@ -36,7 +36,7 @@ Vue.use(VuePhotoZoomPro);
 
 #### props
 
-| Prop        | Type              | Default | Note                                                                                                                                             |
+| Prop Name       | Type              | Default | Note                                                                                                                                             |
 | ----------- | ----------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | url         | String            |         | 图片地址(photo url)                                                                                                                              |
 | high-url    | String            |         | 更清晰的图片,若不提供会采用 url(more detailed photo url)                                                                                         |
@@ -55,19 +55,21 @@ Vue.use(VuePhotoZoomPro);
 
 #### Slot
 
-| Slot | Note                                                               |
+| Slot Name | Note                                                               |
 | ---- | ------------------------------------------------------------------ |
-|      | 内容将会在放大镜内部显示(content will display in magnifying glass) |
+| default | 默认区域(default) |
+| zoom | 内部放大区域 |
+| outzoom| 外部放大区域 |
 
 #### Method
 
-| Method | Note                                |
+| Method Name | Note                                |
 | ------ | ----------------------------------- |
 | reset  | 重置放大镜位置(reset zoom position) |
 
 #### Event
 
-| Event   | Note                               | event                                       |
+| Event Name  | Note                               | event                                       |
 | ------- | ---------------------------------- | ------------------------------------------- |
 | created | 图片放大镜创建(photo-zoom created) | 图像属性(img rect{top,left,width,height}),图像元素(img element) |
 | mousemove | 鼠标移出事件 |  |
