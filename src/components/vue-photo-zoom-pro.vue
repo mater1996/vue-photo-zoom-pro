@@ -162,7 +162,7 @@ export default {
       return !this.outZoom ? this.selectorHalfWidth * (1 - this.scale) : 0;
     },
     selectorMouseOffsetWidth() {
-      return !this.outZoom ? this.selectorHalfWidth * (1 - 1 / this.scale) : 0;
+      return !this.outZoom ? this.bgOffsetWidth * -(1 / this.scale) : 0;
     },
     imgZoomPosition() {
       const { top, left } = this.selector;
@@ -308,7 +308,6 @@ export default {
         document.body.scrollLeft;
       selector.width = selectorWidth;
       selector.topBound = selector.leftBound = 0;
-      selector.topBound = 0;
       selector.rightBound = width - selectorWidth;
       selector.bottomBound = height - selectorWidth;
       selector.absoluteLeft = left + selectorHalfWidth + scrollLeft;
