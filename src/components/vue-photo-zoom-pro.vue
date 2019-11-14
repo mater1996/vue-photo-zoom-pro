@@ -119,12 +119,14 @@ export default {
         topBound: 0,
         rightBound: 0,
         bottomBound: 0,
-        bgLeftBound: 0,
-        bgTopBound: 0,
-        bgRightBound: 0,
-        bgBottomBound: 0,
         absoluteLeft: 0,
         absoluteTop: 0
+      },
+      bgBound: {
+        leftBound: 0,
+        topBound: 0,
+        rightBound: 0,
+        bottomBound: 0
       },
       imgInfo: {},
       $img: null,
@@ -149,6 +151,9 @@ export default {
     },
     width(n) {
       this.initSelectorProperty(n);
+    },
+    selectorMouseOffsetWidth(n) {
+      this.initSelectorBgBound();
     }
   },
   computed: {
@@ -159,21 +164,21 @@ export default {
       return !this.outZoom ? this.width / 2 / this.scale : 0;
     },
     imgZoomPosition() {
-      let { top, left } = this.selector;
+      const { top, left } = this.selector;
       return {
         top: `${top}px`,
         left: `${left}px`
       };
     },
     imgZoomSize() {
-      let width = this.selector.width;
+      const width = this.selector.width;
       return {
         width: `${width}px`,
         height: `${width}px`
       };
     },
     imgOutZoomSize() {
-      let {
+      const {
         scale,
         selector: { width }
       } = this;
@@ -193,7 +198,7 @@ export default {
       };
     },
     imgBgSize() {
-      let {
+      const {
         scale,
         imgInfo: { height, width }
       } = this;
@@ -202,7 +207,7 @@ export default {
       };
     },
     imgBgPosition() {
-      let { bgLeft, bgTop } = this.selector;
+      const { bgLeft, bgTop } = this.selector;
       return {
         backgroundPosition: `${bgLeft}px ${bgTop}px`
       };
@@ -232,7 +237,7 @@ export default {
       if (JSON.stringify(this.imgInfo) != JSON.stringify(imgInfo)) {
         this.imgInfo = imgInfo;
         this.initSelectorProperty(this.width);
-        this.resetOutShowInitPosition();
+        this.resetOutZoomPosition();
       }
       if (!this.imgLoadedFlag) {
         this.imgLoadedFlag = true;
@@ -248,7 +253,8 @@ export default {
           selector,
           outZoom,
           bgOffsetWidth,
-          outShowAutoScroll
+          outShowAutoScroll,
+          bgBound
         } = this;
         let { outShowInitTop } = this;
         const scrollTop = pageY - clientY;
@@ -259,12 +265,14 @@ export default {
           topBound,
           rightBound,
           bottomBound,
-          bgLeftBound,
-          bgTopBound,
-          bgRightBound,
-          bgBottomBound,
           width
         } = selector;
+        const {
+          leftBound: bgLeftBound,
+          topBound: bgTopBound,
+          rightBound: bgRightBound,
+          bottomBound: bgBottomBound
+        } = bgBound;
         const x = pageX - absoluteLeft;
         const y = pageY - absoluteTop;
         if (outZoom) {
@@ -289,7 +297,6 @@ export default {
       const selectorHalfWidth = selectorWidth / 2;
       const selector = this.selector;
       const { width, height, left, top } = this.imgInfo;
-      const selectorMouseOffsetWidth = this.selectorMouseOffsetWidth;
       const scrollTop =
         document.documentElement.scrollTop ||
         window.pageYOffset ||
@@ -301,13 +308,19 @@ export default {
       selector.width = selectorWidth;
       selector.topBound = selector.leftBound = 0;
       selector.topBound = 0;
-      const rightBound = (selector.rightBound = width - selectorWidth);
-      const bottomBound = (selector.bottomBound = height - selectorWidth);
-      selector.bgTopBound = selector.bgLeftBound = -selectorMouseOffsetWidth;
-      selector.bgRightBound = rightBound + selectorMouseOffsetWidth;
-      selector.bgBottomBound = bottomBound + selectorMouseOffsetWidth;
+      selector.rightBound = width - selectorWidth;
+      selector.bottomBound = height - selectorWidth;
       selector.absoluteLeft = left + selectorHalfWidth + scrollLeft;
       selector.absoluteTop = top + selectorHalfWidth + scrollTop;
+      this.initSelectorBgBound();
+    },
+    initSelectorBgBound() {
+      const selectorMouseOffsetWidth = this.selectorMouseOffsetWidth;
+      const bgBound = this.bgBound;
+      const selector = this.selector;
+      bgBound.topBound = bgBound.leftBound = -selectorMouseOffsetWidth;
+      bgBound.rightBound = selector.rightBound + selectorMouseOffsetWidth;
+      bgBound.bottomBound = selector.bottomBound + selectorMouseOffsetWidth;
     },
     mouseLeave(e) {
       this.hideSelector = true;
@@ -323,9 +336,9 @@ export default {
         bgLeft: 0,
         bgTop: 0
       });
-      this.resetOutShowInitPosition();
+      this.resetOutZoomPosition();
     },
-    resetOutShowInitPosition() {
+    resetOutZoomPosition() {
       this.outShowInitTop = 0;
     }
   }
