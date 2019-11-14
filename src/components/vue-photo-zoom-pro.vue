@@ -76,7 +76,7 @@ export default {
     },
     scale: {
       type: Number,
-      default: 3
+      default: 2
     },
     moveEvent: {
       type: [Object, MouseEvent],
@@ -115,8 +115,14 @@ export default {
         left: 0,
         bgTop: 0,
         bgLeft: 0,
+        leftBound: 0,
+        topBound: 0,
         rightBound: 0,
         bottomBound: 0,
+        bgLeftBound: 0,
+        bgTopBound: 0,
+        bgRightBound: 0,
+        bgBottomBound: 0,
         absoluteLeft: 0,
         absoluteTop: 0
       },
@@ -146,8 +152,11 @@ export default {
     }
   },
   computed: {
-    addWidth() {
+    bgOffsetWidth() {
       return !this.outZoom ? (this.width / 2) * (1 - this.scale) : 0;
+    },
+    selectorMouseOffsetWidth() {
+      return !this.outZoom ? this.width / 2 / this.scale : 0;
     },
     imgZoomPosition() {
       let { top, left } = this.selector;
@@ -234,10 +243,28 @@ export default {
       if (!this.hideZoom && this.imgLoadedFlag) {
         !this.disabledReactive && this.imgLoaded();
         const { pageX, pageY, clientY } = e;
-        const { scale, selector, outZoom, addWidth, outShowAutoScroll } = this;
+        const {
+          scale,
+          selector,
+          outZoom,
+          bgOffsetWidth,
+          outShowAutoScroll
+        } = this;
         let { outShowInitTop } = this;
         const scrollTop = pageY - clientY;
-        const { absoluteLeft, absoluteTop, rightBound, bottomBound } = selector;
+        const {
+          absoluteLeft,
+          absoluteTop,
+          leftBound,
+          topBound,
+          rightBound,
+          bottomBound,
+          bgLeftBound,
+          bgTopBound,
+          bgRightBound,
+          bgBottomBound,
+          width
+        } = selector;
         const x = pageX - absoluteLeft;
         const y = pageY - absoluteTop;
         if (outZoom) {
@@ -249,17 +276,20 @@ export default {
             scrollTop > outShowInitTop ? scrollTop - outShowInitTop : 0;
         }
         this.hideSelector && (this.hideSelector = false);
-        selector.left = x > 0 ? (x < rightBound ? x : rightBound) : 0;
-        selector.top = y > 0 ? (y < bottomBound ? y : bottomBound) : 0;
-        selector.bgLeft = addWidth - selector.left * scale;
-        selector.bgTop = addWidth - selector.top * scale;
+        selector.left = x > leftBound ? Math.min(x, rightBound) : leftBound;
+        selector.top = y > topBound ? Math.min(y, bottomBound) : topBound;
+        const bgX = x > bgLeftBound ? Math.min(x, bgRightBound) : bgLeftBound;
+        const bgY = y > bgTopBound ? Math.min(y, bgBottomBound) : bgTopBound;
+        selector.bgLeft = -bgX * scale + bgOffsetWidth;
+        selector.bgTop = -bgY * scale + bgOffsetWidth;
       }
-      this.$emit('mousemove', e)
+      this.$emit("mousemove", e);
     },
     initSelectorProperty(selectorWidth) {
       const selectorHalfWidth = selectorWidth / 2;
       const selector = this.selector;
       const { width, height, left, top } = this.imgInfo;
+      const selectorMouseOffsetWidth = this.selectorMouseOffsetWidth;
       const scrollTop =
         document.documentElement.scrollTop ||
         window.pageYOffset ||
@@ -269,8 +299,13 @@ export default {
         window.pageXOffset ||
         document.body.scrollLeft;
       selector.width = selectorWidth;
-      selector.rightBound = width - selectorWidth;
-      selector.bottomBound = height - selectorWidth;
+      selector.topBound = selector.leftBound = 0;
+      selector.topBound = 0;
+      const rightBound = (selector.rightBound = width - selectorWidth);
+      const bottomBound = (selector.bottomBound = height - selectorWidth);
+      selector.bgTopBound = selector.bgLeftBound = -selectorMouseOffsetWidth;
+      selector.bgRightBound = rightBound + selectorMouseOffsetWidth;
+      selector.bgBottomBound = bottomBound + selectorMouseOffsetWidth;
       selector.absoluteLeft = left + selectorHalfWidth + scrollLeft;
       selector.absoluteTop = top + selectorHalfWidth + scrollTop;
     },
@@ -279,7 +314,7 @@ export default {
       if (this.outZoom) {
         this.hideOutZoom = true;
       }
-      this.$emit('mouseleave', e)
+      this.$emit("mouseleave", e);
     },
     reset() {
       Object.assign(this.selector, {
