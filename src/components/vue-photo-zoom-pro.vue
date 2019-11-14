@@ -133,10 +133,8 @@ export default {
       outShowInitTop: 0,
       outShowTop: 0,
       hideOutZoom: true,
-      imgLoadedFlag: false,
-      highImgLoadedFlag: false,
       hideSelector: true,
-      timer: null
+      imgLoadedFlag: false
     };
   },
   watch: {
@@ -157,11 +155,14 @@ export default {
     }
   },
   computed: {
+    selectorHalfWidth() {
+      return this.width / 2;
+    },
     bgOffsetWidth() {
-      return !this.outZoom ? (this.width / 2) * (1 - this.scale) : 0;
+      return !this.outZoom ? this.selectorHalfWidth * (1 - this.scale) : 0;
     },
     selectorMouseOffsetWidth() {
-      return !this.outZoom ? this.width / 2 / this.scale : 0;
+      return !this.outZoom ? this.selectorHalfWidth * (1 - 1 / this.scale) : 0;
     },
     imgZoomPosition() {
       const { top, left } = this.selector;
@@ -222,7 +223,7 @@ export default {
   methods: {
     handlerUrlChange() {
       this.imgLoadedFlag = false;
-      this.loadImg(this.url).then(this.imgLoaded, err => console.error(err));
+      this.loadImg(this.url).then(this.imgLoaded, console.error);
     },
     loadImg(url) {
       return new Promise((resolve, reject) => {
@@ -294,9 +295,9 @@ export default {
       this.$emit("mousemove", e);
     },
     initSelectorProperty(selectorWidth) {
-      const selectorHalfWidth = selectorWidth / 2;
       const selector = this.selector;
       const { width, height, left, top } = this.imgInfo;
+      const selectorHalfWidth = this.selectorHalfWidth;
       const scrollTop =
         document.documentElement.scrollTop ||
         window.pageYOffset ||
