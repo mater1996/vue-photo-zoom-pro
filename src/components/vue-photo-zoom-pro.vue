@@ -6,10 +6,10 @@
       @mouseleave="!leaveEvent && mouseLeave($event)"
     >
       <img
+        class="origin-img"
         ref="img"
         @load="imgLoaded($event)"
         :src="imgLoadedFlag && url"
-        style="width:100%;display:block"
       />
       <div
         v-show="!hideZoom && imgLoadedFlag && !hideSelector"
@@ -47,7 +47,7 @@
 </template>
 <script>
 export default {
-  name: "vue-photo-zoom-pro",
+  name: 'vue-photo-zoom-pro',
   props: {
     url: String,
     highUrl: String,
@@ -61,21 +61,21 @@ export default {
     },
     type: {
       type: String,
-      default: "square",
+      default: 'square',
       validator: function(value) {
-        return ["circle", "square"].indexOf(value) !== -1;
+        return ['circle', 'square'].indexOf(value) !== -1
       }
     },
     zoomStyle: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     },
     outZoomStyle: {
       type: Object,
       default() {
-        return {};
+        return {}
       }
     },
     scale: {
@@ -116,8 +116,6 @@ export default {
       selector: {
         top: 0,
         left: 0,
-        bgTop: 0,
-        bgLeft: 0,
         leftBound: 0,
         topBound: 0,
         rightBound: 0,
@@ -125,7 +123,9 @@ export default {
         absoluteLeft: 0,
         absoluteTop: 0
       },
-      bgBound: {
+      selectorBg: {
+        top: 0,
+        left: 0,
         leftBound: 0,
         topBound: 0,
         rightBound: 0,
@@ -138,145 +138,145 @@ export default {
       hideOutZoom: true,
       hideSelector: true,
       imgLoadedFlag: false
-    };
+    }
   },
   watch: {
     moveEvent(e) {
-      this.mouseMove(e);
+      this.mouseMove(e)
     },
     leaveEvent(e) {
-      this.mouseLeave(e);
+      this.mouseLeave(e)
     },
     url() {
-      this.handlerUrlChange();
+      this.handlerUrlChange()
     },
     width(n) {
-      this.initSelectorProperty();
+      this.initSelectorProperty()
     },
     height(n) {
-      this.initSelectorProperty();
+      this.initSelectorProperty()
     },
     selectorMouseOffsetWidth(n) {
-      this.initSelectorBgBound();
+      this.initSelectorBgBound()
     },
     selectorMouseOffsetHeight(n) {
-      this.initSelectorBgBound();
+      this.initSelectorBgBound()
     }
   },
   computed: {
     selectorHeight() {
-      return this.height > 0 ? this.height : this.width;
+      return this.height > 0 ? this.height : this.width
     },
     selectorHalfWidth() {
-      return this.width / 2;
+      return this.width / 2
     },
     selectorHalfHeight() {
-      return this.selectorHeight / 2;
+      return this.selectorHeight / 2
     },
     bgOffsetWidth() {
-      return !this.outZoom ? this.selectorHalfWidth * (1 - this.scale) : 0;
+      return !this.outZoom ? this.selectorHalfWidth * (1 - this.scale) : 0
     },
     bgOffsetHeight() {
-      return !this.outZoom ? this.selectorHalfHeight * (1 - this.scale) : 0;
+      return !this.outZoom ? this.selectorHalfHeight * (1 - this.scale) : 0
     },
     selectorMouseOffsetWidth() {
-      return this.bgOffsetWidth * -(1 / this.scale);
+      return this.bgOffsetWidth * -(1 / this.scale)
     },
     selectorMouseOffsetHeight() {
-      return this.bgOffsetHeight * -(1 / this.scale);
+      return this.bgOffsetHeight * -(1 / this.scale)
     },
     imgZoomPosition() {
-      const { top, left } = this.selector;
+      const { top, left } = this.selector
       return {
         top: `${top}px`,
         left: `${left}px`
-      };
+      }
     },
     imgZoomSize() {
-      const { width, selectorHeight: height } = this;
+      const { width, selectorHeight: height } = this
       return {
         width: `${width}px`,
         height: `${height}px`
-      };
+      }
     },
     imgOutZoomSize() {
-      const { scale, width, selectorHeight: height } = this;
+      const { scale, width, selectorHeight: height } = this
       return {
         width: `${width * scale}px`,
         height: `${height * scale}px`
-      };
+      }
     },
     imgOutZoomPosition() {
       return {
         top: `${this.outShowTop}px`
-      };
+      }
     },
     imgBg() {
       return {
         backgroundImage: `url(${this.highUrl || this.url})`
-      };
+      }
     },
     imgBgSize() {
       const {
         scale,
         imgInfo: { height, width }
-      } = this;
+      } = this
       return {
         backgroundSize: `${width * scale}px ${height * scale}px`
-      };
+      }
     },
     imgBgPosition() {
-      const { bgLeft, bgTop } = this.selector;
+      const { left, top } = this.selectorBg
       return {
-        backgroundPosition: `${bgLeft}px ${bgTop}px`
-      };
+        backgroundPosition: `${left}px ${top}px`
+      }
     }
   },
   created() {
-    this.url && this.handlerUrlChange();
+    this.url && this.handlerUrlChange()
   },
   mounted() {
-    this.$img = this.$refs["img"];
+    this.$img = this.$refs['img']
   },
   methods: {
     handlerUrlChange() {
-      this.imgLoadedFlag = false;
-      this.loadImg(this.url).then(this.imgLoaded, console.error);
+      this.imgLoadedFlag = false
+      this.loadImg(this.url).then(this.imgLoaded, console.error)
     },
     loadImg(url) {
       return new Promise((resolve, reject) => {
-        const img = document.createElement("img");
-        img.addEventListener("load", resolve);
-        img.addEventListener("error", reject);
-        img.src = url;
-      });
+        const img = document.createElement('img')
+        img.addEventListener('load', resolve)
+        img.addEventListener('error', reject)
+        img.src = url
+      })
     },
     imgLoaded() {
-      let imgInfo = this.$img.getBoundingClientRect();
+      let imgInfo = this.$img.getBoundingClientRect()
       if (JSON.stringify(this.imgInfo) != JSON.stringify(imgInfo)) {
-        this.imgInfo = imgInfo;
-        this.initSelectorProperty();
-        this.resetOutZoomPosition();
+        this.imgInfo = imgInfo
+        this.initSelectorProperty()
+        this.resetOutZoomPosition()
       }
       if (!this.imgLoadedFlag) {
-        this.imgLoadedFlag = true;
-        this.$emit("created", this.$img, imgInfo);
+        this.imgLoadedFlag = true
+        this.$emit('created', this.$img, imgInfo)
       }
     },
     mouseMove(e) {
       if (!this.hideZoom && this.imgLoadedFlag) {
-        !this.disabledReactive && this.imgLoaded();
-        const { pageX, pageY, clientY } = e;
+        !this.disabledReactive && this.imgLoaded()
+        const { pageX, pageY, clientY } = e
         const {
           scale,
           selector,
+          selectorBg,
           outZoom,
           bgOffsetWidth,
           bgOffsetHeight,
-          outShowAutoScroll,
-          bgBound
-        } = this;
-        const scrollTop = pageY - clientY;
+          outShowAutoScroll
+        } = this
+        const scrollTop = pageY - clientY
         const {
           absoluteLeft,
           absoluteTop,
@@ -284,92 +284,99 @@ export default {
           topBound,
           rightBound,
           bottomBound
-        } = selector;
+        } = selector
         const {
           leftBound: bgLeftBound,
           topBound: bgTopBound,
           rightBound: bgRightBound,
           bottomBound: bgBottomBound
-        } = bgBound;
-        const x = pageX - absoluteLeft;
-        const y = pageY - absoluteTop;
-        let outShowInitTop = this.outShowInitTop;
+        } = selectorBg
+        const x = pageX - absoluteLeft
+        const y = pageY - absoluteTop
+        let outShowInitTop = this.outShowInitTop
         if (outZoom) {
           if (!outShowInitTop) {
-            outShowInitTop = this.outShowInitTop = scrollTop + this.imgInfo.top;
+            outShowInitTop = this.outShowInitTop = scrollTop + this.imgInfo.top
           }
-          this.hideOutZoom && (this.hideOutZoom = false);
+          this.hideOutZoom && (this.hideOutZoom = false)
           this.outShowTop =
-            scrollTop > outShowInitTop ? scrollTop - outShowInitTop : 0;
+            scrollTop > outShowInitTop ? scrollTop - outShowInitTop : 0
         }
-        this.hideSelector && (this.hideSelector = false);
-        selector.left = x > leftBound ? Math.min(x, rightBound) : leftBound;
-        selector.top = y > topBound ? Math.min(y, bottomBound) : topBound;
-        const bgX = x > bgLeftBound ? Math.min(x, bgRightBound) : bgLeftBound;
-        const bgY = y > bgTopBound ? Math.min(y, bgBottomBound) : bgTopBound;
-        selector.bgLeft = -bgX * scale + bgOffsetWidth;
-        selector.bgTop = -bgY * scale + bgOffsetHeight;
+        this.hideSelector && (this.hideSelector = false)
+        selector.left = x > leftBound ? Math.min(x, rightBound) : leftBound
+        selector.top = y > topBound ? Math.min(y, bottomBound) : topBound
+        const bgX = x > bgLeftBound ? Math.min(x, bgRightBound) : bgLeftBound
+        const bgY = y > bgTopBound ? Math.min(y, bgBottomBound) : bgTopBound
+        selectorBg.left = -bgX * scale + bgOffsetWidth
+        selectorBg.top = -bgY * scale + bgOffsetHeight
       }
-      this.$emit("mousemove", e);
+      this.$emit('mousemove', e)
     },
     initSelectorProperty() {
-      const selector = this.selector;
-      const selectorWidth = this.width;
-      const selectorHeight = this.selectorHeight;
-      const selectorHalfWidth = this.selectorHalfWidth;
-      const selectorHalfHeight = this.selectorHalfHeight;
-      const { width, height, left, top } = this.imgInfo;
+      const selector = this.selector
+      const selectorWidth = this.width
+      const selectorHeight = this.selectorHeight
+      const selectorHalfWidth = this.selectorHalfWidth
+      const selectorHalfHeight = this.selectorHalfHeight
+      const { width, height, left, top } = this.imgInfo
       const scrollTop =
         document.documentElement.scrollTop ||
         window.pageYOffset ||
-        document.body.scrollTop;
+        document.body.scrollTop
       const scrollLeft =
         document.documentElement.scrollLeft ||
         window.pageXOffset ||
-        document.body.scrollLeft;
-      selector.topBound = selector.leftBound = 0;
-      selector.rightBound = width - selectorWidth;
-      selector.bottomBound = height - selectorHeight;
-      selector.absoluteLeft = left + selectorHalfWidth + scrollLeft;
-      selector.absoluteTop = top + selectorHalfHeight + scrollTop;
-      this.initSelectorBgBound();
+        document.body.scrollLeft
+      selector.topBound = selector.leftBound = 0
+      selector.rightBound = width - selectorWidth
+      selector.bottomBound = height - selectorHeight
+      selector.absoluteLeft = left + selectorHalfWidth + scrollLeft
+      selector.absoluteTop = top + selectorHalfHeight + scrollTop
+      this.initSelectorBgBound()
     },
     initSelectorBgBound() {
-      const selectorMouseOffsetWidth = this.selectorMouseOffsetWidth;
-      const selectorMouseOffsetHeight = this.selectorMouseOffsetHeight;
-      const bgBound = this.bgBound;
-      const selector = this.selector;
-      bgBound.leftBound = -selectorMouseOffsetWidth;
-      bgBound.topBound = -selectorMouseOffsetHeight;
-      bgBound.rightBound = selector.rightBound + selectorMouseOffsetWidth;
-      bgBound.bottomBound = selector.bottomBound + selectorMouseOffsetHeight;
+      const selectorMouseOffsetWidth = this.selectorMouseOffsetWidth
+      const selectorMouseOffsetHeight = this.selectorMouseOffsetHeight
+      const selectorBg = this.selectorBg
+      const selector = this.selector
+      selectorBg.leftBound = -selectorMouseOffsetWidth
+      selectorBg.topBound = -selectorMouseOffsetHeight
+      selectorBg.rightBound = selector.rightBound + selectorMouseOffsetWidth
+      selectorBg.bottomBound = selector.bottomBound + selectorMouseOffsetHeight
     },
     mouseLeave(e) {
-      this.hideSelector = true;
+      this.hideSelector = true
       if (this.outZoom) {
-        this.hideOutZoom = true;
+        this.hideOutZoom = true
       }
-      this.$emit("mouseleave", e);
+      this.$emit('mouseleave', e)
     },
     reset() {
       Object.assign(this.selector, {
         top: 0,
+        left: 0
+      })
+      Object.assign(this.selectorBg, {
         left: 0,
-        bgLeft: 0,
-        bgTop: 0
-      });
-      this.resetOutZoomPosition();
+        top: 0
+      })
+      this.resetOutZoomPosition()
     },
     resetOutZoomPosition() {
-      this.outShowInitTop = 0;
+      this.outShowInitTop = 0
     }
   }
-};
+}
 </script>
 
 <style scoped>
 .img-container {
   position: relative;
+}
+
+.img-container .origin-img {
+  width: 100%;
+  display: block;
 }
 
 .img-selector {
@@ -404,12 +411,16 @@ export default {
   background-color: black;
 }
 
-.img-out-show.base-line::after {
+.img-out-show.base-line::after,
+.img-out-show.base-line::before {
   position: absolute;
   box-sizing: border-box;
-  content: "";
-  width: 1px;
+  content: '';
   border: 1px dashed rgba(0, 0, 0, 0.36);
+}
+
+.img-out-show.base-line::after {
+  width: 1px;
   top: 0;
   bottom: 0;
   left: 50%;
@@ -417,11 +428,7 @@ export default {
 }
 
 .img-out-show.base-line::before {
-  position: absolute;
-  box-sizing: border-box;
-  content: "";
   height: 1px;
-  border: 1px dashed rgba(0, 0, 0, 0.36);
   left: 0;
   right: 0;
   top: 50%;
