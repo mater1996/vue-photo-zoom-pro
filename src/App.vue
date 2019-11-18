@@ -22,6 +22,7 @@
       </vue-photo-zoom-pro>
     </div>
     <div style="width:38%;display:inline-block;vertical-align:top;">
+      <p>！小提示：可以进行滚动放大</p>
       <p>当前放大倍数：{{ scale }}</p>
       <p>当前放大镜宽度：{{ width }}</p>
       <button style="margin-top:8px" @click="addSelectorWidth">
@@ -63,60 +64,64 @@
 
 <script>
 export default {
-  name: "app",
+  name: 'app',
   data() {
     return {
-      url: "",
+      url: '',
       index: 0,
       scale: 2,
-      type: "square",
+      type: 'square',
       showType: false,
       changeImgPosition: false,
       width: 168,
       imgList: [
-        "https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true",
-        "https://bpic.588ku.com/illus_water_img/18/08/21/64d2b3b02352b00dd668b705fd8af276.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true",
-        "https://bpic.588ku.com/illus_water_img/18/08/18/472f21d353b64c95b9994be6ed3b7274.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true"
+        'https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true',
+        'https://bpic.588ku.com/illus_water_img/18/08/21/64d2b3b02352b00dd668b705fd8af276.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true',
+        'https://bpic.588ku.com/illus_water_img/18/08/18/472f21d353b64c95b9994be6ed3b7274.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true'
       ],
       taobao: false,
       height: -1
-    };
+    }
   },
   created() {
-    this.url = this.imgList[this.index];
+    this.url = this.imgList[this.index]
+    document.body.onmousewheel = event => {
+      event = event || window.event
+      this.scale += event.deltaY > 0 ? -0.1 : 0.1
+    }
   },
   methods: {
     addSelectorWidth() {
-      this.width += 20;
+      this.width += 20
     },
     subSelectorWidth() {
-      this.width -= 20;
+      this.width -= 20
     },
     addScale() {
-      this.scale += 0.5;
+      this.scale += 0.5
     },
     subScale() {
-      this.scale -= 0.5;
+      this.scale -= 0.5
     },
     changeType() {
-      this.type = this.type === "circle" ? "square" : "circle";
+      this.type = this.type === 'circle' ? 'square' : 'circle'
     },
     changeImg() {
-      this.index = this.index > this.imgList.length - 2 ? -1 : this.index;
-      this.url = this.imgList[++this.index];
+      this.index = this.index > this.imgList.length - 2 ? -1 : this.index
+      this.url = this.imgList[++this.index]
     },
     changeShowType() {
-      this.showType = !this.showType;
+      this.showType = !this.showType
     },
     changeToTaobao() {
-      this.taobao = !this.taobao;
-      this.showType = true;
+      this.taobao = !this.taobao
+      this.showType = true
     },
     changeToMultipleWidth() {
-      this.height = this.height === -1 ? 99 : -1;
+      this.height = this.height === -1 ? 99 : -1
     }
   }
-};
+}
 </script>
 
 <style>

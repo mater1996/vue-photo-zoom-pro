@@ -83,11 +83,11 @@ export default {
       default: 2
     },
     moveEvent: {
-      type: [Object, MouseEvent],
+      type: [Object, MouseEvent, TouchEvent, Touch],
       default: null
     },
     leaveEvent: {
-      type: [Object, MouseEvent],
+      type: [Object, MouseEvent, TouchEvent, Touch],
       default: null
     },
     hideZoom: {
@@ -141,6 +141,9 @@ export default {
     }
   },
   watch: {
+    scale() {
+      this.mouseMove()
+    },
     moveEvent(e) {
       this.mouseMove(e)
     },
@@ -180,7 +183,7 @@ export default {
       return !this.outZoom ? this.selectorHalfHeight * (1 - this.scale) : 0
     },
     selectorMouseOffsetWidth() {
-      return this.bgOffsetWidth * -(1 / this.scale)
+      return this.bgOffsetWidth * -(1 / this.scale) // 内部放大会有内部的偏移 所以需要在背景边界上增加偏移量
     },
     selectorMouseOffsetHeight() {
       return this.bgOffsetHeight * -(1 / this.scale)
@@ -239,10 +242,18 @@ export default {
     this.$img = this.$refs['img']
   },
   methods: {
+    /**
+     * 图片url改变
+     */
     handlerUrlChange() {
       this.imgLoadedFlag = false
       this.loadImg(this.url).then(this.imgLoaded, console.error)
     },
+    /**
+     * 加载图片
+     * @param {String} 图片地址
+     * @return {Promise}
+     */
     loadImg(url) {
       return new Promise((resolve, reject) => {
         const img = document.createElement('img')
@@ -251,8 +262,11 @@ export default {
         img.src = url
       })
     },
+    /**
+     * 图片记载完毕事件
+     */
     imgLoaded() {
-      let imgInfo = this.$img.getBoundingClientRect()
+      const imgInfo = this.$img.getBoundingClientRect()
       if (JSON.stringify(this.imgInfo) != JSON.stringify(imgInfo)) {
         this.imgInfo = imgInfo
         this.initSelectorProperty()
@@ -263,8 +277,12 @@ export default {
         this.$emit('created', this.$img, imgInfo)
       }
     },
+    /**
+     * 鼠标移动事件
+     */
     mouseMove(e) {
-      if (!this.hideZoom && this.imgLoadedFlag) {
+      e = e || this.pointerInfo
+      if (!this.hideZoom && this.imgLoadedFlag && e) {
         !this.disabledReactive && this.imgLoaded()
         const { pageX, pageY, clientY } = e
         const {
@@ -291,7 +309,7 @@ export default {
           rightBound: bgRightBound,
           bottomBound: bgBottomBound
         } = selectorBg
-        const x = pageX - absoluteLeft
+        const x = pageX - absoluteLeft // 相对于左上角选择器中心的偏移位置
         const y = pageY - absoluteTop
         let outShowInitTop = this.outShowInitTop
         if (outZoom) {
@@ -302,6 +320,7 @@ export default {
           this.outShowTop =
             scrollTop > outShowInitTop ? scrollTop - outShowInitTop : 0
         }
+        this.pointerInfo = e
         this.hideSelector && (this.hideSelector = false)
         selector.left = x > leftBound ? Math.min(x, rightBound) : leftBound
         selector.top = y > topBound ? Math.min(y, bottomBound) : topBound
@@ -312,6 +331,9 @@ export default {
       }
       this.$emit('mousemove', e)
     },
+    /**
+     * 初始化选择器的属性
+     */
     initSelectorProperty() {
       const selector = this.selector
       const selectorWidth = this.width
@@ -327,23 +349,29 @@ export default {
         document.documentElement.scrollLeft ||
         window.pageXOffset ||
         document.body.scrollLeft
-      selector.topBound = selector.leftBound = 0
+      selector.topBound = selector.leftBound = 0 //相对于图片左上角选择器中心的鼠标边界位置
       selector.rightBound = width - selectorWidth
       selector.bottomBound = height - selectorHeight
-      selector.absoluteLeft = left + selectorHalfWidth + scrollLeft
+      selector.absoluteLeft = left + selectorHalfWidth + scrollLeft //相对于图片左上角选择器中心的绝对位置
       selector.absoluteTop = top + selectorHalfHeight + scrollTop
       this.initSelectorBgBound()
     },
+    /**
+     * 初始化选择器背景属性
+     */
     initSelectorBgBound() {
       const selectorMouseOffsetWidth = this.selectorMouseOffsetWidth
       const selectorMouseOffsetHeight = this.selectorMouseOffsetHeight
       const selectorBg = this.selectorBg
       const selector = this.selector
-      selectorBg.leftBound = -selectorMouseOffsetWidth
+      selectorBg.leftBound = -selectorMouseOffsetWidth //相对于图片左上角选择器中心的背景鼠标边界位置
       selectorBg.topBound = -selectorMouseOffsetHeight
       selectorBg.rightBound = selector.rightBound + selectorMouseOffsetWidth
       selectorBg.bottomBound = selector.bottomBound + selectorMouseOffsetHeight
     },
+    /**
+     * 鼠标移出事件
+     */
     mouseLeave(e) {
       this.hideSelector = true
       if (this.outZoom) {
@@ -351,6 +379,9 @@ export default {
       }
       this.$emit('mouseleave', e)
     },
+    /**
+     * 重置
+     */
     reset() {
       Object.assign(this.selector, {
         top: 0,
@@ -362,6 +393,9 @@ export default {
       })
       this.resetOutZoomPosition()
     },
+    /**
+     * 重置外部放大区域属性
+     */
     resetOutZoomPosition() {
       this.outShowInitTop = 0
     }
