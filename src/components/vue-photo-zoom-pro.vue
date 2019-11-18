@@ -2,6 +2,7 @@
   <div class="pic-img">
     <div
       class="img-container"
+      @mouseenter="!enterEvent && mouseEnter($event)"
       @mousemove="!moveEvent && mouseMove($event)"
       @mouseleave="!leaveEvent && mouseLeave($event)"
     >
@@ -81,6 +82,10 @@ export default {
     scale: {
       type: Number,
       default: 2
+    },
+    enterEvent: {
+      type: [Object, MouseEvent, TouchEvent, Touch],
+      default: null
     },
     moveEvent: {
       type: [Object, MouseEvent, TouchEvent, Touch],
@@ -277,8 +282,14 @@ export default {
         this.$emit('created', this.$img, imgInfo)
       }
     },
+    mouseEnter() {
+      if (!this.hideZoom && this.imgLoadedFlag) {
+        this.hideSelector && (this.hideSelector = false)
+      }
+      this.$emit('mouseenter', e)
+    },
     /**
-     * 鼠标移动事件
+     * 鼠标移动事件, 触摸
      */
     mouseMove(e) {
       e = e || this.pointerInfo
@@ -321,7 +332,6 @@ export default {
             scrollTop > outShowInitTop ? scrollTop - outShowInitTop : 0
         }
         this.pointerInfo = e
-        this.hideSelector && (this.hideSelector = false)
         selector.left = x > leftBound ? Math.min(x, rightBound) : leftBound
         selector.top = y > topBound ? Math.min(y, bottomBound) : topBound
         const bgX = x > bgLeftBound ? Math.min(x, bgRightBound) : bgLeftBound
@@ -330,6 +340,16 @@ export default {
         selectorBg.top = -bgY * scale + bgOffsetHeight
       }
       this.$emit('mousemove', e)
+    },
+    /**
+     * 鼠标移出事件
+     */
+    mouseLeave(e) {
+      this.hideSelector = true
+      if (this.outZoom) {
+        this.hideOutZoom = true
+      }
+      this.$emit('mouseleave', e)
     },
     /**
      * 初始化选择器的属性
@@ -368,16 +388,6 @@ export default {
       selectorBg.topBound = -selectorMouseOffsetHeight
       selectorBg.rightBound = selector.rightBound + selectorMouseOffsetWidth
       selectorBg.bottomBound = selector.bottomBound + selectorMouseOffsetHeight
-    },
-    /**
-     * 鼠标移出事件
-     */
-    mouseLeave(e) {
-      this.hideSelector = true
-      if (this.outZoom) {
-        this.hideOutZoom = true
-      }
-      this.$emit('mouseleave', e)
     },
     /**
      * 重置
