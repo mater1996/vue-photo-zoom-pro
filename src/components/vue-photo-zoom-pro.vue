@@ -147,7 +147,7 @@ export default {
   },
   watch: {
     scale() {
-      this.mouseMove()
+      !this.outZoom && this.mouseMove()
     },
     moveEvent(e) {
       this.mouseMove(e)
