@@ -15,8 +15,7 @@
       <div
         v-show="!hideZoom && imgLoadedFlag && !hideSelector"
         :class="['img-selector', { circle: type === 'circle' }]"
-        :style="[
-          zoomStyle,
+        :style="[ 
           imgZoomSize,
           imgZoomPosition,
           !outZoom && imgBg,
@@ -282,7 +281,7 @@ export default {
         this.$emit('created', this.$img, imgInfo)
       }
     },
-    mouseEnter() {
+    mouseEnter(e) {
       if (!this.hideZoom && this.imgLoadedFlag) {
         this.hideSelector && (this.hideSelector = false)
       }
