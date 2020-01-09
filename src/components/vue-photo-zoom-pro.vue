@@ -23,7 +23,7 @@
           !outZoom && imgBgPosition
         ]"
       >
-        <slot name="header"></slot>
+        <slot name="zoom"></slot>
       </div>
       <div
         v-if="outZoom"
