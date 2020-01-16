@@ -44,8 +44,8 @@ Vue.use(VuePhotoZoomPro);
 | width       | Number            | 166     | 内部放大区域宽度(width of internal amplification region)                                                                                                            |
 | height      | Number            | -1     | 内部放大区域高度，如果不设置或者小于0会和宽度保持同步(height of internal amplification region)                                                                                                            |
 | type        | String            | square  | 放大镜类型(circle,square)(magnifying glass type (circle,square))                                                                                 |
-| zoom-style  | Object            | {}      | 内部放大区域样式(style of internal amplification region)                                                                                                            |
-| out-zoom-style  | Object            | {}  | 外部放大区域样式(style of external amplification region)                                                                                                            |
+| zoomer-style  | Object            | {}      | 内部放大区域样式(style of internal amplification region)                                                                                                            |
+| out-zoomer-style  | Object            | {}  | 外部放大区域样式(style of external amplification region)                                                                                                            |
 | zoomer   | Boolean           | false   | 是否隐藏放大镜(hide magnifying)                                                                                            |
 | out-zoomer    | Boolean           | true    | 图片展示区域会在图片外部(amplification region will be displayed on the outside)                                                                                 |
 | pointer     | Boolean           | false   | 外部区域的中心点 (the center of an external area)                                                                                                |
