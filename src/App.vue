@@ -12,11 +12,11 @@
         :type="type"
         :scale="scale"
         :out-zoomer="showType"
-        :zoom-style="{
+        :zoomer-style="{
           'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0.6)'
         }"
       >
-        <template v-if="taobao" slot="header">
+        <template v-if="taobao" slot="zoomer">
           <div class="ks-imagezoom-wrap"></div>
         </template>
       </vue-photo-zoom-pro>

@@ -6,16 +6,13 @@
       @mousemove="!disabled && !moveEvent && mouseMove($event)"
       @mouseleave="!disabled && !leaveEvent && mouseLeave($event)"
     >
-      <img
-        class="origin-img"
-        ref="img"
-        @load="imgLoaded($event)"
-      />
+      <img class="origin-img" ref="img" @load="imgLoaded($event)" />
       <div
         v-if="zoomer"
         v-show="!hideZoomer && imgLoadedFlag"
         :class="['img-zoomer', { circle: type === 'circle' }]"
         :style="[
+          zoomerStyle,
           zoomerSize,
           zoomerPosition,
           !outZoomer && zoomerBgUrl,
