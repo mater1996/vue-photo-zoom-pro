@@ -46,8 +46,8 @@ Vue.use(VuePhotoZoomPro);
 | type        | String            | square  | 放大镜类型(circle,square)(magnifying glass type (circle,square))                                                                                 |
 | zoom-style  | Object            | {}      | 内部放大区域样式(style of internal amplification region)                                                                                                            |
 | out-zoom-style  | Object            | {}  | 外部放大区域样式(style of external amplification region)                                                                                                            |
-| hide-zoom   | Boolean           | false   | 隐藏放大镜(hide magnifying)                                                                                            |
-| out-zoom    | Boolean           | true    | 图片展示区域会在图片外部(amplification region will be displayed on the outside)                                                                                 |
+| zoomer   | Boolean           | false   | 是否隐藏放大镜(hide magnifying)                                                                                            |
+| out-zoomer    | Boolean           | true    | 图片展示区域会在图片外部(amplification region will be displayed on the outside)                                                                                 |
 | pointer     | Boolean           | false   | 外部区域的中心点 (the center of an external area)                                                                                                |
 | baseline    | Boolean           | false   | 外部区域的基线 (the baseline of the external area)                                                                                               |
 | enter-event | Object/mouseEvent/Touch/TouchEvent | null    | 当需要在外部监听鼠标移入事件时，请通过该字段传入事件(When you need to listen for enter events outside the component)                               |

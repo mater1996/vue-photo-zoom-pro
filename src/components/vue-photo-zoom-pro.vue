@@ -10,7 +10,6 @@
         class="origin-img"
         ref="img"
         @load="imgLoaded($event)"
-        :src="imgLoadedFlag && url"
       />
       <div
         v-if="zoomer"
@@ -26,8 +25,8 @@
       >
         <slot name="zoomer"></slot>
       </div>
-      <div v-if="mask" class="mask">
-        <canvas></canvas>
+      <div v-if="mask" class="mask-container">
+        <canvas id="mask"></canvas>
       </div>
       <div
         v-if="outZoomer"
@@ -338,6 +337,7 @@ export default {
       }
       if (!this.imgLoadedFlag) {
         this.imgLoadedFlag = true;
+        this.$img.src = this.url;
         this.$emit("created", this.$img, imgInfo);
       }
     },
