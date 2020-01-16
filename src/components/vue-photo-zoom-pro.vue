@@ -1,10 +1,10 @@
 <template>
-  <div class="pic-img">
+  <div class="photo-zoom-pro">
     <div
-      class="img-container"
-      @mouseenter="!enterEvent && mouseEnter($event)"
-      @mousemove="!moveEvent && mouseMove($event)"
-      @mouseleave="!leaveEvent && mouseLeave($event)"
+      class="container"
+      @mouseenter="!disabled && !enterEvent && mouseEnter($event)"
+      @mousemove="!disabled && !moveEvent && mouseMove($event)"
+      @mouseleave="!disabled && !leaveEvent && mouseLeave($event)"
     >
       <img
         class="origin-img"
@@ -13,33 +13,37 @@
         :src="imgLoadedFlag && url"
       />
       <div
-        v-show="!hideZoom && imgLoadedFlag && !hideSelector"
-        :class="['img-selector', { circle: type === 'circle' }]"
-        :style="[ 
-          imgZoomSize,
-          imgZoomPosition,
-          !outZoom && imgBg,
-          !outZoom && imgBgSize,
-          !outZoom && imgBgPosition
+        v-if="zoomer"
+        v-show="!hideZoomer && imgLoadedFlag"
+        :class="['img-zoomer', { circle: type === 'circle' }]"
+        :style="[
+          zoomerSize,
+          zoomerPosition,
+          !outZoomer && zoomerBgUrl,
+          !outZoomer && zoomerBgSize,
+          !outZoomer && zoomerBgPosition
         ]"
       >
-        <slot name="zoom"></slot>
+        <slot name="zoomer"></slot>
+      </div>
+      <div v-if="mask" class="mask">
+        <canvas></canvas>
       </div>
       <div
-        v-if="outZoom"
-        v-show="!hideOutZoom"
+        v-if="outZoomer"
+        v-show="!hideOutZoomer"
         :class="['img-out-show', { 'base-line': baseline }]"
         :style="[
-          outZoomStyle,
-          imgOutZoomSize,
-          imgOutZoomPosition,
-          imgBg,
-          imgBgSize,
-          imgBgPosition
+          outZoomerStyle,
+          outZoomerSize,
+          outZoomerPosition,
+          zoomerBgUrl,
+          zoomerBgSize,
+          zoomerBgPosition
         ]"
       >
-        <div v-if="pointer" class="img-selector-point"></div>
-        <slot name="outzoom"></slot>
+        <div v-if="pointer" class="img-zoomer-point"></div>
+        <slot name="outzoomer"></slot>
       </div>
       <slot></slot>
     </div>
@@ -47,7 +51,7 @@
 </template>
 <script>
 export default {
-  name: 'vue-photo-zoom-pro',
+  name: "vue-photo-zoom-pro",
   props: {
     url: String,
     highUrl: String,
@@ -61,44 +65,44 @@ export default {
     },
     type: {
       type: String,
-      default: 'square',
+      default: "square",
       validator: function(value) {
-        return ['circle', 'square'].indexOf(value) !== -1
+        return ["circle", "square"].indexOf(value) !== -1;
       }
     },
-    zoomStyle: {
+    zoomerStyle: {
       type: Object,
       default() {
-        return {}
+        return {};
       }
     },
-    outZoomStyle: {
+    outZoomerStyle: {
       type: Object,
       default() {
-        return {}
+        return {};
       }
     },
     scale: {
       type: Number,
-      default: 2
+      default: 3
     },
     enterEvent: {
-      type: [Object, MouseEvent, TouchEvent, Touch],
+      type: [Object, PointerEvent],
       default: null
     },
     moveEvent: {
-      type: [Object, MouseEvent, TouchEvent, Touch],
+      type: [Object, PointerEvent],
       default: null
     },
     leaveEvent: {
-      type: [Object, MouseEvent, TouchEvent, Touch],
+      type: [Object, PointerEvent],
       default: null
     },
-    hideZoom: {
+    zoomer: {
       type: Boolean,
-      default: false
+      default: true
     },
-    outZoom: {
+    outZoomer: {
       type: Boolean,
       default: false
     },
@@ -113,145 +117,201 @@ export default {
     disabledReactive: {
       type: Boolean,
       default: false
+    },
+    mask: {
+      type: Boolean,
+      default: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      selector: {
-        top: 0,
+      zoomerRect: {
+        top: 0, // 当前缩放器左上角距离container左上角的top/left
         left: 0,
-        leftBound: 0,
+        leftBound: 0, //缩放器的边界
         topBound: 0,
         rightBound: 0,
         bottomBound: 0,
-        absoluteLeft: 0,
+        absoluteLeft: 0, // 缩放器初始位置相对于屏幕的位置
         absoluteTop: 0
       },
-      selectorBg: {
-        top: 0,
+      zoomerBgRect: {
+        top: 0, // 背景位置
         left: 0,
-        leftBound: 0,
+        leftBound: 0, //背景边界
         topBound: 0,
         rightBound: 0,
         bottomBound: 0
       },
-      imgInfo: {},
-      $img: null,
-      outShowInitTop: 0,
-      outShowTop: 0,
-      hideOutZoom: true,
-      hideSelector: true,
-      imgLoadedFlag: false
-    }
+      hideZoomer: true, // 是否隐藏缩放器
+      hideOutZoomer: true, // 是否隐藏外部缩放器
+      imgLoadedFlag: false, // 图片加载完毕标识
+      outZoomerInitTop: 0, // 外部缩放器的初始位置
+      outZoomerTop: 0, // 外部缩放器的位置
+      imgInfo: {}, // 图片信息
+      $img: null // 图片dom
+    };
   },
   watch: {
+    /**
+     * 缩放比例变化时，手动触发move事件来更改大小
+     * 主要解决放大器在内部时的比例变化时的响应
+     */
     scale() {
-      !this.outZoom && this.mouseMove()
+      !this.outZoomer && this.mouseMove();
     },
+    /**
+     * 外部事件变化时的响应
+     */
     moveEvent(e) {
-      this.mouseMove(e)
+      this.mouseMove(e);
     },
     leaveEvent(e) {
-      this.mouseLeave(e)
+      this.mouseLeave(e);
     },
+    /**
+     * 图片地址变化时重置
+     */
     url() {
-      this.handlerUrlChange()
+      this.handlerUrlChange();
     },
+    /**
+     * 缩放器宽度/高度变化时重置缩放器属性
+     */
     width(n) {
-      this.initSelectorProperty()
+      this.initZoomerProperty();
     },
     height(n) {
-      this.initSelectorProperty()
+      this.initZoomerProperty();
     },
-    selectorMouseOffsetWidth(n) {
-      this.initSelectorBgBound()
+    /**
+     * 缩放器背景偏移量变化时重置背景边界
+     */
+    zoomerBgOffsetX(n) {
+      this.initZoomerBgBound();
     },
-    selectorMouseOffsetHeight(n) {
-      this.initSelectorBgBound()
+    zoomerBgOffsetY(n) {
+      this.initZoomerBgBound();
     }
   },
   computed: {
-    selectorHeight() {
-      return this.height > 0 ? this.height : this.width
+    /**
+     * 缩放器宽高
+     * 有高度用高度没高度用宽度
+     */
+    zoomerHeight() {
+      return this.height > 0 ? this.height : this.width;
     },
-    selectorHalfWidth() {
-      return this.width / 2
+    /**
+     * 缩放器宽半径
+     */
+    zoomerHalfWidth() {
+      return this.width / 2;
     },
-    selectorHalfHeight() {
-      return this.selectorHeight / 2
+    /**
+     * 缩放器高半径
+     */
+    zoomerHalfHeight() {
+      return this.zoomerHeight / 2;
     },
-    bgOffsetWidth() {
-      return !this.outZoom ? this.selectorHalfWidth * (1 - this.scale) : 0
+    /**
+     * 背景边界偏移量
+     * 主要是在内部放大的时候与缩放的大小有关
+     */
+    zoomerBgOffsetX() {
+      return !this.outZoomer ? this.zoomerHalfWidth * (this.scale - 1) : 0;
     },
-    bgOffsetHeight() {
-      return !this.outZoom ? this.selectorHalfHeight * (1 - this.scale) : 0
+    /**
+     * 背景边界偏移量
+     */
+    zoomerBgOffsetY() {
+      return !this.outZoomer ? this.zoomerHalfHeight * (this.scale - 1) : 0;
     },
-    selectorMouseOffsetWidth() {
-      return this.bgOffsetWidth * -(1 / this.scale) // 内部放大会有内部的偏移 所以需要在背景边界上增加偏移量
-    },
-    selectorMouseOffsetHeight() {
-      return this.bgOffsetHeight * -(1 / this.scale)
-    },
-    imgZoomPosition() {
-      const { top, left } = this.selector
+    /**
+     * 缩放器位置
+     */
+    zoomerPosition() {
+      const { top, left } = this.zoomerRect;
       return {
         top: `${top}px`,
         left: `${left}px`
-      }
+      };
     },
-    imgZoomSize() {
-      const { width, selectorHeight: height } = this
+    /**
+     * 缩放器大小
+     */
+    zoomerSize() {
+      const { width, zoomerHeight: height } = this;
       return {
         width: `${width}px`,
         height: `${height}px`
-      }
+      };
     },
-    imgOutZoomSize() {
-      const { scale, width, selectorHeight: height } = this
+    /**
+     * 外部缩放器大小
+     */
+    outZoomerSize() {
+      const { scale, width, zoomerHeight: height } = this;
       return {
         width: `${width * scale}px`,
         height: `${height * scale}px`
-      }
+      };
     },
-    imgOutZoomPosition() {
+    /**
+     * 外部缩放器位置
+     */
+    outZoomerPosition() {
       return {
-        top: `${this.outShowTop}px`
-      }
+        top: `${this.outZoomerTop}px`
+      };
     },
-    imgBg() {
+    /**
+     * 高清图地址地址
+     */
+    zoomerBgUrl() {
       return {
         backgroundImage: `url(${this.highUrl || this.url})`
-      }
+      };
     },
-    imgBgSize() {
+    /**
+     * 高清图大小
+     */
+    zoomerBgSize() {
       const {
         scale,
         imgInfo: { height, width }
-      } = this
+      } = this;
       return {
         backgroundSize: `${width * scale}px ${height * scale}px`
-      }
+      };
     },
-    imgBgPosition() {
-      const { left, top } = this.selectorBg
+    /**
+     * 高清图位置
+     */
+    zoomerBgPosition() {
+      const { left, top } = this.zoomerBgRect;
       return {
         backgroundPosition: `${left}px ${top}px`
-      }
+      };
     }
   },
   created() {
-    this.url && this.handlerUrlChange()
+    this.url && this.handlerUrlChange();
   },
   mounted() {
-    this.$img = this.$refs['img']
+    this.$img = this.$refs["img"];
   },
   methods: {
     /**
      * 图片url改变
      */
     handlerUrlChange() {
-      this.imgLoadedFlag = false
-      this.loadImg(this.url).then(this.imgLoaded, console.error)
+      this.imgLoadedFlag = false;
+      this.loadImg(this.url).then(this.imgLoaded, console.error);
     },
     /**
      * 加载图片
@@ -260,51 +320,57 @@ export default {
      */
     loadImg(url) {
       return new Promise((resolve, reject) => {
-        const img = document.createElement('img')
-        img.addEventListener('load', resolve)
-        img.addEventListener('error', reject)
-        img.src = url
-      })
+        const img = document.createElement("img");
+        img.addEventListener("load", resolve);
+        img.addEventListener("error", reject);
+        img.src = url;
+      });
     },
     /**
      * 图片记载完毕事件
      */
     imgLoaded() {
-      const imgInfo = this.$img.getBoundingClientRect()
+      const imgInfo = this.$img.getBoundingClientRect();
       if (JSON.stringify(this.imgInfo) != JSON.stringify(imgInfo)) {
-        this.imgInfo = imgInfo
-        this.initSelectorProperty()
-        this.resetOutZoomPosition()
+        this.imgInfo = imgInfo;
+        this.initZoomerProperty();
+        this.resetOutZoomPosition();
       }
       if (!this.imgLoadedFlag) {
-        this.imgLoadedFlag = true
-        this.$emit('created', this.$img, imgInfo)
+        this.imgLoadedFlag = true;
+        this.$emit("created", this.$img, imgInfo);
       }
     },
+    /**
+     * 鼠标移入事件
+     */
     mouseEnter(e) {
-      if (!this.hideZoom && this.imgLoadedFlag) {
-        this.hideSelector && (this.hideSelector = false)
+      if (this.imgLoadedFlag) {
+        this.hideZoomer = false;
       }
-      this.$emit('mouseenter', e)
+      this.$emit("mouseenter", e);
     },
     /**
      * 鼠标移动事件, 触摸
      */
     mouseMove(e) {
-      e = e || this.pointerInfo
-      if (!this.hideZoom && this.imgLoadedFlag && e) {
-        !this.disabledReactive && this.imgLoaded()
-        const { pageX, pageY, clientY } = e
+      if (!this.zoomer || this.hideZoomer) return;
+      e = e || this.pointerInfo;
+      if (this.imgLoadedFlag && e) {
+        !this.disabledReactive && this.imgLoaded();
+        const { pageX, pageY, clientY } = e;
         const {
           scale,
-          selector,
-          selectorBg,
-          outZoom,
-          bgOffsetWidth,
-          bgOffsetHeight,
+          zoomerRect,
+          zoomerBgRect,
+          outZoomer,
+          zoomerBgOffsetX,
+          zoomerBgOffsetY,
+          zoomerHalfWidth,
+          zoomerHalfHeight,
           outShowAutoScroll
-        } = this
-        const scrollTop = pageY - clientY
+        } = this;
+        const scrollTop = pageY - clientY;
         const {
           absoluteLeft,
           absoluteTop,
@@ -312,117 +378,128 @@ export default {
           topBound,
           rightBound,
           bottomBound
-        } = selector
+        } = zoomerRect;
         const {
           leftBound: bgLeftBound,
           topBound: bgTopBound,
           rightBound: bgRightBound,
           bottomBound: bgBottomBound
-        } = selectorBg
-        const x = pageX - absoluteLeft // 相对于左上角选择器中心的偏移位置
-        const y = pageY - absoluteTop
-        let outShowInitTop = this.outShowInitTop
-        if (outZoom) {
-          if (!outShowInitTop) {
-            outShowInitTop = this.outShowInitTop = scrollTop + this.imgInfo.top
+        } = zoomerBgRect;
+        // pageX-absoluteLeft = 鼠标相对于容器的位置 - zoomerHalfWidth = 偏移到缩放器中心点
+        const x = pageX - absoluteLeft - zoomerHalfWidth;
+        const y = pageY - absoluteTop - zoomerHalfHeight;
+        // 记录外部缩放器的位置
+        let outZoomerInitTop = this.outZoomerInitTop;
+        if (outZoomer) {
+          if (!outZoomerInitTop) {
+            outZoomerInitTop = this.outZoomerInitTop =
+              scrollTop + this.imgInfo.top;
           }
-          this.hideOutZoom && (this.hideOutZoom = false)
-          this.outShowTop =
-            scrollTop > outShowInitTop ? scrollTop - outShowInitTop : 0
+          this.hideOutZoomer && (this.hideOutZoomer = false);
+          this.outZoomerTop =
+            scrollTop > outZoomerInitTop ? scrollTop - outZoomerInitTop : 0;
         }
-        this.pointerInfo = e
-        selector.left = x > leftBound ? Math.min(x, rightBound) : leftBound
-        selector.top = y > topBound ? Math.min(y, bottomBound) : topBound
-        const bgX = x > bgLeftBound ? Math.min(x, bgRightBound) : bgLeftBound
-        const bgY = y > bgTopBound ? Math.min(y, bgBottomBound) : bgTopBound
-        selectorBg.left = -bgX * scale + bgOffsetWidth
-        selectorBg.top = -bgY * scale + bgOffsetHeight
+        this.pointerInfo = e;
+        zoomerRect.left = x > leftBound ? Math.min(x, rightBound) : leftBound;
+        zoomerRect.top = y > topBound ? Math.min(y, bottomBound) : topBound;
+        const bgX =
+          x * scale > bgLeftBound
+            ? Math.min(x * scale, bgRightBound)
+            : bgLeftBound;
+        const bgY =
+          y * scale > bgTopBound
+            ? Math.min(y * scale, bgBottomBound)
+            : bgTopBound;
+        zoomerBgRect.left = -bgX - zoomerBgOffsetX;
+        zoomerBgRect.top = -bgY - zoomerBgOffsetY;
       }
-      this.$emit('mousemove', e)
+      this.$emit("mousemove", e);
     },
     /**
      * 鼠标移出事件
      */
     mouseLeave(e) {
-      this.hideSelector = true
-      if (this.outZoom) {
-        this.hideOutZoom = true
+      this.hideZoomer = true;
+      if (this.outZoomer) {
+        this.hideOutZoomer = true;
       }
-      this.$emit('mouseleave', e)
+      this.$emit("mouseleave", e);
     },
     /**
      * 初始化选择器的属性
      */
-    initSelectorProperty() {
-      const selector = this.selector
-      const selectorWidth = this.width
-      const selectorHeight = this.selectorHeight
-      const selectorHalfWidth = this.selectorHalfWidth
-      const selectorHalfHeight = this.selectorHalfHeight
-      const { width, height, left, top } = this.imgInfo
+    initZoomerProperty() {
+      const zoomerRect = this.zoomerRect;
+      const zoomerWidth = this.width;
+      const zoomerHeight = this.zoomerHeight;
+      const zoomerHalfWidth = this.zoomerHalfWidth;
+      const zoomerHalfHeight = this.zoomerHalfHeight;
+      const { width, height, left, top } = this.imgInfo;
       const scrollTop =
         document.documentElement.scrollTop ||
         window.pageYOffset ||
-        document.body.scrollTop
+        document.body.scrollTop;
       const scrollLeft =
         document.documentElement.scrollLeft ||
         window.pageXOffset ||
-        document.body.scrollLeft
-      selector.topBound = selector.leftBound = 0 //相对于图片左上角选择器中心的鼠标边界位置
-      selector.rightBound = width - selectorWidth
-      selector.bottomBound = height - selectorHeight
-      selector.absoluteLeft = left + selectorHalfWidth + scrollLeft //相对于图片左上角选择器中心的绝对位置
-      selector.absoluteTop = top + selectorHalfHeight + scrollTop
-      this.initSelectorBgBound()
+        document.body.scrollLeft;
+      zoomerRect.topBound = zoomerRect.leftBound = 0; //相对于图片左上角选择器中心的鼠标边界位置
+      zoomerRect.rightBound = width - zoomerWidth;
+      zoomerRect.bottomBound = height - zoomerHeight;
+      zoomerRect.absoluteLeft = left + scrollLeft; // 缩放器初始位置相对于屏幕左上角的位置
+      zoomerRect.absoluteTop = top + scrollTop;
+      this.initZoomerBgBound();
     },
     /**
      * 初始化选择器背景属性
      */
-    initSelectorBgBound() {
-      const selectorMouseOffsetWidth = this.selectorMouseOffsetWidth
-      const selectorMouseOffsetHeight = this.selectorMouseOffsetHeight
-      const selectorBg = this.selectorBg
-      const selector = this.selector
-      selectorBg.leftBound = -selectorMouseOffsetWidth //相对于图片左上角选择器中心的背景鼠标边界位置
-      selectorBg.topBound = -selectorMouseOffsetHeight
-      selectorBg.rightBound = selector.rightBound + selectorMouseOffsetWidth
-      selectorBg.bottomBound = selector.bottomBound + selectorMouseOffsetHeight
+    initZoomerBgBound() {
+      const zoomerBgOffsetX = this.zoomerBgOffsetX;
+      const zoomerBgOffsetY = this.zoomerBgOffsetY;
+      const zoomerBgRect = this.zoomerBgRect;
+      const zoomerRect = this.zoomerRect;
+      zoomerBgRect.leftBound = -zoomerBgOffsetX; //背景图移动的边界
+      zoomerBgRect.topBound = -zoomerBgOffsetY;
+      zoomerBgRect.rightBound =
+        zoomerRect.rightBound * this.scale + zoomerBgOffsetX;
+      zoomerBgRect.bottomBound =
+        zoomerRect.bottomBound * this.scale + zoomerBgOffsetY;
     },
     /**
      * 重置
      */
     reset() {
-      Object.assign(this.selector, {
+      Object.assign(this.zoomerRect, {
         top: 0,
         left: 0
-      })
-      Object.assign(this.selectorBg, {
+      });
+      Object.assign(this.zoomerBgRect, {
         left: 0,
         top: 0
-      })
-      this.resetOutZoomPosition()
+      });
+      this.resetOutZoomPosition();
     },
     /**
      * 重置外部放大区域属性
      */
     resetOutZoomPosition() {
-      this.outShowInitTop = 0
+      this.outZoomerInitTop = 0;
     }
   }
-}
+};
 </script>
 
 <style scoped>
-.img-container {
+.container {
   position: relative;
 }
 
-.img-container .origin-img {
+.container .origin-img {
   width: 100%;
   display: block;
 }
 
-.img-selector {
+.img-zoomer {
   position: absolute;
   cursor: crosshair;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -431,7 +508,7 @@ export default {
   box-sizing: border-box;
 }
 
-.img-selector.circle {
+.img-zoomer.circle {
   border-radius: 50%;
 }
 
@@ -444,7 +521,7 @@ export default {
   box-sizing: border-box;
 }
 
-.img-selector-point {
+.img-zoomer-point {
   position: absolute;
   width: 4px;
   height: 4px;
@@ -458,7 +535,7 @@ export default {
 .img-out-show.base-line::before {
   position: absolute;
   box-sizing: border-box;
-  content: '';
+  content: "";
   border: 1px dashed rgba(0, 0, 0, 0.36);
 }
 

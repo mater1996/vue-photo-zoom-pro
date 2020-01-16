@@ -11,7 +11,7 @@
         :url="url"
         :type="type"
         :scale="scale"
-        :out-zoom="showType"
+        :out-zoomer="showType"
         :zoom-style="{
           'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0.6)'
         }"
