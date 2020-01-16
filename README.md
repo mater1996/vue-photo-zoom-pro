@@ -60,8 +60,8 @@ Vue.use(VuePhotoZoomPro);
 | Slot Name | Note                                                               |
 | ---- | ------------------------------------------------------------------ |
 | default | 默认区域(default) |
-| zoom | 内部放大区域 |
-| outzoom| 外部放大区域 |
+| zoomer | 内部放大区域 |
+| outzoomer| 外部放大区域 |
 
 #### Method
 
