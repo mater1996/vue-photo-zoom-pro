@@ -80,7 +80,7 @@ export default {
     },
     scale: {
       type: Number,
-      default: 3
+      default: 2
     },
     enterEvent: {
       type: [Object, UIEvent],
@@ -126,19 +126,24 @@ export default {
   data() {
     return {
       zoomerRect: {
-        top: 0, // 当前缩放器左上角距离container左上角的top/left
+        top: 0, // 当前缩放器的位置
         left: 0,
-        leftBound: 0, //缩放器的边界
-        topBound: 0,
-        rightBound: 0,
-        bottomBound: 0,
         absoluteLeft: 0, // 缩放器初始位置相对于屏幕的位置
         absoluteTop: 0
       },
       zoomerBgRect: {
         top: 0, // 背景位置
-        left: 0,
-        leftBound: 0, //背景边界
+        left: 0
+      },
+      zoomerPoint: {
+        leftBound: 0, //缩放器的边界
+        topBound: 0,
+        rightBound: 0,
+        bottomBound: 0
+      },
+      vZoomerPoint: {
+        //虚拟缩放器（相对于背景上的缩放器）
+        leftBound: 0, //虚拟缩放器鼠标边界
         topBound: 0,
         rightBound: 0,
         bottomBound: 0
@@ -158,6 +163,7 @@ export default {
      * 主要解决放大器在内部时的比例变化时的响应
      */
     scale() {
+      this.initVZoomerPoint();
       !this.outZoomer && this.mouseMove();
     },
     /**
@@ -172,27 +178,14 @@ export default {
     /**
      * 图片地址变化时重置
      */
-    url() {
-      this.handlerUrlChange();
-    },
+    url: "handlerUrlChange",
     /**
      * 缩放器宽度/高度变化时重置缩放器属性
      */
-    width(n) {
-      this.initZoomerProperty();
-    },
-    height(n) {
-      this.initZoomerProperty();
-    },
-    /**
-     * 缩放器背景偏移量变化时重置背景边界
-     */
-    zoomerBgOffsetX(n) {
-      this.initZoomerBgBound();
-    },
-    zoomerBgOffsetY(n) {
-      this.initZoomerBgBound();
-    }
+    width: "initZoomerPoint",
+    height: "initZoomerPoint",
+    vZoomerHalfWidth: "initVZoomerPoint",
+    vZoomerHalfHeight: "initVZoomerPoint"
   },
   computed: {
     /**
@@ -203,29 +196,24 @@ export default {
       return this.height > 0 ? this.height : this.width;
     },
     /**
-     * 缩放器宽半径
+     * 缩放器宽/高半径
      */
     zoomerHalfWidth() {
       return this.width / 2;
     },
-    /**
-     * 缩放器高半径
-     */
     zoomerHalfHeight() {
       return this.zoomerHeight / 2;
     },
     /**
-     * 背景边界偏移量
-     * 主要是在内部放大的时候与缩放的大小有关
+     * 虚拟缩放器宽/高半径
      */
-    zoomerBgOffsetX() {
-      return !this.outZoomer ? this.zoomerHalfWidth * (this.scale - 1) : 0;
+    vZoomerHalfWidth() {
+      const zoomerHalfWidth = this.zoomerHalfWidth;
+      return this.outZoomer ? zoomerHalfWidth * this.scale : zoomerHalfWidth;
     },
-    /**
-     * 背景边界偏移量
-     */
-    zoomerBgOffsetY() {
-      return !this.outZoomer ? this.zoomerHalfHeight * (this.scale - 1) : 0;
+    vZoomerHalfHeight() {
+      const zoomerHalfHeight = this.zoomerHalfHeight;
+      return this.outZoomer ? zoomerHalfHeight * this.scale : zoomerHalfHeight;
     },
     /**
      * 缩放器位置
@@ -360,32 +348,27 @@ export default {
           scale,
           zoomerRect,
           zoomerBgRect,
+          zoomerPoint,
+          vZoomerPoint,
           outZoomer,
-          zoomerBgOffsetX,
-          zoomerBgOffsetY,
           zoomerHalfWidth,
           zoomerHalfHeight,
-          outShowAutoScroll
+          vZoomerHalfWidth,
+          vZoomerHalfHeight
         } = this;
         const scrollTop = pageY - clientY;
+        const { absoluteLeft, absoluteTop } = zoomerRect;
+        const { leftBound, topBound, rightBound, bottomBound } = zoomerPoint;
         const {
-          absoluteLeft,
-          absoluteTop,
-          leftBound,
-          topBound,
-          rightBound,
-          bottomBound
-        } = zoomerRect;
-        const {
-          leftBound: bgLeftBound,
-          topBound: bgTopBound,
-          rightBound: bgRightBound,
-          bottomBound: bgBottomBound
-        } = zoomerBgRect;
-        // pageX-absoluteLeft = 鼠标相对于容器的位置 - zoomerHalfWidth = 偏移到缩放器中心点
-        const x = pageX - absoluteLeft - zoomerHalfWidth;
-        const y = pageY - absoluteTop - zoomerHalfHeight;
-        // 记录外部缩放器的位置
+          leftBound: vZoomerLeftBound,
+          topBound: vZoomerTopBound,
+          rightBound: vZoomerRightBound,
+          bottomBound: vZoomerBottomBound
+        } = vZoomerPoint;
+        //鼠标相对于容器的位置
+        const x = pageX - absoluteLeft;
+        const y = pageY - absoluteTop;
+        // 记录/修改外部缩放器的位置
         let outZoomerInitTop = this.outZoomerInitTop;
         if (outZoomer) {
           if (!outZoomerInitTop) {
@@ -396,19 +379,25 @@ export default {
           this.outZoomerTop =
             scrollTop > outZoomerInitTop ? scrollTop - outZoomerInitTop : 0;
         }
+        // 缓存event信息
         this.pointerInfo = e;
-        zoomerRect.left = x > leftBound ? Math.min(x, rightBound) : leftBound;
-        zoomerRect.top = y > topBound ? Math.min(y, bottomBound) : topBound;
-        const bgX =
-          x * scale > bgLeftBound
-            ? Math.min(x * scale, bgRightBound)
-            : bgLeftBound;
-        const bgY =
-          y * scale > bgTopBound
-            ? Math.min(y * scale, bgBottomBound)
-            : bgTopBound;
-        zoomerBgRect.left = -bgX - zoomerBgOffsetX;
-        zoomerBgRect.top = -bgY - zoomerBgOffsetY;
+        // 缩放器当前左上角的位置
+        const zoomerLeft = x > leftBound ? Math.min(x, rightBound) : leftBound;
+        const zoomerTop = y > topBound ? Math.min(y, bottomBound) : topBound;
+        // 当前鼠标相对于背景的位置
+        const vZoomerX =
+          x * scale > vZoomerLeftBound
+            ? Math.min(x * scale, vZoomerRightBound)
+            : vZoomerLeftBound;
+        const vZoomerY =
+          y * scale > vZoomerTopBound
+            ? Math.min(y * scale, vZoomerBottomBound)
+            : vZoomerTopBound;
+        // 更新UI位置
+        zoomerRect.left = zoomerLeft - zoomerHalfWidth; // 缩放器偏移到中心
+        zoomerRect.top = zoomerTop - zoomerHalfHeight;
+        zoomerBgRect.left = -vZoomerX + vZoomerHalfWidth; // 背景位置偏移到左上角
+        zoomerBgRect.top = -vZoomerY + vZoomerHalfHeight;
       }
       this.$emit("mousemove", e);
     },
@@ -427,11 +416,7 @@ export default {
      */
     initZoomerProperty() {
       const zoomerRect = this.zoomerRect;
-      const zoomerWidth = this.width;
-      const zoomerHeight = this.zoomerHeight;
-      const zoomerHalfWidth = this.zoomerHalfWidth;
-      const zoomerHalfHeight = this.zoomerHalfHeight;
-      const { width, height, left, top } = this.imgInfo;
+      const { left, top } = this.imgInfo;
       const scrollTop =
         document.documentElement.scrollTop ||
         window.pageYOffset ||
@@ -440,27 +425,34 @@ export default {
         document.documentElement.scrollLeft ||
         window.pageXOffset ||
         document.body.scrollLeft;
-      zoomerRect.topBound = zoomerRect.leftBound = 0; //相对于图片左上角选择器中心的鼠标边界位置
-      zoomerRect.rightBound = width - zoomerWidth;
-      zoomerRect.bottomBound = height - zoomerHeight;
       zoomerRect.absoluteLeft = left + scrollLeft; // 缩放器初始位置相对于屏幕左上角的位置
       zoomerRect.absoluteTop = top + scrollTop;
-      this.initZoomerBgBound();
+      this.initZoomerPoint();
+      this.initVZoomerPoint();
+    },
+    initZoomerPoint() {
+      const zoomerHalfWidth = this.zoomerHalfWidth;
+      const zoomerHalfHeight = this.zoomerHalfHeight;
+      const { width, height } = this.imgInfo;
+      const zommerPoint = this.zoomerPoint;
+      zommerPoint.leftBound = zoomerHalfWidth; //鼠标相对于容器的边界
+      zommerPoint.topBound = zoomerHalfHeight;
+      zommerPoint.rightBound = width - zoomerHalfWidth;
+      zommerPoint.bottomBound = height - zoomerHalfHeight;
     },
     /**
      * 初始化选择器背景属性
      */
-    initZoomerBgBound() {
-      const zoomerBgOffsetX = this.zoomerBgOffsetX;
-      const zoomerBgOffsetY = this.zoomerBgOffsetY;
-      const zoomerBgRect = this.zoomerBgRect;
-      const zoomerRect = this.zoomerRect;
-      zoomerBgRect.leftBound = -zoomerBgOffsetX; //背景图移动的边界
-      zoomerBgRect.topBound = -zoomerBgOffsetY;
-      zoomerBgRect.rightBound =
-        zoomerRect.rightBound * this.scale + zoomerBgOffsetX;
-      zoomerBgRect.bottomBound =
-        zoomerRect.bottomBound * this.scale + zoomerBgOffsetY;
+    initVZoomerPoint() {
+      const vZoomerPoint = this.vZoomerPoint;
+      const vZoomerHalfWidth = this.vZoomerHalfWidth;
+      const vZoomerHalfHeight = this.vZoomerHalfHeight;
+      const { width, height } = this.imgInfo;
+      const scale = this.scale;
+      vZoomerPoint.leftBound = vZoomerHalfWidth; //虚拟缩放器鼠标相对于容器的边界
+      vZoomerPoint.topBound = vZoomerHalfHeight;
+      vZoomerPoint.rightBound = width * scale - vZoomerHalfWidth;
+      vZoomerPoint.bottomBound = height * scale - vZoomerHalfHeight;
     },
     /**
      * 重置
@@ -470,7 +462,7 @@ export default {
         top: 0,
         left: 0
       });
-      Object.assign(this.zoomerBgRect, {
+      Object.assign(this.vZoomerPoint, {
         left: 0,
         top: 0
       });
