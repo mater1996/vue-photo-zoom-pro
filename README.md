@@ -41,6 +41,7 @@ Vue.use(VuePhotoZoomPro);
 | url         | String            |         | 图片地址(photo url)                                                                                                                              |
 | high-url    | String            |         | 更清晰的图片,若不提供会采用 url(more detailed photo url)                                                                                         |
 | scale       | Number            | 2       | 放大倍数(scale number)                                                                                                                                  |
+| disabled| Boolean | false    | 禁用 |
 | width       | Number            | 166     | 内部放大区域宽度(width of internal amplification region)                                                                                                            |
 | height      | Number            | -1     | 内部放大区域高度，如果不设置或者小于0会和宽度保持同步(height of internal amplification region)                                                                                                            |
 | type        | String            | square  | 放大镜类型(circle,square)(magnifying glass type (circle,square))                                                                                 |
