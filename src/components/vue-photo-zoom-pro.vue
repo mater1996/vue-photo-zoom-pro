@@ -169,12 +169,9 @@ export default {
     /**
      * 外部事件变化时的响应
      */
-    moveEvent(e) {
-      this.mouseMove(e);
-    },
-    leaveEvent(e) {
-      this.mouseLeave(e);
-    },
+    enterEvent: "mouseEnter",
+    moveEvent: "mouseMove",
+    leaveEvent: "mouseLeave",
     /**
      * 图片地址变化时重置
      */
