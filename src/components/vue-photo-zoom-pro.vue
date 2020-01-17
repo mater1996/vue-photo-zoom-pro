@@ -83,15 +83,15 @@ export default {
       default: 3
     },
     enterEvent: {
-      type: [Object, PointerEvent],
+      type: [Object, UIEvent],
       default: null
     },
     moveEvent: {
-      type: [Object, PointerEvent],
+      type: [Object, UIEvent],
       default: null
     },
     leaveEvent: {
-      type: [Object, PointerEvent],
+      type: [Object, UIEvent],
       default: null
     },
     zoomer: {
