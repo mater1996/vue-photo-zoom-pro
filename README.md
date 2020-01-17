@@ -6,7 +6,7 @@
 
 ## DEMO
 
-[demo](https://codepen.io/xbup/project/editor/AjnEgE)
+[demo](https://codepen.io/xbup/project/full/AjnEgE)
 
 ## Usage example
 
