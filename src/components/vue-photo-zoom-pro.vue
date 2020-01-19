@@ -22,9 +22,6 @@
       >
         <slot name="zoomer"></slot>
       </div>
-      <div v-if="mask" class="mask-container">
-        <canvas id="mask"></canvas>
-      </div>
       <div
         v-if="outZoomer"
         v-show="!hideOutZoomer"
@@ -113,10 +110,6 @@ export default {
     disabledReactive: {
       type: Boolean,
       default: false
-    },
-    mask: {
-      type: Boolean,
-      default: true
     },
     disabled: {
       type: Boolean,
