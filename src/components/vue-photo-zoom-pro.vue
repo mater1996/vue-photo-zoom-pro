@@ -8,7 +8,7 @@
     >
       <img class="origin-img" ref="img" @load="imgLoaded($event)" />
       <div
-        v-if="zoomer"
+        v-if="selector"
         v-show="!hideZoomer && imgLoadedFlag"
         :class="['img-zoomer', { circle: type === 'circle' }]"
         :style="[
@@ -91,7 +91,7 @@ export default {
       type: [Object, UIEvent],
       default: null
     },
-    zoomer: {
+    selector: {
       type: Boolean,
       default: true
     },
@@ -304,17 +304,33 @@ export default {
      * 图片记载完毕事件
      */
     imgLoaded() {
-      const imgInfo = this.$img.getBoundingClientRect();
-      if (JSON.stringify(this.imgInfo) != JSON.stringify(imgInfo)) {
-        this.imgInfo = imgInfo;
-        this.initZoomerProperty();
-        this.resetOutZoomPosition();
-      }
+      const $img = this.$img;
       if (!this.imgLoadedFlag) {
         this.imgLoadedFlag = true;
-        this.$img.src = this.url;
-        this.$emit("created", this.$img, imgInfo);
+        $img.src = this.url;
+        setTimeout(() => {
+          this.imgInfo = $img.getBoundingClientRect();
+          this.handlerImgResize();
+          this.$emit("created", $img, $img.getBoundingClientRect());
+        });
       }
+    },
+    /**
+     * 检测img大小或者位置是否改变
+     */
+    validImgResize() {
+      const imgInfo = this.$img.getBoundingClientRect();
+      if (JSON.stringify(this.imgInfo) !== JSON.stringify(imgInfo)) {
+        this.imgInfo = imgInfo;
+        this.handlerImgResize();
+      }
+    },
+    /**
+     * 图片大小或者位置改变后的事件
+     */
+    handlerImgResize() {
+      this.initZoomerProperty();
+      this.resetOutZoomPosition();
     },
     /**
      * 鼠标移入事件
@@ -329,10 +345,10 @@ export default {
      * 鼠标移动事件, 触摸
      */
     mouseMove(e) {
-      if (!this.zoomer || this.hideZoomer) return;
+      if (this.hideZoomer) return;
       e = e || this.pointerInfo;
       if (this.imgLoadedFlag && e) {
-        !this.disabledReactive && this.imgLoaded();
+        !this.disabledReactive && this.validImgResize();
         const { pageX, pageY, clientY } = e;
         const {
           scale,
