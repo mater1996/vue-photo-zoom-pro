@@ -275,11 +275,32 @@ export default {
   },
   created() {
     this.url && this.handlerUrlChange();
+    this.beforeReactivateMoveFns = []
   },
   mounted() {
     this.$img = this.$refs["img"];
+    this.addResizeListener(this.$img);
   },
   methods: {
+    addResizeListener(dom) {
+      if (!this.disabledReactive) {
+        if (ResizeObserver) {
+          const resizeObserver = new ResizeObserver(entries => {
+            this.imgInfo = entries[0].contentRect.toJSON();
+            this.handlerImgResize();
+          });
+          resizeObserver.observe(dom);
+        } else {
+          this.beforeReactivateMoveFns.push(() => {
+            const imgInfo = this.$img.getBoundingClientRect().toJSON();
+            if (this.validImgResize(imgInfo)) {
+              this.imgInfo = imgInfo;
+              this.handlerImgResize();
+            }
+          });
+        }
+      }
+    },
     /**
      * 图片url改变
      */
@@ -309,21 +330,17 @@ export default {
         this.imgLoadedFlag = true;
         $img.src = this.url;
         setTimeout(() => {
-          this.imgInfo = $img.getBoundingClientRect();
+          this.imgInfo = $img.getBoundingClientRect().toJSON();
           this.handlerImgResize();
-          this.$emit("created", $img, $img.getBoundingClientRect());
+          this.$emit("created", $img, this.imgInfo);
         });
       }
     },
     /**
      * 检测img大小或者位置是否改变
      */
-    validImgResize() {
-      const imgInfo = this.$img.getBoundingClientRect();
-      if (JSON.stringify(this.imgInfo) !== JSON.stringify(imgInfo)) {
-        this.imgInfo = imgInfo;
-        this.handlerImgResize();
-      }
+    validImgResize(imgInfo) {
+      return JSON.stringify(this.imgInfo) !== JSON.stringify(imgInfo);
     },
     /**
      * 图片大小或者位置改变后的事件
@@ -348,7 +365,7 @@ export default {
       if (this.hideZoomer) return;
       e = e || this.pointerInfo;
       if (this.imgLoadedFlag && e) {
-        !this.disabledReactive && this.validImgResize();
+        this.beforeReactivateMoveFns.forEach(fn => fn.call(this));
         const { pageX, pageY, clientY } = e;
         const {
           scale,
@@ -464,14 +481,24 @@ export default {
      * 重置
      */
     reset() {
-      Object.assign(this.zoomerRect, {
+      const initPoint = {
         top: 0,
         left: 0
+      };
+      const initBound = {
+        leftBound: 0,
+        topBound: 0,
+        rightBound: 0,
+        bottomBound: 0
+      };
+      Object.assign(this.zoomerRect, {
+        ...initPoint,
+        absoluteLeft: 0,
+        absoluteTop: 0
       });
-      Object.assign(this.vZoomerPoint, {
-        left: 0,
-        top: 0
-      });
+      Object.assign(this.zoomerBgRect, initPoint);
+      Object.assign(this.zoomerPoint, initBound);
+      Object.assign(this.vZoomerPoint, initBound);
       this.resetOutZoomPosition();
     },
     /**
