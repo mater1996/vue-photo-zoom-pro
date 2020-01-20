@@ -47,13 +47,13 @@ Vue.use(VuePhotoZoomPro);
 | type        | String            | square  | 放大镜类型(circle,square)(magnifying glass type (circle,square))                                                                                 |
 | zoomer-style  | Object            | {}      | 内部放大区域样式(style of internal amplification region)                                                                                                            |
 | out-zoomer-style  | Object            | {}  | 外部放大区域样式(style of external amplification region)                                                                                                            |
-| zoomer   | Boolean           | false   | 是否隐藏放大镜(hide magnifying)                                                                                            |
-| out-zoomer    | Boolean           | true    | 图片展示区域会在图片外部(amplification region will be displayed on the outside)                                                                                 |
+| selector   | Boolean           | true   | 是否显示选择器(show or remove selector)                                                                                            |
+| out-zoomer    | Boolean           | false    | 切换内外部放大镜(amplification region will be displayed on the outside)                                                                                 |
 | pointer     | Boolean           | false   | 外部区域的中心点 (the center of an external area)                                                                                                |
 | baseline    | Boolean           | false   | 外部区域的基线 (the baseline of the external area)                                                                                               |
-| enter-event | Object/mouseEvent/Touch/TouchEvent | null    | 当需要在外部监听鼠标移入事件时，请通过该字段传入事件(When you need to listen for enter events outside the component)                               |
-| move-event  | Object/mouseEvent/Touch/TouchEvent | null    | 当需要在外部监听移动事件时,请通过该字段传入事件（必须包含 pageX,pageY,clientY），这将禁用内部移动监听(when you need to listen for moving events outside the component) |
-| leave-event | Object/mouseEvent/Touch/TouchEvent | null    | 当需要在外部监听离开事件时，请通过该字段传入事件(When you need to listen for leaving events outside the component)                               |
+| enter-event | Object/UIEvent | null    | 当需要在外部监听鼠标移入事件时，请通过该字段传入事件(When you need to listen for enter events outside the component)                               |
+| move-event  | Object/UIEvent | null    | 当需要在外部监听移动事件时,请通过该字段传入事件（必须包含 pageX,pageY,clientY），这将禁用内部移动监听(when you need to listen for moving events outside the component) |
+| leave-event | Object/UIEvent | null    | 当需要在外部监听离开事件时，请通过该字段传入事件(When you need to listen for leaving events outside the component)                               |
 | disabled-reactive| Boolean | false    | 禁用响应式，不会轮询图像的位置,在确定不改变布局的情况下使用可以提升性能 |
 
 #### Slot
