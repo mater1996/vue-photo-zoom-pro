@@ -517,10 +517,13 @@ export default {
 <style scoped>
 .container {
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .container .origin-img {
   width: 100%;
+  height: 100%;
   display: block;
 }
 
