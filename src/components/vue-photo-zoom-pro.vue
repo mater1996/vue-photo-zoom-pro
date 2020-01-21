@@ -275,11 +275,37 @@ export default {
   },
   created() {
     this.url && this.handlerUrlChange();
+    this.beforeReactivateMoveFns = [];
   },
   mounted() {
     this.$img = this.$refs["img"];
+    this.addResizeListener(this.$img, rect => {
+      this.imgInfo = rect;
+      this.handlerImgResize();
+    });
   },
   methods: {
+    /**
+     * 为某个dom添加监听dom位置或者大小变化的
+     */
+    addResizeListener(dom, cb) {
+      if (!this.disabledReactive) {
+        if (ResizeObserver) {
+          const resizeObserver = new ResizeObserver(([entrie]) => {
+            const {contentRect} = entrie
+            cb && contentRect && cb(contentRect.toJSON());
+          });
+          resizeObserver.observe(dom);
+        } else {
+          this.beforeReactivateMoveFns.push(() => {
+            const rect = dom.getBoundingClientRect().toJSON();
+            if (this.validImgResize(rect)) {
+              cb && cb(rect);
+            }
+          });
+        }
+      }
+    },
     /**
      * 图片url改变
      */
@@ -309,21 +335,17 @@ export default {
         this.imgLoadedFlag = true;
         $img.src = this.url;
         setTimeout(() => {
-          this.imgInfo = $img.getBoundingClientRect();
+          this.imgInfo = $img.getBoundingClientRect().toJSON();
           this.handlerImgResize();
-          this.$emit("created", $img, $img.getBoundingClientRect());
+          this.$emit("created", $img, this.imgInfo);
         });
       }
     },
     /**
      * 检测img大小或者位置是否改变
      */
-    validImgResize() {
-      const imgInfo = this.$img.getBoundingClientRect();
-      if (JSON.stringify(this.imgInfo) !== JSON.stringify(imgInfo)) {
-        this.imgInfo = imgInfo;
-        this.handlerImgResize();
-      }
+    validImgResize(imgInfo) {
+      return JSON.stringify(this.imgInfo) !== JSON.stringify(imgInfo);
     },
     /**
      * 图片大小或者位置改变后的事件
@@ -348,8 +370,12 @@ export default {
       if (this.hideZoomer) return;
       e = e || this.pointerInfo;
       if (this.imgLoadedFlag && e) {
-        !this.disabledReactive && this.validImgResize();
+        // 缓存event信息
+        this.pointerInfo = e;
+        // 执行move响应前的方法
+        this.beforeReactivateMoveFns.forEach(fn => fn.call(this));
         const { pageX, pageY, clientY } = e;
+        const scrollTop = pageY - clientY;
         const {
           scale,
           zoomerRect,
@@ -362,7 +388,6 @@ export default {
           vZoomerHalfWidth,
           vZoomerHalfHeight
         } = this;
-        const scrollTop = pageY - clientY;
         const { absoluteLeft, absoluteTop } = zoomerRect;
         const { leftBound, topBound, rightBound, bottomBound } = zoomerPoint;
         const {
@@ -371,22 +396,11 @@ export default {
           rightBound: vZoomerRightBound,
           bottomBound: vZoomerBottomBound
         } = vZoomerPoint;
+        let outZoomerInitTop = this.outZoomerInitTop;
         //鼠标相对于容器的位置
         const x = pageX - absoluteLeft;
         const y = pageY - absoluteTop;
         // 记录/修改外部缩放器的位置
-        let outZoomerInitTop = this.outZoomerInitTop;
-        if (outZoomer) {
-          if (!outZoomerInitTop) {
-            outZoomerInitTop = this.outZoomerInitTop =
-              scrollTop + this.imgInfo.top;
-          }
-          this.hideOutZoomer && (this.hideOutZoomer = false);
-          this.outZoomerTop =
-            scrollTop > outZoomerInitTop ? scrollTop - outZoomerInitTop : 0;
-        }
-        // 缓存event信息
-        this.pointerInfo = e;
         // 缩放器当前左上角的位置
         const zoomerLeft = x > leftBound ? Math.min(x, rightBound) : leftBound;
         const zoomerTop = y > topBound ? Math.min(y, bottomBound) : topBound;
@@ -404,6 +418,15 @@ export default {
         zoomerRect.top = zoomerTop - zoomerHalfHeight;
         zoomerBgRect.left = -vZoomerX + vZoomerHalfWidth; // 背景位置偏移到左上角
         zoomerBgRect.top = -vZoomerY + vZoomerHalfHeight;
+        if (outZoomer) {
+          if (!outZoomerInitTop) {
+            outZoomerInitTop = this.outZoomerInitTop =
+              scrollTop + this.imgInfo.top;
+          }
+          this.hideOutZoomer && (this.hideOutZoomer = false);
+          this.outZoomerTop =
+            scrollTop > outZoomerInitTop ? scrollTop - outZoomerInitTop : 0;
+        }
       }
       this.$emit("mousemove", e);
     },
@@ -423,14 +446,11 @@ export default {
     initZoomerProperty() {
       const zoomerRect = this.zoomerRect;
       const { left, top } = this.imgInfo;
+      const { documentElement, body } = document;
       const scrollTop =
-        document.documentElement.scrollTop ||
-        window.pageYOffset ||
-        document.body.scrollTop;
+        documentElement.scrollTop || window.pageYOffset || body.scrollTop;
       const scrollLeft =
-        document.documentElement.scrollLeft ||
-        window.pageXOffset ||
-        document.body.scrollLeft;
+        documentElement.scrollLeft || window.pageXOffset || body.scrollLeft;
       zoomerRect.absoluteLeft = left + scrollLeft; // 缩放器初始位置相对于屏幕左上角的位置
       zoomerRect.absoluteTop = top + scrollTop;
       this.initZoomerPoint();
@@ -464,14 +484,24 @@ export default {
      * 重置
      */
     reset() {
-      Object.assign(this.zoomerRect, {
+      const initPoint = {
         top: 0,
         left: 0
+      };
+      const initBound = {
+        leftBound: 0,
+        topBound: 0,
+        rightBound: 0,
+        bottomBound: 0
+      };
+      Object.assign(this.zoomerRect, {
+        ...initPoint,
+        absoluteLeft: 0,
+        absoluteTop: 0
       });
-      Object.assign(this.vZoomerPoint, {
-        left: 0,
-        top: 0
-      });
+      Object.assign(this.zoomerBgRect, initPoint);
+      Object.assign(this.zoomerPoint, initBound);
+      Object.assign(this.vZoomerPoint, initBound);
       this.resetOutZoomPosition();
     },
     /**
