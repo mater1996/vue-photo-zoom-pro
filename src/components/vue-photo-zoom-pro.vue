@@ -290,20 +290,26 @@ export default {
      */
     addResizeListener(dom, cb) {
       if (!this.disabledReactive) {
-        if (ResizeObserver) {
-          const resizeObserver = new ResizeObserver(([entrie]) => {
-            const {contentRect} = entrie
-            cb && contentRect && cb(contentRect.toJSON());
-          });
-          resizeObserver.observe(dom);
-        } else {
-          this.beforeReactivateMoveFns.push(() => {
-            const rect = dom.getBoundingClientRect().toJSON();
-            if (this.validImgResize(rect)) {
-              cb && cb(rect);
-            }
-          });
-        }
+        // if (ResizeObserver) {
+        //   const resizeObserver = new ResizeObserver(([entrie]) => {
+        //     const {contentRect} = entrie
+        //     cb && contentRect && cb(contentRect.toJSON());
+        //   });
+        //   resizeObserver.observe(dom);
+        // } else {
+        //   this.beforeReactivateMoveFns.push(() => {
+        //     const rect = dom.getBoundingClientRect().toJSON();
+        //     if (this.validImgResize(rect)) {
+        //       cb && cb(rect);
+        //     }
+        //   });
+        // }
+        this.beforeReactivateMoveFns.push(() => {
+          const rect = dom.getBoundingClientRect().toJSON();
+          if (this.validImgResize(rect)) {
+            cb && cb(rect);
+          }
+        });
       }
     },
     /**
@@ -484,25 +490,7 @@ export default {
      * 重置
      */
     reset() {
-      const initPoint = {
-        top: 0,
-        left: 0
-      };
-      const initBound = {
-        leftBound: 0,
-        topBound: 0,
-        rightBound: 0,
-        bottomBound: 0
-      };
-      Object.assign(this.zoomerRect, {
-        ...initPoint,
-        absoluteLeft: 0,
-        absoluteTop: 0
-      });
-      Object.assign(this.zoomerBgRect, initPoint);
-      Object.assign(this.zoomerPoint, initBound);
-      Object.assign(this.vZoomerPoint, initBound);
-      this.resetOutZoomPosition();
+      this.initZoomerProperty();
     },
     /**
      * 重置外部放大区域属性
