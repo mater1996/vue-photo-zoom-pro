@@ -13,7 +13,7 @@
         :scale="scale"
         :out-zoomer="showType"
         :zoomer-style="{
-          'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0.6)'
+          'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0)'
         }"
       >
         <template v-if="taobao" slot="zoomer">
@@ -65,7 +65,7 @@
 <script>
 export default {
   name: 'app',
-  data() {
+  data: function() {
     return {
       url: '',
       index: 0,
@@ -83,41 +83,42 @@ export default {
       height: -1
     }
   },
-  created() {
+  created: function() {
     this.url = this.imgList[this.index]
     document.body.onmousewheel = event => {
       event = event || window.event
+      event.preventDefault()
       this.scale += event.deltaY > 0 ? -0.1 : 0.1
     }
   },
   methods: {
-    addSelectorWidth() {
+    addSelectorWidth: function() {
       this.width += 20
     },
-    subSelectorWidth() {
+    subSelectorWidth: function() {
       this.width -= 20
     },
-    addScale() {
+    addScale: function() {
       this.scale += 0.5
     },
-    subScale() {
+    subScale: function() {
       this.scale -= 0.5
     },
-    changeType() {
+    changeType: function() {
       this.type = this.type === 'circle' ? 'square' : 'circle'
     },
-    changeImg() {
+    changeImg: function() {
       this.index = this.index > this.imgList.length - 2 ? -1 : this.index
       this.url = this.imgList[++this.index]
     },
-    changeShowType() {
+    changeShowType: function() {
       this.showType = !this.showType
     },
-    changeToTaobao() {
+    changeToTaobao: function() {
       this.taobao = !this.taobao
       this.showType = true
     },
-    changeToMultipleWidth() {
+    changeToMultipleWidth: function() {
       this.height = this.height === -1 ? 99 : -1
     }
   }

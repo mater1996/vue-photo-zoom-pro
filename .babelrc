@@ -1,6 +1,11 @@
 {
   "presets": [
-    ["env", { "modules": false }],
-    "stage-3"
+    [
+      "env",
+      {
+        "modules": false,
+        "useBuiltIns": "usage"
+      }
+    ]
   ]
 }
