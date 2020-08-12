@@ -55,6 +55,7 @@
 </template>
 <script>
 import photoMask from './photo-mask'
+import {getBoundingClientRect} from '../util'
 export default {
   name: 'vue-photo-zoom-pro',
   components: {
@@ -313,7 +314,7 @@ export default {
     addResizeListener(dom, cb) {
       if (!this.disabledReactive) {
         this.beforeReactivateMoveFns.push(() => {
-          const rect = dom.getBoundingClientRect().toJSON()
+          const rect = getBoundingClientRect(dom)
           if (this.validImgResize(rect)) {
             cb && cb(rect)
           }
@@ -349,7 +350,7 @@ export default {
         this.imgLoadedFlag = true
         $img.src = this.url
         setTimeout(() => {
-          this.imgInfo = $img.getBoundingClientRect().toJSON()
+          this.imgInfo = getBoundingClientRect($img)
           this.handlerImgResize()
           this.$emit('created', $img, this.imgInfo)
         })
