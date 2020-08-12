@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import vuePhotoZoomPro from './components/vue-photo-zoom-pro';
 
 const photoZoomPro = {
