@@ -49,7 +49,7 @@ Vue.use(VuePhotoZoomPro)
 | out-zoomer-style  | Object         | {}      | 外部放大区域样式(style of external amplification region)                                                                                                               |
 | selector          | Boolean        | true    | 是否显示选择器(show or remove selector)                                                                                                                                |
 | out-zoomer        | Boolean        | false   | 切换内外部放大镜(amplification region will be displayed on the outside)                                                                                                |
-| mask              | Boolean        | false   | 显示遮罩 (show mask)                                                                                                                                                   |
+| mask              | Boolean        | true   | 显示遮罩 (show mask)                                                                                                                                                   |
 | mask-color        | Color         | {}      | 遮罩的颜色                                                                                                                                                             |
 | pointer           | Boolean        | false   | 外部区域的中心点 (the center of an external area)                                                                                                                      |
 | baseline          | Boolean        | false   | 外部区域的基线 (the baseline of the external area)                                                                                                                     |
