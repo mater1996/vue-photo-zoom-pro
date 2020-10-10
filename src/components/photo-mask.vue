@@ -64,7 +64,7 @@ export default {
         height: this.pHeight - this.top - this.height + 'px'
       }
     },
-    maskStyle(){
+    maskStyle() {
       return {
         color: this.maskColor
       }

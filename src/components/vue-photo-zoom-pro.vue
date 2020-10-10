@@ -55,7 +55,8 @@
 </template>
 <script>
 import photoMask from './photo-mask'
-import {getBoundingClientRect} from '../util'
+import { getBoundingClientRect } from '../util'
+
 export default {
   name: 'vue-photo-zoom-pro',
   components: {
@@ -75,7 +76,7 @@ export default {
     type: {
       type: String,
       default: 'square',
-      validator: function(value) {
+      validator: function (value) {
         return ['circle', 'square'].indexOf(value) !== -1
       }
     },
@@ -136,7 +137,7 @@ export default {
       default: true
     },
     maskColor: {
-      type: String,
+      type: String
     }
   },
   data() {
@@ -302,9 +303,11 @@ export default {
   },
   mounted() {
     this.$img = this.$refs['img']
-    this.addResizeListener(this.$img, rect => {
-      this.imgInfo = rect
-      this.handlerImgResize()
+    this.addResizeListener(this.$img, (rect) => {
+      if (!this.disabledReactive) {
+        this.imgInfo = rect
+        this.handlerImgResize()
+      }
     })
   },
   methods: {
@@ -312,14 +315,15 @@ export default {
      * 为某个dom添加监听dom位置或者大小变化的
      */
     addResizeListener(dom, cb) {
-      if (!this.disabledReactive) {
-        this.beforeReactivateMoveFns.push(() => {
-          const rect = getBoundingClientRect(dom)
-          if (this.validImgResize(rect)) {
-            cb && cb(rect)
-          }
-        })
-      }
+      this.beforeReactivateMoveFns.push(() => {
+        const newImgInfo = getBoundingClientRect(dom)
+        if (this.validImgResize(newImgInfo, this.imgInfo)) {
+          cb && cb(newImgInfo)
+        }
+      })
+    },
+    walkResizeListener() {
+      this.beforeReactivateMoveFns.forEach((fn) => fn.call(this))
     },
     /**
      * 图片url改变
@@ -342,7 +346,7 @@ export default {
       })
     },
     /**
-     * 图片记载完毕事件
+     * 图片加载完毕事件
      */
     imgLoaded() {
       const $img = this.$img
@@ -359,8 +363,8 @@ export default {
     /**
      * 检测img大小或者位置是否改变
      */
-    validImgResize(imgInfo) {
-      return JSON.stringify(this.imgInfo) !== JSON.stringify(imgInfo)
+    validImgResize(newImgInfo, imgInfo) {
+      return JSON.stringify(newImgInfo) !== JSON.stringify(imgInfo)
     },
     /**
      * 图片大小或者位置改变后的事件
@@ -388,7 +392,7 @@ export default {
         // 缓存event信息
         this.pointerInfo = e
         // 执行move响应前的方法
-        this.beforeReactivateMoveFns.forEach(fn => fn.call(this))
+        this.walkResizeListener()
         const { pageX, pageY, clientY } = e
         const scrollTop = pageY - clientY
         const {
