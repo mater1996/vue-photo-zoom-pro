@@ -1,15 +1,8 @@
-<!--
-  * @author: Mater
-  * @Email: bxh8640@gmail.com
-  * @Date: 2020-06-26 10:55:05
-  * @LastEditTime: 2020-08-12 09:02:50
-  * @Description:
--->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Vue.JS Grid</title>
+    <title>Vue Photom Zoom Pro</title>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat"
       rel="stylesheet"
@@ -22,23 +15,22 @@
         v-if="changeImgPosition"
         style="width:100px;display:inline-block"
       ></div>
-      <div style="width:60%;display:inline-block">
-        <vue-photo-zoom-pro
-          :width="width"
-          :height="height"
-          :url="url"
-          :type="type"
-          :scale="scale"
-          :out-zoomer="showType"
-          :zoomer-style="{
-          'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0)', 'filter': filter ?  'drop-shadow(16px 16px 20px red) invert(75%)' : ''
-        }"
-        >
-          <template v-if="taobao" slot="zoomer">
-            <div class="ks-imagezoom-wrap"></div>
-          </template>
-        </vue-photo-zoom-pro>
-      </div>
+      <vue-photo-zoom-pro
+        style="width:60%;display:inline-block"
+        :width="width"
+        :height="height"
+        :url="url"
+        :type="type"
+        :scale="scale"
+        :out-zoomer="showType"
+        :zoomer-style="{
+      'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0)', 'filter': filter ?  'drop-shadow(16px 16px 20px red) invert(75%)' : ''
+    }"
+      >
+        <template v-if="taobao" slot="zoomer">
+          <div class="ks-imagezoom-wrap"></div>
+        </template>
+      </vue-photo-zoom-pro>
       <div style="width:38%;display:inline-block;vertical-align:top;">
         <p>！小提示：可以进行滚动放大</p>
         <p>当前放大倍数：{{ scale }}</p>
@@ -79,7 +71,7 @@
         </button>
       </div>
     </div>
-    <script src="../dist/vue-photo-zoom-pro.js"></script>
+    <script src="../dist/vue-photo-zoom-pro.global.js"></script>
     <script src="./index.js"></script>
   </body>
 </html>

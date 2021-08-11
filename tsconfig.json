@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": false,
+    "jsx": "preserve",
+    "lib": ["ESNext", "DOM"],
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "example"]
+}

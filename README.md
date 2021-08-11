@@ -94,6 +94,14 @@ npm run dev
 npm run build
 ```
 
+## Feature
+
+- rollup build
+- 支持无图放大
+- 支持canvas
+- 支持旋转
+- selector放大改为canvas绘制
+- ts
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
