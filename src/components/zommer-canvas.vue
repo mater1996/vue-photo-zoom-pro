@@ -1,7 +1,7 @@
 <!--
  * @author: Mater
  * @Email: bxh8640@gmail.com
- * @Date: 2021-08-10 10:23:09
+ * @Date: 2021-08-11 11:44:54
  * @Description:
 -->
 <template>
@@ -59,25 +59,8 @@ export default {
       default: 0
     }
   },
-  computed: {
-    zoomerStyle () {
-      return {
-        width: `${this.width}px`,
-        height: `${this.height}px`
-      }
-    },
-    positionStyle () {
-      return {
-        transform: `translate(${-this.left}px, ${-this.top}px)`
-      }
-    },
-    imgStyle () {
-      return {
-        transform: `scale(${this.scale})`,
-        width: `${this.scaleWidth}px`,
-        height: `${this.scaleHeight}px`
-      }
-    }
+  mounted () {
+    ;
   }
 }
 </script>

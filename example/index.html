@@ -2,12 +2,21 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Vue Photom Zoom Pro</title>
+    <title>Vue Photom Zoom Pro Demo</title>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat"
       rel="stylesheet"
     />
-    <script src="https://unpkg.com/vue@2.1.10/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <style>
+      .container{
+        transform: rotate(90deg);
+      }
+
+      .zoomer img{
+        transform: scale(2) rotate(0deg)!important;
+      }
+    </style>
   </head>
   <body>
     <div id="demo">
@@ -15,22 +24,18 @@
         v-if="changeImgPosition"
         style="width:100px;display:inline-block"
       ></div>
-      <vue-photo-zoom-pro
-        style="width:60%;display:inline-block"
-        :width="width"
-        :height="height"
-        :url="url"
-        :type="type"
-        :scale="scale"
-        :out-zoomer="showType"
-        :zoomer-style="{
-      'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0)', 'filter': filter ?  'drop-shadow(16px 16px 20px red) invert(75%)' : ''
-    }"
-      >
-        <template v-if="taobao" slot="zoomer">
-          <div class="ks-imagezoom-wrap"></div>
-        </template>
-      </vue-photo-zoom-pro>
+      <div style="width:60%;display:inline-block;">
+        <vue-photo-zoom-pro
+          :high-url="url"
+          :width="width"
+          :height="height"
+          :type="type"
+          :scale="scale"
+          :out-zoomer="showType"
+        >
+          <img ref="img" :src="url" class="origin-img" />
+        </vue-photo-zoom-pro>
+      </div>
       <div style="width:38%;display:inline-block;vertical-align:top;">
         <p>！小提示：可以进行滚动放大</p>
         <p>当前放大倍数：{{ scale }}</p>
@@ -61,9 +66,6 @@
         </button>
         <button style="margin-top:8px" @click="changeShowType">
           更换放大方式(change type of scale)
-        </button>
-        <button style="margin-top:8px" @click="changeToTaobao">
-          类淘宝放大镜
         </button>
         <button style="margin-top:8px" @click="filter = !filter">滤镜</button>
         <button style="margin-top:8px" @click="changeToMultipleWidth">

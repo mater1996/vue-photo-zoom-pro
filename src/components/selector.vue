@@ -6,7 +6,7 @@
 -->
 <template>
   <div
-    class="selector"
+    :class="['selector', type]"
     :style="selectorStyle"
   >
     <slot />
@@ -61,10 +61,11 @@ export default {
 <style lang="scss" scoped>
 .selector {
   position: absolute;
-  cursor: crosshair;
+  overflow: hidden;
   background-repeat: no-repeat;
+  cursor: crosshair;
 
-  .circle {
+  &.circle {
     border-radius: 50%;
   }
 }

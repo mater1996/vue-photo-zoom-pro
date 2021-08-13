@@ -30,18 +30,20 @@ var app = new Vue({
   },
   created: function() {
     this.url = this.imgList[this.index]
+  },
+  mounted() {
     var that = this
-    document.body.addEventListener(
-      'wheel',
-      function(e) {
-        e.preventDefault()
-        e = e || window.event
-        that.scale += e.deltaY > 0 ? 0.1 : -0.1
-      },
-      {
-        passive: false
-      }
-    )
+    // document.querySelector('.photo-zoom-pro').addEventListener(
+    //   'wheel',
+    //   function(e) {
+    //     e.preventDefault()
+    //     e = e || window.event
+    //     that.scale += e.deltaY > 0 ? 0.1 : -0.1
+    //   },
+    //   {
+    //     passive: false
+    //   }
+    // )
   },
   methods: {
     addSelectorWidth: function() {

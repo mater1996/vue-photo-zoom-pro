@@ -1,6 +1,6 @@
 # vue-photo-zoom-pro
 
-> Vue(2.x) 图片放大器(Photoloupe)
+> Vue picture magnifying glass
 
 ![example](https://raw.githubusercontent.com/Mater1996/vue-photo-zoom-pro/master/example.png)
 
@@ -19,67 +19,81 @@ npm install vue-photo-zoom-pro
 main.js
 
 ```js
-import VuePhotoZoomPro from 'vue-photo-zoom-pro'
+import vuePhotoZoomPro from 'vue-photo-zoom-pro'
 
-Vue.use(VuePhotoZoomPro)
+export default {
+  components: {
+    vuePhotoZoomPro
+  }
+}
 ```
 
 \*.vue
 
 ```html
+<vue-photo-zoom-pro>
+  <img
+    src="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg"
+  />
+</vue-photo-zoom-pro>
+```
+
+or
+
+```html
 <vue-photo-zoom-pro
-  url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg!/watermark/url/L3dhdGVyL3dhdGVyX2JhY2tfNDAwXzIwMC5wbmc=/repeat/true"
-></vue-photo-zoom-pro>
+  high-url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg"
+>
+  <div style="width:100px; height: 200px"></div>
+</vue-photo-zoom-pro>
+```
+
+or 
+```html
+<vue-photo-zoom-pro
+  high-url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg"
+>
+  <canvas width="100" height="200" style="width:100px; height: 200px"></canvas>
+</vue-photo-zoom-pro>
 ```
 
 ### Settings
 
 #### props
 
-| Prop Name         | Type           | Default | Note                                                                                                                                                                   |
-| ----------------- | -------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| url               | String         |         | 图片地址(photo url)                                                                                                                                                    |
-| high-url          | String         |         | 更清晰的图片,若不提供会采用 url(more detailed photo url)                                                                                                               |
-| scale             | Number         | 2       | 放大倍数(scale number)                                                                                                                                                 |
-| disabled          | Boolean        | false   | 禁用                                                                                                                                                                   |
-| width             | Number         | 166     | 内部放大区域宽度(width of internal amplification region)                                                                                                               |
-| height            | Number         | -1      | 内部放大区域高度，如果不设置或者小于 0 会和宽度保持同步(height of internal amplification region)                                                                       |
-| type              | String         | square  | 放大镜类型(circle,square)(magnifying glass type (circle,square))                                                                                                       |
-| zoomer-style      | Object         | {}      | 内部放大区域样式(style of internal amplification region)                                                                                                               |
-| out-zoomer-style  | Object         | {}      | 外部放大区域样式(style of external amplification region)                                                                                                               |
-| selector          | Boolean        | true    | 是否显示选择器(show or remove selector)                                                                                                                                |
-| out-zoomer        | Boolean        | false   | 切换内外部放大镜(amplification region will be displayed on the outside)                                                                                                |
-| mask              | Boolean        | true   | 显示遮罩 (show mask)                                                                                                                                                   |
-| mask-color        | Color         | {}      | 遮罩的颜色                                                                                                                                                             |
-| pointer           | Boolean        | false   | 外部区域的中心点 (the center of an external area)                                                                                                                      |
-| baseline          | Boolean        | false   | 外部区域的基线 (the baseline of the external area)                                                                                                                     |
-| enter-event       | Object/UIEvent | null    | 当需要在外部监听鼠标移入事件时，请通过该字段传入事件(When you need to listen for enter events outside the component)                                                   |
-| move-event        | Object/UIEvent | null    | 当需要在外部监听移动事件时,请通过该字段传入事件（必须包含 pageX,pageY,clientY），这将禁用内部移动监听(when you need to listen for moving events outside the component) |
-| leave-event       | Object/UIEvent | null    | 当需要在外部监听离开事件时，请通过该字段传入事件(When you need to listen for leaving events outside the component)                                                     |
-| disabled-reactive | Boolean        | false   | 禁用响应式，不会轮询图像的位置,在确定不改变布局的情况下使用可以提升性能                                                                                                |
+| Prop Name         | Type           | Default | Note                                                  |
+| ----------------- | -------------- | ------- | ----------------------------------------------------- |
+| high-url          | String         |         | Clearer picture url                                   |
+| scale             | Number         | 2       | magnification                                         |
+| disabled          | Boolean        | false   | disabled move                                         |
+| width             | Number         | 166     | The width of the magnified area                       |
+| height            | Number         | -1      | The height of the magnified area                      |
+| type              | String         | square  | magnifying glass type (circle,square)                 |
+| selector          | Boolean        | true    | show or remove selector                               |
+| out-zoomer        | Boolean        | false   | amplification region will be displayed on the outside |
+| mask              | Boolean        | true    | show mask                                             |
+| mask-color        | Color          | {}      | mask c                                                |
+| enter-event       | Object/UIEvent | null    | custom enter event                                    |
+| move-event        | Object/UIEvent | null    | custom move event                                     |
+| leave-event       | Object/UIEvent | null    | custom leave event                                    |
+| disabled-reactive | Boolean        | false   |                                                       |
 
 #### Slot
 
 | Slot Name | Note              |
 | --------- | ----------------- |
-| default   | 默认区域(default) |
-| zoomer    | 内部放大区域      |
-| outzoomer | 外部放大区域      |
-
-#### Method
-
-| Method Name | Note                                |
-| ----------- | ----------------------------------- |
-| reset       | 重置放大镜位置(reset zoom position) |
+| default   | default slot      |
+| zoomer    | inner zoomer slot |
+| outzoomer | out zoomer slot   |
 
 #### Event
 
-| Event Name | Note                               | event                                                           |
-| ---------- | ---------------------------------- | --------------------------------------------------------------- |
-| created    | 图片放大镜创建(photo-zoom created) | 图像属性(img rect{top,left,width,height}),图像元素(img element) |
-| mouseenter | 鼠标移入事件                       |                                                                 |
-| mousemove  | 鼠标移动事件                       |                                                                 |
-| mouseleave | 鼠标移出事件                       |                                                                 |
+| Event Name | Note              | value |
+| ---------- | ----------------- | ----- |
+| created    | created event     | img   |
+| mouseenter | mouse enter event |       |
+| mousemove  | mouse move event  |       |
+| mouseleave | mouse leave event |       |
 
 ## Build Setup
 
@@ -87,8 +101,8 @@ Vue.use(VuePhotoZoomPro)
 # install dependencies
 npm install
 
-# serve with hot reload at localhost:8080
-npm run dev
+# serve with hot reload at localhost:5000
+npm run dev & npm run serve
 
 # build for production with minification
 npm run build
@@ -98,10 +112,11 @@ npm run build
 
 - rollup build
 - 支持无图放大
-- 支持canvas
+- canvas zoomer
 - 支持旋转
-- selector放大改为canvas绘制
-- ts
+
+## CHANGELOG
+
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)

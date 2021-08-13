@@ -42,11 +42,11 @@ export const getScrollInfo = () => {
 }
 
 /**
-* 加载图片
-* @param {String} 图片地址
-* @return {Promise}
-*/
-export const loadImg = (url) => {
+ * load img
+ * @param {String} img url
+ * @return {Promise}
+ */
+export const loadImg = url => {
   return new Promise((resolve, reject) => {
     const img = document.createElement('img')
     img.addEventListener('load', resolve)
@@ -56,17 +56,22 @@ export const loadImg = (url) => {
 }
 
 const beforeReactivateMoveFns = []
-let imgRect = {}
+let rect = {}
 
-const validImgResize = (newImgRect) => {
-  return JSON.stringify(imgRect) !== JSON.stringify(newImgRect)
+const isResize = newRect => {
+  return (
+    rect.width !== newRect.width ||
+    rect.height !== newRect.height ||
+    rect.left !== newRect.left ||
+    rect.top !== newRect.top
+  )
 }
 
 export const addResizeListener = (dom, cb) => {
   beforeReactivateMoveFns.push(() => {
-    const rect = getBoundingClientRect(dom)
-    if (validImgResize(rect)) {
-      imgRect = rect
+    const newRect = getBoundingClientRect(dom)
+    if (isResize(newRect)) {
+      rect = newRect
       cb && cb(rect)
     }
   })
