@@ -1,14 +1,30 @@
 <template>
-  <div class="mask" :style="maskStyle">
-    <div class="block top" :style="topStyle"></div>
-    <div class="block left" :style="leftStyle"></div>
-    <div class="block right" :style="rightStyle"></div>
-    <div class="block bottom" :style="bottomStyle"></div>
+  <div
+    class="mask"
+    :style="maskStyle"
+  >
+    <div
+      class="block top"
+      :style="topStyle"
+    />
+    <div
+      class="block left"
+      :style="leftStyle"
+    />
+    <div
+      class="block right"
+      :style="rightStyle"
+    />
+    <div
+      class="block bottom"
+      :style="bottomStyle"
+    />
   </div>
 </template>
 
 <script>
 export default {
+  name: 'VuePhotoZoomProMask',
   props: {
     pWidth: {
       type: Number,
@@ -36,44 +52,44 @@ export default {
     },
     maskColor: {
       type: String,
-      default: 'rgba(255,255,255,0.6)'
+      default: ''
     }
   },
   computed: {
-    topStyle() {
+    topStyle () {
       return {
-        width: this.pWidth + 'px',
-        height: this.top + 'px'
+        width: `${this.pWidth}px`,
+        height: `${this.top}px`
       }
     },
-    leftStyle() {
+    leftStyle () {
       return {
-        width: this.left + 'px',
-        height: this.height + 'px'
+        width: `${this.left}px`,
+        height: `${this.height}px`
       }
     },
-    rightStyle() {
+    rightStyle () {
       return {
-        width: this.pWidth - this.left - this.width + 'px',
-        height: this.height + 'px'
+        width: `${this.pWidth - this.left - this.width}px`,
+        height: `${this.height}px`
       }
     },
-    bottomStyle() {
+    bottomStyle () {
       return {
-        width: this.pWidth + 'px',
-        height: this.pHeight - this.top - this.height + 'px'
+        width: `${this.pWidth}px`,
+        height: `${this.pHeight - this.top - this.height}px`
       }
     },
-    maskStyle(){
+    maskStyle () {
       return {
-        color: this.maskColor
+        backgroundColor: this.maskColor
       }
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .mask {
   position: absolute;
   top: 0;
@@ -81,23 +97,22 @@ export default {
   right: 0;
   bottom: 0;
   font-size: 0;
+  background-color: rgba(0,0,0,0.4);
+  z-index: 1;
 }
 
 .block {
   width: 30%;
   height: 50px;
-  background: currentColor;
-}
-
-.block.left {
-  float: left;
-}
-
-.block.right {
-  float: right;
-}
-
-.block.bottom {
-  clear: both;
+  background: inherit;
+  &.left {
+    float: left;
+  }
+  &.right {
+    float: right;
+  }
+  &.bottom {
+    clear: both;
+  }
 }
 </style>
