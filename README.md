@@ -33,7 +33,7 @@ export default {
 or cdn
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro@2.0.0-beta.0/dist/vue-photo-zoom-pro.global.js"></script>
 ```
 
 \*.vue
