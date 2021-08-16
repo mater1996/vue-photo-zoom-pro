@@ -28,6 +28,12 @@ export default {
 }
 ```
 
+或者使用cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+```
+
 \*.vue
 
 ### 图片
