@@ -8,7 +8,7 @@ English | [简体中文](./README-zh_CN.md)
 
 ## DEMO
 
-[demo](./example/index.html)
+[demo](https://mater1996.github.io/vue-photo-zoom-pro/example/)
 
 ## Usage example
 

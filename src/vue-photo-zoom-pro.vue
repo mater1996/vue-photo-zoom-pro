@@ -311,4 +311,9 @@ export default {
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
 }
+
+.scale-area {
+  display: inline-block;
+  font-size: 0;
+}
 </style>

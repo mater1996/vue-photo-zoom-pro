@@ -6,7 +6,7 @@
 
 ## 在线示例
 
-[demo](./example/index.html)
+[demo](https://mater1996.github.io/vue-photo-zoom-pro/example/)
 
 ## 使用
 
