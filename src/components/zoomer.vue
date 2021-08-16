@@ -21,6 +21,7 @@
       </div>
       <img
         v-else-if="url"
+        class="zommer-img"
         :src="url"
         :style="zoomedStyle"
       >
@@ -93,7 +94,7 @@ export default {
 .zoomer {
   overflow: hidden;
   pointer-events: none;
-  img {
+  .zommer-img {
     display: block;
   }
 }
