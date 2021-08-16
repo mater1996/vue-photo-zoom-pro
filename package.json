@@ -5,7 +5,7 @@
   "module": "dist/vue-photo-zoom-pro.esm.js",
   "unpkg": "dist/vue-photo-zoom-pro.global.js",
   "jsdelivr": "dist/vue-photo-zoom-pro.global.js",
-  "version": "2.0.0-1",
+  "version": "2.0.0-beta.0",
   "author": "xhb <xb864083144@outlook.com>",
   "license": "MIT",
   "repository": {
