@@ -32,7 +32,7 @@ export default {
 
 \*.vue
 
-##### Image
+### Image
 
 ```html
 <vue-photo-zoom-pro :high-url="imgSrc">
@@ -66,7 +66,7 @@ export deafult{
 }
 ```
 
-###### Customize the enlarged area
+### Customize the enlarged area
 
 You can use any element to represent the enlarged area
 
@@ -76,7 +76,7 @@ You can use any element to represent the enlarged area
 </vue-photo-zoom-pro>
 ```
 
-##### Customize magnified elements
+### Customize magnified elements
 
 ```html
 <vue-photo-zoom-pro>
