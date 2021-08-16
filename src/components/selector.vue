@@ -43,8 +43,7 @@ export default {
       return {
         width: `${this.width}px`,
         height: `${this.height}px`,
-        left: `${this.left}px`,
-        top: `${this.top}px`
+        transform: `translate3d(${this.left}px, ${this.top}px, 0)`
       }
     }
   }

@@ -75,12 +75,12 @@ export default {
     },
     positionStyle () {
       return {
-        transform: `translate(${-this.left}px, ${-this.top}px)`
+        transform: `translate3d(${-this.left}px, ${-this.top}px, 0)`
       }
     },
     zoomedStyle () {
       return {
-        transform: `scale(${this.scale})`,
+        transform: `scale(${this.scale}) translateZ(0)`,
         width: `${this.scaleWidth}px`,
         height: `${this.scaleHeight}px`,
         transformOrigin: 'left top'
