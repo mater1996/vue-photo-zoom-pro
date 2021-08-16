@@ -4,7 +4,7 @@
 
 ![example](https://raw.githubusercontent.com/Mater1996/vue-photo-zoom-pro/master/example.png)
 
-English | [简体中文](./README-zh_CN.md)
+English | [简体中文](./README-ZH_CN.md)
 
 ## DEMO
 
