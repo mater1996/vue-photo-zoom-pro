@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "node scripts/dev.js",
     "build": "node scripts/build.js",
-    "release": "node scripts/release.js",
+    "release": "release-it",
     "serve": "serve"
   },
   "lint-staged": {
@@ -57,6 +57,7 @@
     "husky": "^7.0.1",
     "lint-staged": "^11.1.2",
     "node-sass": "^6.0.1",
+    "release-it": "^14.11.5",
     "rollup": "^2.56.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-delete": "^2.0.0",
@@ -72,5 +73,10 @@
     "vue",
     "photo zoom",
     "magnifying glass"
-  ]
+  ],
+  "release-it": {
+    "github": {
+      "release": true
+    }
+  }
 }
