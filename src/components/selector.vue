@@ -64,6 +64,8 @@ export default {
   overflow: hidden;
   background-repeat: no-repeat;
   cursor: crosshair;
+  pointer-events: none;
+  z-index: 1;
 
   &.circle {
     border-radius: 50%;

@@ -4,9 +4,11 @@
 
 ![example](https://raw.githubusercontent.com/Mater1996/vue-photo-zoom-pro/master/example.png)
 
+English | [简体中文](./README-zh_CN.md)
+
 ## DEMO
 
-[demo](https://codepen.io/xbup/project/full/AjnEgE)
+[demo](./example/index.html)
 
 ## Usage example
 
@@ -30,31 +32,78 @@ export default {
 
 \*.vue
 
+##### Image
+
 ```html
-<vue-photo-zoom-pro>
-  <img
-    src="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg"
-  />
+<vue-photo-zoom-pro :high-url="imgSrc">
+  <img :src="imgSrc" />
 </vue-photo-zoom-pro>
 ```
 
-or
+> Tips: If your image is not loaded at the beginning and set `disabled-reactive`, you must manually listen for the event when the image is loaded before displaying it
 
 ```html
-<vue-photo-zoom-pro
-  high-url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg"
->
+<vue-photo-zoom-pro v-if="loaded" :high-url="imgSrc">
+  <img :src="imgSrc" />
+</vue-photo-zoom-pro>
+```
+
+```js
+export deafult{
+  data(){
+    return {
+      loaded: false,
+      imgSrc: ''
+    }
+  },
+  created(){
+    const img = new Image()
+    img.src = imgSrc
+    img.addEventListener('load', ()=>{
+      this.loaded = true
+    })
+  }
+}
+```
+
+###### Customize the enlarged area
+
+You can use any element to represent the enlarged area
+
+```html
+<vue-photo-zoom-pro :high-url="imgSrc">
   <div style="width:100px; height: 200px"></div>
 </vue-photo-zoom-pro>
 ```
 
-or 
+##### Customize magnified elements
+
 ```html
-<vue-photo-zoom-pro
-  high-url="https://bpic.588ku.com/illus_water_img/18/07/30/f3c7060bc28216271dc8c4630b288331.jpg"
->
-  <canvas width="100" height="200" style="width:100px; height: 200px"></canvas>
+<vue-photo-zoom-pro>
+  <template slot="zoomer">
+    <!-- Is the same as the canvas-1 -->
+    <canvas id="canvas-2" width="100" height="100"></canvas>
+  </template>
+  <canvas id="canvas-1" width="100" height="100"></canvas>
 </vue-photo-zoom-pro>
+```
+
+```js
+const canvas1 = document.querySelector('#canvas-1')
+const canvas2 = document.querySelector('#canvas-2')
+const ctx1 = canvas1.getContext('2d')
+const ctx2 = canvas2.getContext('2d')
+
+const offscreenCanvas = document.createElement('canvas')
+const ctx = c.getContext('2d')
+offscreenCanvas.width = 100
+offscreenCanvas.height = 100
+
+ctx.font = '30px Arial'
+ctx.fillText('Hello World', 10, 50)
+
+ctx1.drawImage(offscreenCanvas, 0, 0)
+ctx2.drawImage(offscreenCanvas, 0, 0)
 ```
 
 ### Settings
@@ -71,18 +120,19 @@ or
 | type              | String         | square  | magnifying glass type (circle,square)                 |
 | selector          | Boolean        | true    | show or remove selector                               |
 | out-zoomer        | Boolean        | false   | amplification region will be displayed on the outside |
-| mask              | Boolean        | true    | show mask                                             |
+| mask              | Boolean        | false   | show mask                                             |
 | mask-color        | Color          | {}      | mask c                                                |
 | enter-event       | Object/UIEvent | null    | custom enter event                                    |
 | move-event        | Object/UIEvent | null    | custom move event                                     |
 | leave-event       | Object/UIEvent | null    | custom leave event                                    |
-| disabled-reactive | Boolean        | false   |                                                       |
+| disabled-reactive | Boolean        | false   | Disable listening for internal element info changes   |
 
 #### Slot
 
 | Slot Name | Note              |
 | --------- | ----------------- |
 | default   | default slot      |
+| selector  | selector slot     |
 | zoomer    | inner zoomer slot |
 | outzoomer | out zoomer slot   |
 
@@ -90,10 +140,16 @@ or
 
 | Event Name | Note              | value |
 | ---------- | ----------------- | ----- |
-| created    | created event     | img   |
+| created    | created event     |       |
 | mouseenter | mouse enter event |       |
 | mousemove  | mouse move event  |       |
 | mouseleave | mouse leave event |       |
+
+#### Methods
+
+| Method Name | Note   | value |
+| ----------- | ------ | ----- |
+| update      | update |       |
 
 ## Build Setup
 
@@ -108,17 +164,10 @@ npm run dev & npm run serve
 npm run build
 ```
 
-## Feature
-
-- rollup build
-- 支持无图放大
-- canvas zoomer
-- 支持旋转
-
 ## CHANGELOG
 
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
 
-Copyright (c) 2018-present, Mater1996
+Copyright (c) 2018-present, mater1996

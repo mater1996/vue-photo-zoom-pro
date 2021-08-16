@@ -13,11 +13,17 @@
       class="position"
       :style="positionStyle"
     >
-      <img
-        :src="url"
-        :style="imgStyle"
+      <div
+        v-if="$slots.default"
+        :style="zoomedStyle"
       >
-      <slot />
+        <slot />
+      </div>
+      <img
+        v-else-if="url"
+        :src="url"
+        :style="zoomedStyle"
+      >
     </div>
   </div>
 </template>
@@ -71,11 +77,12 @@ export default {
         transform: `translate(${-this.left}px, ${-this.top}px)`
       }
     },
-    imgStyle () {
+    zoomedStyle () {
       return {
         transform: `scale(${this.scale})`,
         width: `${this.scaleWidth}px`,
-        height: `${this.scaleHeight}px`
+        height: `${this.scaleHeight}px`,
+        transformOrigin: 'left top'
       }
     }
   }
@@ -85,9 +92,9 @@ export default {
 <style lang="scss" scoped>
 .zoomer {
   overflow: hidden;
+  pointer-events: none;
   img {
     display: block;
-    transform-origin: left top;
   }
 }
 </style>

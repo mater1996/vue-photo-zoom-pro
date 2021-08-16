@@ -9,68 +9,52 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
     <style>
-      .container{
-        transform: rotate(90deg);
+      body {
+        margin: 0;
+        padding: 0;
       }
 
-      .zoomer img{
-        transform: scale(2) rotate(0deg)!important;
+      .star-sky {
+        display: flex;
+        position: relative;
+        margin: 0;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        background: black;
+        background: linear-gradient(to bottom, #000000 0%, #5788fe 100%);
+      }
+
+      .landscape {
+        position: absolute;
+        bottom: 0px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('./Trees-Landscape-Silhouette.png');
+        background-size: 600px 212.5px;
+        background-repeat: repeat-x;
+        background-position: center bottom;
       }
     </style>
   </head>
   <body>
     <div id="demo">
-      <div
-        v-if="changeImgPosition"
-        style="width:100px;display:inline-block"
-      ></div>
-      <div style="width:60%;display:inline-block;">
-        <vue-photo-zoom-pro
-          :high-url="url"
-          :width="width"
-          :height="height"
-          :type="type"
-          :scale="scale"
-          :out-zoomer="showType"
-        >
-          <img ref="img" :src="url" class="origin-img" />
+      <div>
+        <vue-photo-zoom-pro type="circle">
+          <div class="star-sky">
+            <div class="landscape"></div>
+            <div class="filter"></div>
+            <canvas id="canvas1"></canvas>
+          </div>
+          <template slot="zoomer">
+            <div class="star-sky">
+              <div class="landscape"></div>
+              <div class="filter"></div>
+              <canvas id="canvas2"></canvas>
+            </div>
+          </template>
         </vue-photo-zoom-pro>
-      </div>
-      <div style="width:38%;display:inline-block;vertical-align:top;">
-        <p>！小提示：可以进行滚动放大</p>
-        <p>当前放大倍数：{{ scale }}</p>
-        <p>当前放大镜宽度：{{ width }}</p>
-        <button style="margin-top:8px" @click="addSelectorWidth">
-          增加放大器宽度(add width)
-        </button>
-        <button style="margin-top:8px" @click="subSelectorWidth">
-          减小放大器宽度(cut width)
-        </button>
-        <button
-          style="margin-top:8px"
-          @click="changeImgPosition = !changeImgPosition"
-        >
-          改变图片位置(change position)
-        </button>
-        <button style="margin-top:8px" @click="addScale">
-          增加放大倍数(add scale)
-        </button>
-        <button style="margin-top:8px" @click="subScale">
-          减小放大倍数(cut scale)
-        </button>
-        <button style="margin-top:8px" @click="changeImg">
-          更换图片(change img url)
-        </button>
-        <button style="margin-top:8px" @click="changeType">
-          更换放大镜类型(change type)
-        </button>
-        <button style="margin-top:8px" @click="changeShowType">
-          更换放大方式(change type of scale)
-        </button>
-        <button style="margin-top:8px" @click="filter = !filter">滤镜</button>
-        <button style="margin-top:8px" @click="changeToMultipleWidth">
-          高宽不同
-        </button>
       </div>
     </div>
     <script src="../dist/vue-photo-zoom-pro.global.js"></script>

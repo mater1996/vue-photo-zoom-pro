@@ -98,6 +98,7 @@ export default {
   bottom: 0;
   font-size: 0;
   background-color: rgba(0,0,0,0.4);
+  z-index: 1;
 }
 
 .block {

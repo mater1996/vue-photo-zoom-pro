@@ -1,6 +1,5 @@
 <template>
   <div class="photo-zoom-pro">
-    {{ selectorProps }}
     <div
       class="container"
       @mouseenter="!disabled && mouseEnter($event)"
@@ -39,7 +38,12 @@
       >
         <slot name="outzoomer" />
       </Zoomer>
-      <slot />
+      <div
+        ref="scaleArea"
+        class="scale-area"
+      >
+        <slot />
+      </div>
     </div>
   </div>
 </template>
@@ -111,7 +115,7 @@ export default {
       },
       mask: {
         type: Boolean,
-        default: true
+        default: false
       },
       maskColor: {
         type: String,
@@ -140,7 +144,7 @@ export default {
       return this.width
     },
     selectorHeight () {
-      return this.height > 0 ? this.height : this.width
+      return this.height > -1 ? this.height : this.width
     },
     selectorHalfWidth () {
       return this.selectorWidth / 2
@@ -231,17 +235,18 @@ export default {
     }
   },
   mounted () {
-    const defaultSlot = this.$slots.default[0]
-    if (defaultSlot) {
-      const $scaleEl = this.$scaleEl = defaultSlot.elm
-      this.handleScaleElResize(getBoundingClientRect($scaleEl))
-      if (!this.disabledReactive) {
-        this.resizer = addResizeListener($scaleEl, this.handleScaleElResize)
-      }
-      this.$emit('created', $scaleEl, this.scaleElRect)
+    console.log(this.$slots)
+    this.$scaleArea = this.$refs.scaleArea
+    if (!this.disabledReactive) {
+      this.resizer = addResizeListener(this.$scaleArea, this.handleScaleElResize)
     }
+    this.update()
+    this.$emit('created')
   },
   methods: {
+    getDefaultSlot () {
+      return this.$slots.default[0]
+    },
     handleScaleElResize (rect) {
       const { scrollTop, scrollLeft } = getScrollInfo()
       this.scaleElRect = {
@@ -277,6 +282,9 @@ export default {
       this.hideSelector = true
       if (this.outZoomer) this.hideOutZoomer = true
       this.$emit('mouseleave', e)
+    },
+    update () {
+      this.handleScaleElResize(getBoundingClientRect(this.$scaleArea))
     }
   }
 }

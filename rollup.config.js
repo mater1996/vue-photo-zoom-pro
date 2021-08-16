@@ -15,7 +15,6 @@ function parseEnvironment (environment) {
 
 module.exports = ({ environment }) => {
   const { NODE_ENV, FORMAT } = parseEnvironment(environment)
-  console.log(parseEnvironment(environment))
   const isProd = NODE_ENV === 'production'
   const isESM = FORMAT === 'esm'
   const isIIFE = FORMAT === 'iife'
