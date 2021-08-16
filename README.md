@@ -164,8 +164,6 @@ npm run dev & npm run serve
 npm run build
 ```
 
-## CHANGELOG
-
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)

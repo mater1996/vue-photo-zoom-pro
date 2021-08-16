@@ -30,7 +30,7 @@ export default {
 
 \*.vue
 
-##### 图片
+### 图片
 
 ```html
 <vue-photo-zoom-pro :high-url="imgSrc">
@@ -65,7 +65,7 @@ export deafult{
 }
 ```
 
-###### 自定义放大区域
+### 自定义放大区域
 
 使用其它元素来作为放大区域
 
@@ -75,7 +75,7 @@ export deafult{
 </vue-photo-zoom-pro>
 ```
 
-##### 自定义被放大的元素
+### 自定义被放大的元素
 
 ```html
 <vue-photo-zoom-pro>
@@ -162,8 +162,6 @@ npm run dev & npm run serve
 # build for production with minification
 npm run build
 ```
-
-## CHANGELOG
 
 ## License
 
