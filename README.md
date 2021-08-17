@@ -14,7 +14,7 @@ English | [简体中文](./README-ZH_CN.md)
 
 ```js
 
-npm install vue-photo-zoom-pro
+npm install vue-photo-zoom-pro@2.0.0-beta.2
 
 ```
 
@@ -33,7 +33,7 @@ export default {
 or cdn
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro@2.0.0-beta.2/dist/vue-photo-zoom-pro.global.js"></script>
 ```
 
 \*.vue

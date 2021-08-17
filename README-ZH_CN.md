@@ -19,7 +19,7 @@ npm install vue-photo-zoom-pro
 main.js
 
 ```js
-import vuePhotoZoomPro from 'vue-photo-zoom-pro'
+import vuePhotoZoomPro from 'vue-photo-zoom-pro@2.0.0-beta.2'
 
 export default {
   components: {
@@ -31,7 +31,7 @@ export default {
 或者使用 cdn
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro@2.0.0-beta.2/dist/vue-photo-zoom-pro.global.js"></script>
 ```
 
 \*.vue
