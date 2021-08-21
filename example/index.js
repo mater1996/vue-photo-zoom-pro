@@ -13,7 +13,7 @@ var app = new Vue({
   data: function() {
     return {}
   },
-  mounted() {
+  mounted: function() {
     var canvas = document.createElement('canvas')
     var canvas1 = document.querySelector('#canvas1')
     var canvas2 = document.querySelector('#canvas2')
