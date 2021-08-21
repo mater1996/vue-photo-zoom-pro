@@ -235,7 +235,6 @@ export default {
     }
   },
   mounted () {
-    console.log(this.$slots)
     this.$scaleArea = this.$refs.scaleArea
     if (!this.disabledReactive) {
       this.resizer = addResizeListener(this.$scaleArea, this.handleScaleElResize)
