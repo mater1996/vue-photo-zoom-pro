@@ -22,26 +22,6 @@ module.exports = ({ environment }) => {
   const resolveDir = p => resolve(__dirname, p)
   const resolveOutput = p => resolve(resolveDir('dist'), p)
 
-  const babelConfig = {
-    presets: [
-      [
-        '@babel/preset-env',
-        {
-          modules: 'auto',
-          useBuiltIns: 'usage',
-          corejs: 3
-        }
-      ]
-    ],
-    plugins: [
-      ['@babel/plugin-transform-runtime'],
-      ['@babel/plugin-proposal-class-properties']
-    ],
-    externalHelpers: false,
-    runtimeHelpers: true,
-    exclude: 'node_modules/**'
-  }
-
   const FORMAT_OPTIONS = {
     cjs: {
       name: 'VuePhotoZoomPro',
@@ -70,13 +50,18 @@ module.exports = ({ environment }) => {
         preventAssignment: true,
         values: { 'process.env.NODE_ENV': JSON.stringify(NODE_ENV) }
       }),
-      vue({}),
+      vue({
+        css: !isProd
+      }),
       nodeResolve({
         browser: true,
         preferBuiltins: true
       }),
       commonjs(),
-      !isESM && babel(babelConfig),
+      !isESM && babel({
+        babelrc: true,
+        runtimeHelpers: true
+      }),
       isIIFE &&
         isProd &&
         terser({
@@ -91,9 +76,9 @@ module.exports = ({ environment }) => {
           }
         }),
       postcss({
-        extract: true,
+        extract: resolveOutput(`style/${name}.css`),
         minimize: isProd,
-        sourceMap: !isProd,
+        sourceMap: false,
         modules: false,
         plugins: [require('autoprefixer')]
       })

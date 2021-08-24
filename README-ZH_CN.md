@@ -20,6 +20,7 @@ main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
+import vuePhotoZoomPro from 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
 
 export default {
   components: {
@@ -32,6 +33,7 @@ export default {
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
 \*.vue
