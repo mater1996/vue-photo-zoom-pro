@@ -10,8 +10,8 @@
         v-if="mask"
         v-show="!hideSelector"
         :mask-color="maskColor"
-        :p-width="scaleElRect.width"
-        :p-height="scaleElRect.height"
+        :p-width="zoomRegionRect.width"
+        :p-height="zoomRegionRect.height"
         v-bind="selectorProps"
       />
       <Selector
@@ -39,8 +39,8 @@
         <slot name="outzoomer" />
       </Zoomer>
       <div
-        ref="scaleArea"
-        class="scale-area"
+        ref="zoomRegion"
+        class="zoom-region"
       >
         <slot />
       </div>
@@ -84,6 +84,10 @@ export default {
       scale: {
         type: Number,
         default: 2
+      },
+      zoomRegion: {
+        type: Object,
+        default: () => ({})
       },
       enterEvent: {
         type: [Object, UIEvent],
@@ -131,7 +135,7 @@ export default {
         x: 0,
         y: 0
       },
-      scaleElRect: {
+      zoomRegionRect: {
         width: 0,
         height: 0,
         absoluteLeft: 0,
@@ -159,21 +163,21 @@ export default {
       return this.outZoomer ? this.selectorHalfHeight * this.scale : this.selectorHalfHeight
     },
     pointBound () {
-      const { scaleElRect } = this
+      const { zoomRegionRect } = this
       return {
         leftBound: this.selectorHalfWidth,
         topBound: this.selectorHalfHeight,
-        rightBound: scaleElRect.width - this.selectorHalfWidth,
-        bottomBound: scaleElRect.height - this.selectorHalfHeight
+        rightBound: zoomRegionRect.width - this.selectorHalfWidth,
+        bottomBound: zoomRegionRect.height - this.selectorHalfHeight
       }
     },
     vPointBound () {
-      const { vSelectorHalfWidth, vSelectorHalfHeight, scaleElRect, scale } = this
+      const { vSelectorHalfWidth, vSelectorHalfHeight, zoomRegionRect, scale } = this
       return {
         leftBound: vSelectorHalfWidth,
         topBound: vSelectorHalfHeight,
-        rightBound: scaleElRect.width * scale - vSelectorHalfWidth,
-        bottomBound: scaleElRect.height * scale - vSelectorHalfHeight
+        rightBound: zoomRegionRect.width * scale - vSelectorHalfWidth,
+        bottomBound: zoomRegionRect.height * scale - vSelectorHalfHeight
       }
     },
     point () {
@@ -202,12 +206,12 @@ export default {
       }
     },
     zoomerProps () {
-      const { vPoint, scale, scaleElRect } = this
+      const { vPoint, scale, zoomRegionRect } = this
       return {
         url: this.highUrl,
         scale,
-        scaleWidth: scaleElRect.width,
-        scaleHeight: scaleElRect.height,
+        scaleWidth: zoomRegionRect.width,
+        scaleHeight: zoomRegionRect.height,
         width: this.outZoomer ? this.selectorWidth * scale : this.selectorWidth,
         height: this.outZoomer ? this.selectorHeight * scale : this.selectorHeight,
         left: vPoint.left - this.vSelectorHalfWidth,
@@ -235,9 +239,9 @@ export default {
     }
   },
   mounted () {
-    this.$scaleArea = this.$refs.scaleArea
+    this.$zoomRegion = this.$refs.zoomRegion
     if (!this.disabledReactive) {
-      this.resizer = addResizeListener(this.$scaleArea, this.handleScaleElResize)
+      this.resizer = addResizeListener(this.$zoomRegion, this.handleZoomRegionResize)
     }
     this.update()
     this.$emit('created')
@@ -246,10 +250,11 @@ export default {
     getDefaultSlot () {
       return this.$slots.default[0]
     },
-    handleScaleElResize (rect) {
+    handleZoomRegionResize (rect) {
       const { scrollTop, scrollLeft } = getScrollInfo()
-      this.scaleElRect = {
+      this.zoomRegionRect = {
         ...rect,
+        ...this.zoomRegion,
         absoluteLeft: rect.left + scrollLeft,
         absoluteTop: rect.top + scrollTop
       }
@@ -267,7 +272,7 @@ export default {
         this.resizer && this.resizer.valid()
         this.hideSelector = false
         const { pageX, pageY } = e
-        const { absoluteLeft, absoluteTop } = this.scaleElRect
+        const { absoluteLeft, absoluteTop } = this.zoomRegionRect
         this.mouse.x = pageX - absoluteLeft
         this.mouse.y = pageY - absoluteTop
         if (this.outZoomer) {
@@ -283,7 +288,7 @@ export default {
       this.$emit('mouseleave', e)
     },
     update () {
-      this.handleScaleElResize(getBoundingClientRect(this.$scaleArea))
+      this.handleZoomRegionResize(getBoundingClientRect(this.$zoomRegion))
     }
   }
 }
@@ -305,7 +310,7 @@ export default {
   box-sizing: border-box;
 }
 
-.scale-area {
+.zoom-region {
   display: inline-block;
   font-size: 0;
 }
