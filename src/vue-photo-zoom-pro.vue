@@ -2,9 +2,9 @@
   <div class="photo-zoom-pro">
     <div
       class="container"
-      @mouseenter="!disabled && mouseEnter($event)"
-      @mousemove="!disabled && mouseMove($event)"
-      @mouseleave="!disabled && mouseLeave($event)"
+      @mouseenter="!disabled && handleMouseEnter($event)"
+      @mousemove="!disabled && handleMouseMove($event)"
+      @mouseleave="!disabled && handleMouseLeave($event)"
     >
       <PhotoMask
         v-if="mask"
@@ -83,10 +83,6 @@ export default {
       scale: {
         type: Number,
         default: 2
-      },
-      zoomRegion: {
-        type: Object,
-        default: () => ({})
       },
       enterEvent: {
         type: [Object, UIEvent],
@@ -232,16 +228,16 @@ export default {
   },
   watch: {
     scale () {
-      this.mouseMove(this.pointerInfo)
+      this.handleMouseMove(this.pointerInfo)
     },
     enterEvent (v) {
-      !this.disabled && this.mouseEnter(v)
+      !this.disabled && this.handleMouseEnter(v)
     },
     moveEvent (v) {
-      !this.disabled && this.mouseMove(v)
+      !this.disabled && this.handleMouseMove(v)
     },
     leaveEvent (v) {
-      !this.disabled && this.mouseLeave(v)
+      !this.disabled && this.handleMouseLeave(v)
     }
   },
   mounted () {
@@ -253,22 +249,18 @@ export default {
     this.$emit('created')
   },
   methods: {
-    getDefaultSlot () {
-      return this.$slots.default[0]
-    },
     handleZoomRegionResize (rect) {
       this.zoomRegionRect = {
-        ...rect,
-        ...this.zoomRegion
+        ...rect
       }
     },
-    mouseEnter (e) {
+    handleMouseEnter (e) {
       this.resizer && this.resizer.valid()
       this.hideSelector = false
       if (this.outZoomer) this.hideOutZoomer = false
       this.$emit('mouseenter', e)
     },
-    mouseMove (e) {
+    handleMouseMove (e) {
       if (this.hideSelector) return
       e = this.pointerInfo = e || this.pointerInfo
       if (e) {
@@ -285,7 +277,7 @@ export default {
       }
       this.$emit('mousemove', e)
     },
-    mouseLeave (e) {
+    handleMouseLeave (e) {
       this.hideSelector = true
       if (this.outZoomer) this.hideOutZoomer = true
       this.$emit('mouseleave', e)
@@ -302,6 +294,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+  font-size: 0;
 }
 
 .out-zoomer {
