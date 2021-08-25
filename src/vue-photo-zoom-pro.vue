@@ -10,9 +10,8 @@
         v-if="mask"
         v-show="!hideSelector"
         :mask-color="maskColor"
-        :p-width="zoomRegionRect.width"
-        :p-height="zoomRegionRect.height"
-        v-bind="selectorProps"
+        :selector="selectorProps"
+        :zoom-region="zoomRegionRect"
       />
       <Selector
         v-if="selector"
@@ -217,7 +216,7 @@ export default {
       const { vPoint, scale, zoomRegionRect } = this
       return {
         scale,
-        zoomRegionRect,
+        zoomRegion: zoomRegionRect,
         url: this.highUrl,
         width: this.outZoomer ? this.selectorWidth * scale : this.selectorWidth,
         height: this.outZoomer ? this.selectorHeight * scale : this.selectorHeight,

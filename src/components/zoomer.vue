@@ -49,13 +49,9 @@ export default {
       type: Number,
       default: 2
     },
-    scaleWidth: {
-      type: Number,
-      default: 0
-    },
-    scaleHeight: {
-      type: Number,
-      default: 0
+    zoomRegion: {
+      type: Object,
+      default: () => ({ width: 0, height: 0 })
     },
     width: {
       type: Number,
@@ -79,10 +75,11 @@ export default {
       }
     },
     zoomedStyle () {
+      const { zoomRegion } = this
       return {
         transform: `scale(${this.scale}) translateZ(0)`,
-        width: `${this.scaleWidth}px`,
-        height: `${this.scaleHeight}px`,
+        width: `${zoomRegion.width}px`,
+        height: `${zoomRegion.height}px`,
         transformOrigin: 'left top'
       }
     }
