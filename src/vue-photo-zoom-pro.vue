@@ -308,6 +308,5 @@ export default {
 
 .zoom-region {
   display: inline-block;
-  font-size: 0;
 }
 </style>
