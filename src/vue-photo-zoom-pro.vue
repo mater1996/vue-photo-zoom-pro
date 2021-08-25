@@ -136,10 +136,10 @@ export default {
         y: 0
       },
       zoomRegionRect: {
+        left: 0,
+        top: 0,
         width: 0,
-        height: 0,
-        absoluteLeft: 0,
-        absoluteTop: 0
+        height: 0
       }
     }
   },
@@ -161,6 +161,14 @@ export default {
     },
     vSelectorHalfHeight () {
       return this.outZoomer ? this.selectorHalfHeight * this.scale : this.selectorHalfHeight
+    },
+    zoomRegionAbsolute () {
+      const { zoomRegionRect } = this
+      const { scrollTop, scrollLeft } = getScrollInfo()
+      return {
+        left: zoomRegionRect.left + scrollLeft,
+        top: zoomRegionRect.top + scrollTop
+      }
     },
     pointBound () {
       const { zoomRegionRect } = this
@@ -208,10 +216,9 @@ export default {
     zoomerProps () {
       const { vPoint, scale, zoomRegionRect } = this
       return {
-        url: this.highUrl,
         scale,
-        scaleWidth: zoomRegionRect.width,
-        scaleHeight: zoomRegionRect.height,
+        zoomRegionRect,
+        url: this.highUrl,
         width: this.outZoomer ? this.selectorWidth * scale : this.selectorWidth,
         height: this.outZoomer ? this.selectorHeight * scale : this.selectorHeight,
         left: vPoint.left - this.vSelectorHalfWidth,
@@ -251,12 +258,9 @@ export default {
       return this.$slots.default[0]
     },
     handleZoomRegionResize (rect) {
-      const { scrollTop, scrollLeft } = getScrollInfo()
       this.zoomRegionRect = {
         ...rect,
-        ...this.zoomRegion,
-        absoluteLeft: rect.left + scrollLeft,
-        absoluteTop: rect.top + scrollTop
+        ...this.zoomRegion
       }
     },
     mouseEnter (e) {
@@ -272,9 +276,9 @@ export default {
         this.resizer && this.resizer.valid()
         this.hideSelector = false
         const { pageX, pageY } = e
-        const { absoluteLeft, absoluteTop } = this.zoomRegionRect
-        this.mouse.x = pageX - absoluteLeft
-        this.mouse.y = pageY - absoluteTop
+        const { zoomRegionAbsolute } = this
+        this.mouse.x = pageX - zoomRegionAbsolute.left
+        this.mouse.y = pageY - zoomRegionAbsolute.top
         if (this.outZoomer) {
           this.hideOutZoomer = false
           this.outZoomerTop = Math.max(pageY - e.clientY, 0)
