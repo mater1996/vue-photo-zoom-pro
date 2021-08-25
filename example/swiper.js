@@ -23,6 +23,7 @@ new Vue({
     }
   },
   mounted: function() {
+    var that = this
     var swiper = new Swiper('.swiper-container', {
       autoplay: true,
       on: {
