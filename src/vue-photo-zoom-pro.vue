@@ -307,6 +307,8 @@ export default {
 }
 
 .zoom-region {
+  position: relative;
+  z-index: 0;
   display: inline-block;
 }
 </style>

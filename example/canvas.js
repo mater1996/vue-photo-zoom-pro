@@ -5,7 +5,7 @@
  * @Description:
  */
 
-var app = new Vue({
+new Vue({
   el: '#demo',
   components: {
     vuePhotoZoomPro: VuePhotoZoomPro
@@ -16,9 +16,6 @@ var app = new Vue({
     }
   },
   mounted: function() {
-    document.body.addEventListener('wheel', e => {
-      this.scale = this.scale + (e.deltaY > 0 ?  + 0.05 : -0.05)
-    })
     var canvas = document.createElement('canvas')
     var canvas1 = document.querySelector('#canvas1')
     var canvas2 = document.querySelector('#canvas2')

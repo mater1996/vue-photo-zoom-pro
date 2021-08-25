@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Photom Zoom Pro Swiper Demo</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/swiper@4.5.1/dist/css/swiper.min.css"
+      type="text/css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@4.5.1/dist/js/swiper.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      .swiper-container,.image {
+        width: 1000px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="demo">
+      <vue-photo-zoom-pro type="circle" :scale="scale" :high-url="url">
+        <div class="swiper-container">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img class="image" src="swiper-image-1.jpg" />
+            </div>
+            <div class="swiper-slide">
+              <img class="image" src="swiper-image-2.jpg" />
+            </div>
+            <div class="swiper-slide">
+              <img class="image" src="swiper-image-3.jpg" />
+            </div>
+          </div>
+        </div>
+      </vue-photo-zoom-pro>
+    </div>
+    <script src="./swiper.js"></script>
+  </body>
+</html>
