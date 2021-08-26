@@ -285,18 +285,22 @@ export default {
 }
 </script>
 
-<style scoped>
-.zoom-region {
-  position: relative;
-  display: inline-block;
-}
+<style lang="scss" scoped>
+.vue-photo-zoom-pro {
+  font-size: 0;
 
-.out-zoomer {
-  position: absolute;
-  right: -8px;
-  background-repeat: no-repeat;
-  transform: translate(100%, 0);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  .zoom-region {
+    position: relative;
+    display: inline-block;
+  }
+
+  .out-zoomer {
+    position: absolute;
+    right: -8px;
+    background-repeat: no-repeat;
+    transform: translate(100%, 0);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
 }
 </style>
