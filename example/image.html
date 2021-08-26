@@ -21,13 +21,14 @@
       }
 
       .image {
+        display: block;
         width: 1000px;
       }
     </style>
   </head>
   <body>
     <div id="demo">
-      <vue-photo-zoom-pro type="circle" :scale="scale" high-url="./image-high.jpg">
+      <vue-photo-zoom-pro mask type="circle" :scale="scale" high-url="./image-high.jpg">
         <img class="image" src="./image.jpg" />
       </vue-photo-zoom-pro>
     </div>

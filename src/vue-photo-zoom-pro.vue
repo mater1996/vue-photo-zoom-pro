@@ -1,7 +1,8 @@
 <template>
-  <div class="photo-zoom-pro">
+  <div class="vue-photo-zoom-pro">
     <div
-      class="container"
+      ref="zoomRegion"
+      class="zoom-region"
       @mouseenter="!disabled && handleMouseEnter($event)"
       @mousemove="!disabled && handleMouseMove($event)"
       @mouseleave="!disabled && handleMouseLeave($event)"
@@ -37,12 +38,7 @@
       >
         <slot name="outzoomer" />
       </Zoomer>
-      <div
-        ref="zoomRegion"
-        class="zoom-region"
-      >
-        <slot />
-      </div>
+      <slot />
     </div>
   </div>
 </template>
@@ -290,11 +286,9 @@ export default {
 </script>
 
 <style scoped>
-.container {
+.zoom-region {
   position: relative;
-  width: 100%;
-  height: 100%;
-  font-size: 0;
+  display: inline-block;
 }
 
 .out-zoomer {
@@ -304,11 +298,5 @@ export default {
   transform: translate(100%, 0);
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
-}
-
-.zoom-region {
-  position: relative;
-  z-index: 0;
-  display: inline-block;
 }
 </style>
