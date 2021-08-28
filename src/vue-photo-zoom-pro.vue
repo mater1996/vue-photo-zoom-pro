@@ -153,6 +153,12 @@ export default {
     vSelectorHalfHeight () {
       return this.outZoomer ? this.selectorHalfHeight * this.scale : this.selectorHalfHeight
     },
+    zoomerWidth () {
+      return this.outZoomer ? this.selectorWidth * this.scale : this.selectorWidth
+    },
+    zoomerHeight () {
+      return this.outZoomer ? this.selectorHeight * this.scale : this.selectorHeight
+    },
     zoomRegionAbsolute () {
       const { zoomRegionRect } = this
       const { scrollTop, scrollLeft } = getScrollInfo()
@@ -205,13 +211,13 @@ export default {
       }
     },
     zoomerProps () {
-      const { vPoint, scale, zoomRegionRect } = this
+      const { vPoint } = this
       return {
-        scale,
-        zoomRegion: zoomRegionRect,
+        scale: this.scale,
+        zoomRegion: this.zoomRegionRect,
         url: this.highUrl,
-        width: this.outZoomer ? this.selectorWidth * scale : this.selectorWidth,
-        height: this.outZoomer ? this.selectorHeight * scale : this.selectorHeight,
+        width: this.zoomerWidth,
+        height: this.zoomerHeight,
         left: vPoint.left - this.vSelectorHalfWidth,
         top: vPoint.top - this.vSelectorHalfHeight
       }

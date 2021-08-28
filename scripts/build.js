@@ -12,14 +12,14 @@ async function build (format) {
   await execaRollup([['NODE_ENV', 'production'], ['FORMAT', format]])
 }
 
-const execaRollup = options => {
+const execaRollup = environment => {
   return execa(
     'rollup',
     [
       '-c',
       './rollup.config.js',
       '--environment',
-      options.map(v => v.join(':')).join(',')
+      environment.map(v => v.join(':')).join(',')
     ],
     { stdio: 'inherit' }
   )
