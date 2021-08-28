@@ -18,7 +18,7 @@
   "scripts": {
     "dev": "node scripts/dev.js",
     "build": "node scripts/build.js",
-    "release": "release-it",
+    "release": "npm run build && release-it",
     "serve": "serve"
   },
   "lint-staged": {
