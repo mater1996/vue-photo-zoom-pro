@@ -147,17 +147,17 @@ export default {
     selectorHalfHeight () {
       return this.selectorHeight / 2
     },
-    vSelectorHalfWidth () {
-      return this.outZoomer ? this.selectorHalfWidth * this.scale : this.selectorHalfWidth
-    },
-    vSelectorHalfHeight () {
-      return this.outZoomer ? this.selectorHalfHeight * this.scale : this.selectorHalfHeight
-    },
     zoomerWidth () {
       return this.outZoomer ? this.selectorWidth * this.scale : this.selectorWidth
     },
     zoomerHeight () {
       return this.outZoomer ? this.selectorHeight * this.scale : this.selectorHeight
+    },
+    zoomerHalfWidth () {
+      return this.zoomerWidth / 2
+    },
+    zoomerHalfHeight () {
+      return this.zoomerHeight / 2
     },
     zoomRegionAbsolute () {
       const { zoomRegionRect } = this
@@ -177,12 +177,12 @@ export default {
       }
     },
     vPointBound () {
-      const { vSelectorHalfWidth, vSelectorHalfHeight, zoomRegionRect, scale } = this
+      const { zoomerHalfWidth, zoomerHalfHeight, zoomRegionRect, scale } = this
       return {
-        leftBound: vSelectorHalfWidth,
-        topBound: vSelectorHalfHeight,
-        rightBound: zoomRegionRect.width * scale - vSelectorHalfWidth,
-        bottomBound: zoomRegionRect.height * scale - vSelectorHalfHeight
+        leftBound: zoomerHalfWidth,
+        topBound: zoomerHalfHeight,
+        rightBound: zoomRegionRect.width * scale - zoomerHalfWidth,
+        bottomBound: zoomRegionRect.height * scale - zoomerHalfHeight
       }
     },
     point () {
@@ -218,8 +218,8 @@ export default {
         url: this.highUrl,
         width: this.zoomerWidth,
         height: this.zoomerHeight,
-        left: vPoint.left - this.vSelectorHalfWidth,
-        top: vPoint.top - this.vSelectorHalfHeight
+        left: vPoint.left - this.zoomerHalfWidth,
+        top: vPoint.top - this.zoomerHalfHeight
       }
     },
     outZoomerPosition () {
