@@ -4,11 +4,11 @@
 
 ![example](https://raw.githubusercontent.com/Mater1996/vue-photo-zoom-pro/master/example.png)
 
-English | [简体中文](./README-zh_CN.md)
+English | [简体中文](./README-ZH_CN.md)
 
 ## DEMO
 
-[demo](./example/index.html)
+[demo](https://mater1996.github.io/vue-photo-zoom-pro/example/)
 
 ## Usage example
 
@@ -22,6 +22,7 @@ main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
+import vuePhotoZoomPro from 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
 
 export default {
   components: {
@@ -34,6 +35,7 @@ or cdn
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
 \*.vue
@@ -127,7 +129,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | selector          | Boolean        | true    | show or remove selector                               |
 | out-zoomer        | Boolean        | false   | amplification region will be displayed on the outside |
 | mask              | Boolean        | false   | show mask                                             |
-| mask-color        | Color          | {}      | mask c                                                |
+| mask-color        | Color          | {}      | mask color                                            |
 | enter-event       | Object/UIEvent | null    | custom enter event                                    |
 | move-event        | Object/UIEvent | null    | custom move event                                     |
 | leave-event       | Object/UIEvent | null    | custom leave event                                    |

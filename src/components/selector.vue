@@ -39,19 +39,11 @@ export default {
     }
   },
   computed: {
-    /**
-     * 缩放器宽高
-     * 有高度用高度没高度用宽度
-     */
-    zoomerHeight () {
-      return this.height > 0 ? this.height : this.width
-    },
     selectorStyle () {
       return {
         width: `${this.width}px`,
-        height: `${this.zoomerHeight}px`,
-        left: `${this.left}px`,
-        top: `${this.top}px`
+        height: `${this.height}px`,
+        transform: `translate3d(${this.left}px, ${this.top}px, 0)`
       }
     }
   }

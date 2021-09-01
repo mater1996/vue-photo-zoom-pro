@@ -5,17 +5,20 @@
   "module": "dist/vue-photo-zoom-pro.esm.js",
   "unpkg": "dist/vue-photo-zoom-pro.global.js",
   "jsdelivr": "dist/vue-photo-zoom-pro.global.js",
-  "version": "1.3.7",
-  "author": "xhb <xb864083144@outlook.com>",
+  "version": "2.1.9",
+  "author": "xhb <bxh8640@gmail.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git@github.com:mater1996/vue-photo-zoom-pro.git"
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "node scripts/dev.js",
     "build": "node scripts/build.js",
-    "release": "release-it",
+    "release": "npm run build && release-it",
     "serve": "serve"
   },
   "lint-staged": {

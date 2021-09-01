@@ -1,18 +1,18 @@
 <template>
-  <div class="photo-zoom-pro">
+  <div class="vue-photo-zoom-pro">
     <div
-      class="container"
-      @mouseenter="!disabled && mouseEnter($event)"
-      @mousemove="!disabled && mouseMove($event)"
-      @mouseleave="!disabled && mouseLeave($event)"
+      ref="zoomRegion"
+      class="zoom-region"
+      @mouseenter="!disabled && handleMouseEnter($event)"
+      @mousemove="!disabled && handleMouseMove($event)"
+      @mouseleave="!disabled && handleMouseLeave($event)"
     >
       <PhotoMask
         v-if="mask"
         v-show="!hideSelector"
         :mask-color="maskColor"
-        :p-width="scaleElRect.width"
-        :p-height="scaleElRect.height"
-        v-bind="selectorProps"
+        :selector="selectorProps"
+        :zoom-region="zoomRegionRect"
       />
       <Selector
         v-if="selector"
@@ -38,12 +38,7 @@
       >
         <slot name="outzoomer" />
       </Zoomer>
-      <div
-        ref="scaleArea"
-        class="scale-area"
-      >
-        <slot />
-      </div>
+      <slot />
     </div>
   </div>
 </template>
@@ -131,11 +126,11 @@ export default {
         x: 0,
         y: 0
       },
-      scaleElRect: {
+      zoomRegionRect: {
+        left: 0,
+        top: 0,
         width: 0,
-        height: 0,
-        absoluteLeft: 0,
-        absoluteTop: 0
+        height: 0
       }
     }
   },
@@ -152,28 +147,42 @@ export default {
     selectorHalfHeight () {
       return this.selectorHeight / 2
     },
-    vSelectorHalfWidth () {
-      return this.outZoomer ? this.selectorHalfWidth * this.scale : this.selectorHalfWidth
+    zoomerWidth () {
+      return this.outZoomer ? this.selectorWidth * this.scale : this.selectorWidth
     },
-    vSelectorHalfHeight () {
-      return this.outZoomer ? this.selectorHalfHeight * this.scale : this.selectorHalfHeight
+    zoomerHeight () {
+      return this.outZoomer ? this.selectorHeight * this.scale : this.selectorHeight
+    },
+    zoomerHalfWidth () {
+      return this.zoomerWidth / 2
+    },
+    zoomerHalfHeight () {
+      return this.zoomerHeight / 2
+    },
+    zoomRegionAbsolute () {
+      const { zoomRegionRect } = this
+      const { scrollTop, scrollLeft } = getScrollInfo()
+      return {
+        left: zoomRegionRect.left + scrollLeft,
+        top: zoomRegionRect.top + scrollTop
+      }
     },
     pointBound () {
-      const { scaleElRect } = this
+      const { selectorHalfWidth, selectorHalfHeight, zoomRegionRect } = this
       return {
-        leftBound: this.selectorHalfWidth,
-        topBound: this.selectorHalfHeight,
-        rightBound: scaleElRect.width - this.selectorHalfWidth,
-        bottomBound: scaleElRect.height - this.selectorHalfHeight
+        leftBound: selectorHalfWidth,
+        topBound: selectorHalfHeight,
+        rightBound: zoomRegionRect.width - selectorHalfWidth,
+        bottomBound: zoomRegionRect.height - selectorHalfHeight
       }
     },
     vPointBound () {
-      const { vSelectorHalfWidth, vSelectorHalfHeight, scaleElRect, scale } = this
+      const { zoomerHalfWidth, zoomerHalfHeight, zoomRegionRect, scale } = this
       return {
-        leftBound: vSelectorHalfWidth,
-        topBound: vSelectorHalfHeight,
-        rightBound: scaleElRect.width * scale - vSelectorHalfWidth,
-        bottomBound: scaleElRect.height * scale - vSelectorHalfHeight
+        leftBound: zoomerHalfWidth,
+        topBound: zoomerHalfHeight,
+        rightBound: zoomRegionRect.width * scale - zoomerHalfWidth,
+        bottomBound: zoomRegionRect.height * scale - zoomerHalfHeight
       }
     },
     point () {
@@ -202,16 +211,15 @@ export default {
       }
     },
     zoomerProps () {
-      const { vPoint, scale, scaleElRect } = this
+      const { vPoint } = this
       return {
+        scale: this.scale,
+        zoomRegion: this.zoomRegionRect,
         url: this.highUrl,
-        scale,
-        scaleWidth: scaleElRect.width,
-        scaleHeight: scaleElRect.height,
-        width: this.outZoomer ? this.selectorWidth * scale : this.selectorWidth,
-        height: this.outZoomer ? this.selectorHeight * scale : this.selectorHeight,
-        left: vPoint.left - this.vSelectorHalfWidth,
-        top: vPoint.top - this.vSelectorHalfHeight
+        width: this.zoomerWidth,
+        height: this.zoomerHeight,
+        left: vPoint.left - this.zoomerHalfWidth,
+        top: vPoint.top - this.zoomerHalfHeight
       }
     },
     outZoomerPosition () {
@@ -222,55 +230,48 @@ export default {
   },
   watch: {
     scale () {
-      this.mouseMove(this.pointerInfo)
+      this.handleMouseMove(this.pointerInfo)
     },
     enterEvent (v) {
-      !this.disabled && this.mouseEnter(v)
+      !this.disabled && this.handleMouseEnter(v)
     },
     moveEvent (v) {
-      !this.disabled && this.mouseMove(v)
+      !this.disabled && this.handleMouseMove(v)
     },
     leaveEvent (v) {
-      !this.disabled && this.mouseLeave(v)
+      !this.disabled && this.handleMouseLeave(v)
     }
   },
   mounted () {
-    console.log(this.$slots)
-    this.$scaleArea = this.$refs.scaleArea
+    this.$zoomRegion = this.$refs.zoomRegion
     if (!this.disabledReactive) {
-      this.resizer = addResizeListener(this.$scaleArea, this.handleScaleElResize)
+      this.resizer = addResizeListener(this.$zoomRegion, this.handleZoomRegionResize)
     }
     this.update()
     this.$emit('created')
   },
   methods: {
-    getDefaultSlot () {
-      return this.$slots.default[0]
-    },
-    handleScaleElResize (rect) {
-      const { scrollTop, scrollLeft } = getScrollInfo()
-      this.scaleElRect = {
-        ...rect,
-        absoluteLeft: rect.left + scrollLeft,
-        absoluteTop: rect.top + scrollTop
+    handleZoomRegionResize (rect) {
+      this.zoomRegionRect = {
+        ...rect
       }
     },
-    mouseEnter (e) {
+    handleMouseEnter (e) {
       this.resizer && this.resizer.valid()
       this.hideSelector = false
       if (this.outZoomer) this.hideOutZoomer = false
       this.$emit('mouseenter', e)
     },
-    mouseMove (e) {
+    handleMouseMove (e) {
       if (this.hideSelector) return
       e = this.pointerInfo = e || this.pointerInfo
       if (e) {
         this.resizer && this.resizer.valid()
         this.hideSelector = false
         const { pageX, pageY } = e
-        const { absoluteLeft, absoluteTop } = this.scaleElRect
-        this.mouse.x = pageX - absoluteLeft
-        this.mouse.y = pageY - absoluteTop
+        const { zoomRegionAbsolute } = this
+        this.mouse.x = pageX - zoomRegionAbsolute.left
+        this.mouse.y = pageY - zoomRegionAbsolute.top
         if (this.outZoomer) {
           this.hideOutZoomer = false
           this.outZoomerTop = Math.max(pageY - e.clientY, 0)
@@ -278,37 +279,34 @@ export default {
       }
       this.$emit('mousemove', e)
     },
-    mouseLeave (e) {
+    handleMouseLeave (e) {
       this.hideSelector = true
       if (this.outZoomer) this.hideOutZoomer = true
       this.$emit('mouseleave', e)
     },
     update () {
-      this.handleScaleElResize(getBoundingClientRect(this.$scaleArea))
+      this.handleZoomRegionResize(getBoundingClientRect(this.$zoomRegion))
     }
   }
 }
 </script>
 
-<style scoped>
-.container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
+<style lang="scss" scoped>
+.vue-photo-zoom-pro {
+  font-size: 0;
 
-.container .origin-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
+  .zoom-region {
+    position: relative;
+    display: inline-block;
+  }
 
-.out-zoomer {
-  position: absolute;
-  right: -8px;
-  background-repeat: no-repeat;
-  transform: translate(100%, 0);
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
+  .out-zoomer {
+    position: absolute;
+    right: -8px;
+    background-repeat: no-repeat;
+    transform: translate(100%, 0);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+  }
 }
 </style>

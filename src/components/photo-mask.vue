@@ -26,29 +26,13 @@
 export default {
   name: 'VuePhotoZoomProMask',
   props: {
-    pWidth: {
-      type: Number,
-      default: 0
+    zoomRegion: {
+      type: Object,
+      default: () => ({ width: 0, height: 0 })
     },
-    pHeight: {
-      type: Number,
-      default: 0
-    },
-    width: {
-      type: Number,
-      default: 0
-    },
-    height: {
-      type: Number,
-      default: 0
-    },
-    left: {
-      type: Number,
-      default: 0
-    },
-    top: {
-      type: Number,
-      default: 0
+    selector: {
+      type: Object,
+      default: () => ({ left: 0, top: 0, width: 0, height: 0 })
     },
     maskColor: {
       type: String,
@@ -57,27 +41,31 @@ export default {
   },
   computed: {
     topStyle () {
+      const { selector, zoomRegion } = this
       return {
-        width: `${this.pWidth}px`,
-        height: `${this.top}px`
+        width: `${zoomRegion.width}px`,
+        height: `${selector.top}px`
       }
     },
     leftStyle () {
+      const { selector } = this
       return {
-        width: `${this.left}px`,
-        height: `${this.height}px`
+        width: `${selector.left}px`,
+        height: `${selector.height}px`
       }
     },
     rightStyle () {
+      const { selector, zoomRegion } = this
       return {
-        width: `${this.pWidth - this.left - this.width}px`,
-        height: `${this.height}px`
+        width: `${zoomRegion.width - selector.left - selector.width}px`,
+        height: `${selector.height}px`
       }
     },
     bottomStyle () {
+      const { selector, zoomRegion } = this
       return {
-        width: `${this.pWidth}px`,
-        height: `${this.pHeight - this.top - this.height}px`
+        width: `${zoomRegion.width}px`,
+        height: `${zoomRegion.height - selector.top - selector.height}px`
       }
     },
     maskStyle () {

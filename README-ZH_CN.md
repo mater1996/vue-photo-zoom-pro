@@ -20,6 +20,7 @@ main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
+import vuePhotoZoomPro from 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
 
 export default {
   components: {
@@ -28,10 +29,11 @@ export default {
 }
 ```
 
-或者使用cdn
+或者使用 cdn
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
 \*.vue
@@ -126,7 +128,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | selector          | Boolean        | true    | 是否显示选择器                             |
 | out-zoomer        | Boolean        | false   | 在外部显示放大内容                         |
 | mask              | Boolean        | true    | 是否显示遮罩 mask                          |
-| mask-color        | Color          | {}      | 遮罩颜色 c                                 |
+| mask-color        | Color          | {}      | 遮罩颜色                                   |
 | enter-event       | Object/UIEvent | null    | 自定义的鼠标进入事件(例如移动端的进入事件) |
 | move-event        | Object/UIEvent | null    | 自定义的鼠标移动事件                       |
 | leave-event       | Object/UIEvent | null    | 自定义的鼠标移出事件                       |
@@ -134,12 +136,12 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 
 #### Slot
 
-| Slot Name | Note              |
-| --------- | ----------------- |
-| default   | 默认      |
-| selector   | 选择器      |
+| Slot Name | Note         |
+| --------- | ------------ |
+| default   | 默认         |
+| selector  | 选择器       |
 | zoomer    | 内部放大区域 |
-| outzoomer | 外部放大区域   |
+| outzoomer | 外部放大区域 |
 
 #### 事件
 
