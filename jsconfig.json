@@ -5,13 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "strict": true,
-    "noUnusedLocals": true,
-    "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "declaration": true,
-    "sourceMap": true,
-    "removeComments": false,
     "jsx": "preserve",
     "lib": ["ESNext", "DOM"],
     "rootDir": "src"

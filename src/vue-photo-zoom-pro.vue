@@ -168,12 +168,12 @@ export default {
       }
     },
     pointBound () {
-      const { zoomRegionRect } = this
+      const { selectorHalfWidth, selectorHalfHeight, zoomRegionRect } = this
       return {
-        leftBound: this.selectorHalfWidth,
-        topBound: this.selectorHalfHeight,
-        rightBound: zoomRegionRect.width - this.selectorHalfWidth,
-        bottomBound: zoomRegionRect.height - this.selectorHalfHeight
+        leftBound: selectorHalfWidth,
+        topBound: selectorHalfHeight,
+        rightBound: zoomRegionRect.width - selectorHalfWidth,
+        bottomBound: zoomRegionRect.height - selectorHalfHeight
       }
     },
     vPointBound () {
