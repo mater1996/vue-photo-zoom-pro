@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Photom Zoom Pro Image Demo</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .image {
+        display: block;
+        width: 1000px;
+      }
+
+      .selector{
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="demo">
+      <vue-photo-zoom-pro :scale="scale" high-url="./image-high.jpg" :height="88">
+        <img class="image" src="./image.jpg" />
+      </vue-photo-zoom-pro>
+    </div>
+    <script src="./image.js"></script>
+  </body>
+</html>
