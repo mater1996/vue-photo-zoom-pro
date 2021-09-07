@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vue Photom Zoom Pro Image Demo</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      .cavans1,
+      .cavans2 {
+        display: block;
+        width: 1000px;
+      }
+
+      .rotate-icon {
+        display: inline-block;
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        z-index: 999;
+        width: 16px;
+        height: 16px;
+        background-color: red;
+        line-height: 16px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="demo">
+      <vue-photo-zoom-pro :scale="scale">
+        <canvas id="canvas1"></canvas>
+        <template slot="zoomer">
+          <canvas id="canvas2"></canvas>
+        </template>
+        <div class="rotate-icon" @click="rotate">🔄</div>
+      </vue-photo-zoom-pro>
+    </div>
+    <script src="./rotate.js"></script>
+  </body>
+</html>
