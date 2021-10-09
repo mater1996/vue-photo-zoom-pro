@@ -16,7 +16,6 @@ function parseEnvironment (environment) {
 module.exports = ({ environment }) => {
   const { NODE_ENV, FORMAT } = parseEnvironment(environment)
   const isProd = NODE_ENV === 'production'
-  const isESM = FORMAT === 'esm'
   const isIIFE = FORMAT === 'iife'
   const resolve = path.resolve
   const resolveDir = p => resolve(__dirname, p)
@@ -50,17 +49,19 @@ module.exports = ({ environment }) => {
         preventAssignment: true,
         values: { 'process.env.NODE_ENV': JSON.stringify(NODE_ENV) }
       }),
+      commonjs(),
       vue({
-        css: !isProd
+        css: !isProd,
+        normalizer: '~vue-runtime-helpers/dist/normalize-component.js'
       }),
       nodeResolve({
         browser: true,
         preferBuiltins: true
       }),
-      commonjs(),
-      !isESM && babel({
+      babel({
         babelrc: true,
-        runtimeHelpers: true
+        runtimeHelpers: true,
+        extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.vue']
       }),
       isIIFE &&
         isProd &&
