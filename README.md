@@ -129,7 +129,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | selector          | Boolean        | true    | show or remove selector                               |
 | out-zoomer        | Boolean        | false   | amplification region will be displayed on the outside |
 | mask              | Boolean        | false   | show mask                                             |
-| mask-color        | Color          | {}      | mask color                                            |
+| mask-color        | Color          | rgba(0,0,0,0.4)      | mask color                                            |
 | enter-event       | Object/UIEvent | null    | custom enter event                                    |
 | move-event        | Object/UIEvent | null    | custom move event                                     |
 | leave-event       | Object/UIEvent | null    | custom leave event                                    |
