@@ -128,7 +128,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | selector          | Boolean        | true    | 是否显示选择器                             |
 | out-zoomer        | Boolean        | false   | 在外部显示放大内容                         |
 | mask              | Boolean        | true    | 是否显示遮罩 mask                          |
-| mask-color        | Color          | {}      | 遮罩颜色                                   |
+| mask-color        | Color          | rgba(0,0,0,0.4)      | 遮罩颜色                                   |
 | enter-event       | Object/UIEvent | null    | 自定义的鼠标进入事件(例如移动端的进入事件) |
 | move-event        | Object/UIEvent | null    | 自定义的鼠标移动事件                       |
 | leave-event       | Object/UIEvent | null    | 自定义的鼠标移出事件                       |
