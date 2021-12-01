@@ -11,12 +11,8 @@
 ## 使用
 
 ```js
-
 npm install vue-photo-zoom-pro
-
 ```
-
-main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
@@ -36,7 +32,14 @@ export default {
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
-\*.vue
+```js
+new Vue({
+  el: '#app',
+  components: {
+    vuePhotoZoomPro: VuePhotoZoomPro
+  }
+}
+```
 
 ### 图片
 
