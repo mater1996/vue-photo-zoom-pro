@@ -105,7 +105,7 @@ const ctx1 = canvas1.getContext('2d')
 const ctx2 = canvas2.getContext('2d')
 
 const offscreenCanvas = document.createElement('canvas')
-const ctx = c.getContext('2d')
+const ctx = offscreenCanvas.getContext('2d')
 offscreenCanvas.width = 100
 offscreenCanvas.height = 100
 
