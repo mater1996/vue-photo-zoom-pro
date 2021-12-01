@@ -51,7 +51,7 @@ or cdn
 > Tips: If your image is not loaded at the beginning and set `disabled-reactive`, you must manually listen for the event when the image is loaded before displaying it
 
 ```html
-<vue-photo-zoom-pro v-if="loaded" :high-url="imgSrc">
+<vue-photo-zoom-pro v-if="loaded" :high-url="imgSrc" disabled-reactive>
   <img :src="imgSrc" />
 </vue-photo-zoom-pro>
 ```
