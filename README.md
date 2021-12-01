@@ -13,12 +13,8 @@ English | [简体中文](./README-ZH_CN.md)
 ## Usage example
 
 ```js
-
 npm install vue-photo-zoom-pro
-
 ```
-
-main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
@@ -38,7 +34,14 @@ or cdn
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
-\*.vue
+```js
+new Vue({
+  el: '#app',
+  components: {
+    vuePhotoZoomPro: VuePhotoZoomPro
+  }
+}
+```
 
 ### Image
 
@@ -103,7 +106,7 @@ const ctx1 = canvas1.getContext('2d')
 const ctx2 = canvas2.getContext('2d')
 
 const offscreenCanvas = document.createElement('canvas')
-const ctx = c.getContext('2d')
+const ctx = offscreenCanvas.getContext('2d')
 offscreenCanvas.width = 100
 offscreenCanvas.height = 100
 
