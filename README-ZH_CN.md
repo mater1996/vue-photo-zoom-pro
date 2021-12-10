@@ -142,7 +142,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | height            | Number         | -1              | 放大器的高度                               |
 | type              | String         | square          | 放大器的类型 (circle,square)               |
 | selector          | Boolean        | true            | 是否显示选择器                             |
-| mask              | Boolean        | true            | 是否显示遮罩 mask                          |
+| mask              | Boolean        | false            | 是否显示遮罩 mask                          |
 | mask-color        | Color          | rgba(0,0,0,0.4) | 遮罩颜色                                   |
 | enter-event       | Object/UIEvent | null            | 自定义的鼠标进入事件(例如移动端的进入事件) |
 | move-event        | Object/UIEvent | null            | 自定义的鼠标移动事件                       |
