@@ -10,7 +10,7 @@ English | [简体中文](./README-ZH_CN.md)
 
 [demo](https://mater1996.github.io/vue-photo-zoom-pro/example/)
 
-## Usage example
+## Install
 
 ```js
 
@@ -22,7 +22,7 @@ main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
-import vuePhotoZoomPro from 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
+import 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
 
 export default {
   components: {
@@ -38,7 +38,7 @@ or cdn
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
-\*.vue
+## Usage
 
 ### Image
 

@@ -8,7 +8,7 @@
 
 [demo](https://mater1996.github.io/vue-photo-zoom-pro/example/)
 
-## 使用
+## 安装
 
 ```js
 
@@ -20,7 +20,7 @@ main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
-import vuePhotoZoomPro from 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
+import 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
 
 export default {
   components: {
@@ -36,7 +36,7 @@ export default {
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
-\*.vue
+## 使用
 
 ### 图片
 
