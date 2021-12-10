@@ -198,12 +198,13 @@ export default {
 ```
 
 ```js
-export default {
+new Vue({
+  el: '#app',
   components: {
     ImgPreview: VuePhotoZoomProPluginImg.ImgPreview,
     ImgZoomer: VuePhotoZoomProPluginImg.ImgZoomer
   }
-}
+})
 ```
 
 ```html
@@ -242,12 +243,13 @@ export default {
 ```
 
 ```js
-export default {
+new Vue({
+  el: '#app',
   components: {
     CanvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
     CanvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
   }
-}
+})
 ```
 
 ```html
