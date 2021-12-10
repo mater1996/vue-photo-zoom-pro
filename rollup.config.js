@@ -30,8 +30,7 @@ module.exports = ({ environment }) => {
     cjs: {
       name: global,
       format: 'cjs',
-      file: resolveOutput(`${name}.js`),
-      exports: 'default'
+      file: resolveOutput(`${name}.js`)
     },
     esm: {
       name: global,
