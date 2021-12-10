@@ -10,23 +10,24 @@ English | [简体中文](./README-ZH_CN.md)
 
 [demo](https://mater1996.github.io/vue-photo-zoom-pro/example/)
 
-## Usage example
+## Install
 
 ```js
-
 npm install vue-photo-zoom-pro
 
+# or
+yarn add vue-photo-zoom-pro
 ```
 
 main.js
 
 ```js
-import vuePhotoZoomPro from 'vue-photo-zoom-pro'
-import vuePhotoZoomPro from 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
+import VuePhotoZoomPro from 'vue-photo-zoom-pro'
+import 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
 
 export default {
   components: {
-    vuePhotoZoomPro
+    VuePhotoZoomPro
   }
 }
 ```
@@ -35,12 +36,30 @@ or cdn
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css"
+/>
 ```
 
-\*.vue
+```js
+export default {
+  components: {
+    VuePhotoZoomPro: window.VuePhotoZoomPro
+  }
+}
+```
+
+## Usage example
 
 ### Image
+
+```html
+<vue-photo-zoom-pro :url="imgSrc" :high-url="imgHighSrc"> </vue-photo-zoom-pro>
+```
+
+### Custom Image
 
 ```html
 <vue-photo-zoom-pro :high-url="imgSrc">
@@ -74,9 +93,9 @@ export deafult{
 }
 ```
 
-### Customize the enlarged area
+### Customize preview area
 
-You can use any element to represent the enlarged area
+You can use any element to represent the preview area
 
 ```html
 <vue-photo-zoom-pro :high-url="imgSrc">
@@ -84,7 +103,7 @@ You can use any element to represent the enlarged area
 </vue-photo-zoom-pro>
 ```
 
-### Customize magnified elements
+### Customize zoomer
 
 ```html
 <vue-photo-zoom-pro>
@@ -114,35 +133,138 @@ ctx1.drawImage(offscreenCanvas, 0, 0)
 ctx2.drawImage(offscreenCanvas, 0, 0)
 ```
 
+### Plugins
+
+#### ImgPlugin
+
+Preview and zoom image using img
+
+```js
+import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'
+
+export default {
+  components: {
+    ImgPreview,
+    ImgZoomer
+  }
+}
+```
+
+or cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/img.global.js"></script>
+```
+
+```js
+export default {
+  components: {
+    ImgPreview: VuePhotoZoomProPluginImg.ImgPreview,
+    ImgZoomer: VuePhotoZoomProPluginImg.ImgZoomer
+  }
+}
+```
+
+```html
+<template>
+  <vue-photo-zoom-pro>
+    <img-preview :url="imgSrc"></img-preview>
+    <template>
+      <img-zoomer :url="imgHighSrc"></img-zoomer>
+    </template>
+  </vue-photo-zoom-pro>
+  <!-- 
+    same as <vue-photo-zoom-pro :url="imgSrc" :high-url="imgHighSrc">
+  -->
+</template>
+```
+
+#### CanvasPlugin
+
+Preview and zoom image using canvas
+
+```js
+import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro/canvas'
+
+export default {
+  components: {
+    CanvasPreview,
+    CanvasZoomer
+  }
+}
+```
+
+or cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/canvas.global.js"></script>
+```
+
+```js
+export default {
+  components: {
+    CanvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
+    CanvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
+  }
+}
+```
+
+```html
+<template>
+  <vue-photo-zoom-pro>
+    <canvas-preview :url="imgSrc" width="960" height="480"></canvas-preview>
+    <template>
+      <canvas-zoomer :url="imgHighSrc" width="960" height="480"></canvas-zoomer>
+    </template>
+  </vue-photo-zoom-pro>
+</template>
+```
+
+##### canvasPreview props
+
+| Prop Name | Type   | Default    | Note           |
+| --------- | ------ | ---------- | -------------- |
+| url       | String | ''         | img url        |
+| width     | Number | Img width  | canvas width   |
+| height    | Number | Img height | canvas height  |
+| rotate    | Number | 0          | Rotation Angle |
+
+##### canvasZoom props
+
+| Prop Name | Type   | Default    | Note           |
+| --------- | ------ | ---------- | -------------- |
+| url       | String | ''         | High img url   |
+| width     | Number | Img width  | Canvas width   |
+| height    | Number | Img height | Canvas height  |
+| rotate    | Number | 0          | Rotation Angle |
+
 ### Settings
 
 #### props
 
-| Prop Name         | Type           | Default | Note                                                  |
-| ----------------- | -------------- | ------- | ----------------------------------------------------- |
-| high-url          | String         |         | Clearer picture url                                   |
-| scale             | Number         | 2       | magnification                                         |
-| disabled          | Boolean        | false   | disabled move                                         |
-| width             | Number         | 166     | The width of the magnified area                       |
-| height            | Number         | -1      | The height of the magnified area                      |
-| type              | String         | square  | magnifying glass type (circle,square)                 |
-| selector          | Boolean        | true    | show or remove selector                               |
-| out-zoomer        | Boolean        | false   | amplification region will be displayed on the outside |
-| mask              | Boolean        | false   | show mask                                             |
-| mask-color        | Color          | {}      | mask color                                            |
-| enter-event       | Object/UIEvent | null    | custom enter event                                    |
-| move-event        | Object/UIEvent | null    | custom move event                                     |
-| leave-event       | Object/UIEvent | null    | custom leave event                                    |
-| disabled-reactive | Boolean        | false   | Disable listening for internal element info changes   |
+| Prop Name         | Type           | Default | Note                                                |
+| ----------------- | -------------- | ------- | --------------------------------------------------- |
+| high-url          | String         |         | Clearer picture url                                 |
+| scale             | Number         | 2       | magnification                                       |
+| disabled          | Boolean        | false   | disabled move                                       |
+| width             | Number         | 166     | The width of the magnified area                     |
+| height            | Number         | -1      | The height of the magnified area                    |
+| type              | String         | square  | magnifying glass type (circle,square)               |
+| selector          | Boolean        | true    | show or remove selector                             |
+| mask              | Boolean        | false   | show mask                                           |
+| mask-color        | Color          | {}      | mask color                                          |
+| enter-event       | Object/UIEvent | null    | custom enter event                                  |
+| move-event        | Object/UIEvent | null    | custom move event                                   |
+| leave-event       | Object/UIEvent | null    | custom leave event                                  |
+| disabled-reactive | Boolean        | false   | Disable listening for internal element info changes |
 
 #### Slot
 
-| Slot Name | Note              |
-| --------- | ----------------- |
-| default   | default slot      |
-| selector  | selector slot     |
-| zoomer    | inner zoomer slot |
-| outzoomer | out zoomer slot   |
+| Slot Name | Note                      |
+| --------- | ------------------------- |
+| default   | default slot              |
+| selector  | selector slot             |
+| zoomer    | inner and out zoomer slot |
 
 #### Event
 

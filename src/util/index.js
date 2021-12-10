@@ -49,7 +49,7 @@ export const getScrollInfo = () => {
 export const loadImg = url => {
   return new Promise((resolve, reject) => {
     const img = document.createElement('img')
-    img.addEventListener('load', resolve)
+    img.addEventListener('load', () => resolve(img))
     img.addEventListener('error', reject)
     img.src = url
   })
@@ -79,5 +79,45 @@ export const addResizeListener = (dom, cb) => {
     valid () {
       beforeReactivateMoveFns.forEach(fn => fn())
     }
+  }
+}
+
+export function rotateCanvas (canvas, img, width, height, step) {
+  const ctx = canvas.getContext('2d')
+  const degree = (step * 90 * Math.PI) / 180
+  const { width: imgWidth, height: imgHeight } = img
+
+  switch (step) {
+    case 0:
+      canvas.width = imgWidth
+      canvas.height = imgHeight
+      ctx.drawImage(img, 0, 0, imgWidth, imgHeight)
+      canvas.style.width = width + 'px'
+      canvas.style.height = height + 'px'
+      break
+    case 1:
+      canvas.width = imgHeight
+      canvas.height = imgWidth
+      ctx.rotate(degree)
+      ctx.drawImage(img, 0, -imgHeight, imgWidth, imgHeight)
+      canvas.style.width = height + 'px'
+      canvas.style.height = width + 'px'
+      break
+    case 2:
+      canvas.width = imgWidth
+      canvas.height = imgHeight
+      ctx.rotate(degree)
+      ctx.drawImage(img, 0, 0, -imgWidth, -imgHeight)
+      canvas.style.width = width + 'px'
+      canvas.style.height = height + 'px'
+      break
+    case 3:
+      canvas.width = imgHeight
+      canvas.height = imgWidth
+      ctx.rotate(degree)
+      ctx.drawImage(img, -imgWidth, 0, imgWidth, imgHeight)
+      canvas.style.width = height + 'px'
+      canvas.style.height = width + 'px'
+      break
   }
 }
