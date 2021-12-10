@@ -19,8 +19,6 @@ npm install vue-photo-zoom-pro
 yarn add vue-photo-zoom-pro
 ```
 
-main.js
-
 ```js
 import VuePhotoZoomPro from 'vue-photo-zoom-pro'
 import 'vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css'
@@ -44,14 +42,13 @@ or cdn
 ```
 
 ```js
-export default {
+new Vue({
+  el: '#app',
   components: {
-    VuePhotoZoomPro: window.VuePhotoZoomPro
+    vuePhotoZoomPro: VuePhotoZoomPro
   }
 }
 ```
-
-## Usage
 
 ### Image
 
@@ -63,15 +60,15 @@ export default {
 
 ```html
 <vue-photo-zoom-pro :high-url="imgHighUrl">
-  <img :src="imgUrl" style="height:200px"/>
+  <img :src="imgUrl" style="height:200px" />
 </vue-photo-zoom-pro>
 ```
 
 > Tips: If your image is not loaded at the beginning and set `disabled-reactive`, you must manually listen for the event when the image is loaded before displaying it
 
 ```html
-<vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl">
-  <img :src="imgUrl" style="height:200px"/>
+<vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl" disabled-reactive>
+  <img :src="imgUrl" style="height:200px" />
 </vue-photo-zoom-pro>
 ```
 
@@ -122,7 +119,7 @@ const ctx1 = canvas1.getContext('2d')
 const ctx2 = canvas2.getContext('2d')
 
 const offscreenCanvas = document.createElement('canvas')
-const ctx = c.getContext('2d')
+const ctx = offscreenCanvas.getContext('2d')
 offscreenCanvas.width = 100
 offscreenCanvas.height = 100
 
@@ -139,7 +136,8 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 
 | Prop Name         | Type           | Default | Note                                                |
 | ----------------- | -------------- | ------- | --------------------------------------------------- |
-| high-url          | String         |         | Clearer picture url                                 |
+| url               | String         | ''      | picture url                                         |
+| high-url          | String         | ''      | Clearer picture url                                 |
 | scale             | Number         | 2       | magnification                                       |
 | disabled          | Boolean        | false   | disabled move                                       |
 | width             | Number         | 166     | The width of the magnified area                     |

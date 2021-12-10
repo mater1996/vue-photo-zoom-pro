@@ -11,12 +11,11 @@
 ## 安装
 
 ```js
-
 npm install vue-photo-zoom-pro
 
+# or
+yarn add vue-photo-zoom-pro
 ```
-
-main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
@@ -40,7 +39,14 @@ export default {
 />
 ```
 
-## 使用
+```js
+new Vue({
+  el: '#app',
+  components: {
+    vuePhotoZoomPro: VuePhotoZoomPro
+  }
+}
+```
 
 ### 图片
 
@@ -59,7 +65,7 @@ export default {
 > Tips: 如果图片在开始没有加载完毕并且设置`disabled-reactive`为 true 的话，组件拿到的默认高度是 0，这时候需要在创建组件前加载图片或者给图片默认的高度
 
 ```html
-<vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl">
+<vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl" disabled-reactive>
   <img :src="imgUrl" style="height:200px" />
 </vue-photo-zoom-pro>
 ```
@@ -111,7 +117,7 @@ const ctx1 = canvas1.getContext('2d')
 const ctx2 = canvas2.getContext('2d')
 
 const offscreenCanvas = document.createElement('canvas')
-const ctx = c.getContext('2d')
+const ctx = offscreenCanvas.getContext('2d')
 offscreenCanvas.width = 100
 offscreenCanvas.height = 100
 
@@ -126,22 +132,22 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 
 #### 属性
 
-| Prop Name         | Type           | Default | Note                                       |
-| ----------------- | -------------- | ------- | ------------------------------------------ |
-| high-url          | String         |         | 更加清晰的图片                             |
-| scale             | Number         | 2       | magnification                              |
-| disabled          | Boolean        | false   | 禁用鼠标事件 move                          |
-| width             | Number         | 166     | 放大器的宽度                               |
-| height            | Number         | -1      | 放大器的高度                               |
-| type              | String         | square  | 放大器的类型 (circle,square)               |
-| selector          | Boolean        | true    | 是否显示选择器                             |
-| out-zoomer        | Boolean        | false   | 在外部显示放大内容                         |
-| mask              | Boolean        | true    | 是否显示遮罩 mask                          |
-| mask-color        | Color          | {}      | 遮罩颜色                                   |
-| enter-event       | Object/UIEvent | null    | 自定义的鼠标进入事件(例如移动端的进入事件) |
-| move-event        | Object/UIEvent | null    | 自定义的鼠标移动事件                       |
-| leave-event       | Object/UIEvent | null    | 自定义的鼠标移出事件                       |
-| disabled-reactive | Boolean        | false   | 禁用监听子元素宽高变化                     |
+| Prop Name         | Type           | Default         | Note                                       |
+| ----------------- | -------------- | --------------- | ------------------------------------------ |
+| url               | String         | ''              | 图片                                       |
+| high-url          | String         | ''              | 更加清晰的图片                             |
+| scale             | Number         | 2               | magnification                              |
+| disabled          | Boolean        | false           | 禁用鼠标事件 move                          |
+| width             | Number         | 166             | 放大器的宽度                               |
+| height            | Number         | -1              | 放大器的高度                               |
+| type              | String         | square          | 放大器的类型 (circle,square)               |
+| selector          | Boolean        | true            | 是否显示选择器                             |
+| mask              | Boolean        | true            | 是否显示遮罩 mask                          |
+| mask-color        | Color          | rgba(0,0,0,0.4) | 遮罩颜色                                   |
+| enter-event       | Object/UIEvent | null            | 自定义的鼠标进入事件(例如移动端的进入事件) |
+| move-event        | Object/UIEvent | null            | 自定义的鼠标移动事件                       |
+| leave-event       | Object/UIEvent | null            | 自定义的鼠标移出事件                       |
+| disabled-reactive | Boolean        | false           | 禁用监听子元素宽高变化                     |
 
 #### Slot
 
@@ -150,7 +156,6 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | default   | 默认         |
 | selector  | 选择器       |
 | zoomer    | 内部放大区域 |
-| outzoomer | 外部放大区域 |
 
 #### 事件
 
