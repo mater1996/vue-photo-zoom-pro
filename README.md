@@ -13,12 +13,8 @@ English | [简体中文](./README-ZH_CN.md)
 ## Install
 
 ```js
-
 npm install vue-photo-zoom-pro
-
 ```
-
-main.js
 
 ```js
 import vuePhotoZoomPro from 'vue-photo-zoom-pro'
@@ -38,7 +34,14 @@ or cdn
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
 ```
 
-## Usage
+```js
+new Vue({
+  el: '#app',
+  components: {
+    vuePhotoZoomPro: VuePhotoZoomPro
+  }
+}
+```
 
 ### Image
 
@@ -51,7 +54,7 @@ or cdn
 > Tips: If your image is not loaded at the beginning and set `disabled-reactive`, you must manually listen for the event when the image is loaded before displaying it
 
 ```html
-<vue-photo-zoom-pro v-if="loaded" :high-url="imgSrc">
+<vue-photo-zoom-pro v-if="loaded" :high-url="imgSrc" disabled-reactive>
   <img :src="imgSrc" />
 </vue-photo-zoom-pro>
 ```
@@ -103,7 +106,7 @@ const ctx1 = canvas1.getContext('2d')
 const ctx2 = canvas2.getContext('2d')
 
 const offscreenCanvas = document.createElement('canvas')
-const ctx = c.getContext('2d')
+const ctx = offscreenCanvas.getContext('2d')
 offscreenCanvas.width = 100
 offscreenCanvas.height = 100
 
@@ -129,7 +132,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | selector          | Boolean        | true    | show or remove selector                               |
 | out-zoomer        | Boolean        | false   | amplification region will be displayed on the outside |
 | mask              | Boolean        | false   | show mask                                             |
-| mask-color        | Color          | {}      | mask color                                            |
+| mask-color        | Color          | rgba(0,0,0,0.4)      | mask color                                            |
 | enter-event       | Object/UIEvent | null    | custom enter event                                    |
 | move-event        | Object/UIEvent | null    | custom move event                                     |
 | leave-event       | Object/UIEvent | null    | custom leave event                                    |
