@@ -132,22 +132,23 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 
 ### 属性
 
-| Prop Name         | Type           | Default         | Note                                       |
-| ----------------- | -------------- | --------------- | ------------------------------------------ |
-| url               | String         | ''              | 图片                                       |
-| high-url          | String         | ''              | 更加清晰的图片                             |
-| scale             | Number         | 2               | magnification                              |
-| disabled          | Boolean        | false           | 禁用鼠标事件 move                          |
-| width             | Number         | 166             | 放大器的宽度                               |
-| height            | Number         | -1              | 放大器的高度                               |
-| type              | String         | square          | 放大器的类型 (circle,square)               |
-| selector          | Boolean        | true            | 是否显示选择器                             |
-| mask              | Boolean        | false            | 是否显示遮罩 mask                          |
-| mask-color        | Color          | rgba(0,0,0,0.4) | 遮罩颜色                                   |
-| enter-event       | Object/UIEvent | null            | 自定义的鼠标进入事件(例如移动端的进入事件) |
-| move-event        | Object/UIEvent | null            | 自定义的鼠标移动事件                       |
-| leave-event       | Object/UIEvent | null            | 自定义的鼠标移出事件                       |
-| disabled-reactive | Boolean        | false           | 禁用监听子元素宽高变化                     |
+| Prop Name         | Type                      | Default         | Note                                       |
+| ----------------- | ------------------------- | --------------- | ------------------------------------------ |
+| url               | String                    | ''              | 图片                                       |
+| high-url          | String                    | ''              | 更加清晰的图片                             |
+| scale             | Number                    | 2               | magnification                              |
+| disabled          | Boolean                   | false           | 禁用鼠标事件 move                          |
+| width             | Number                    | 166             | 放大器的宽度                               |
+| height            | Number                    | -1              | 放大器的高度                               |
+| type              | String                    | square          | 放大器的类型 (circle,square)               |
+| selector          | Boolean                   | true            | 是否显示放大器                             |
+| out-zoomer        | Boolean/{sticky: Boolean} | false           | 缩放区域会展示在外面                       |
+| mask              | Boolean                   | false           | 是否显示遮罩 mask                          |
+| mask-color        | Color                     | rgba(0,0,0,0.4) | 遮罩颜色                                   |
+| enter-event       | Object/UIEvent            | null            | 自定义的鼠标进入事件(例如移动端的进入事件) |
+| move-event        | Object/UIEvent            | null            | 自定义的鼠标移动事件                       |
+| leave-event       | Object/UIEvent            | null            | 自定义的鼠标移出事件                       |
+| disabled-reactive | Boolean                   | false           | 禁用监听子元素宽高变化                     |
 
 ### Slot
 
@@ -155,7 +156,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | --------- | ------------ |
 | default   | 默认         |
 | selector  | 选择器       |
-| zoomer    | 内部放大区域 |
+| zoomer    | 放大区域 |
 
 ### 事件
 

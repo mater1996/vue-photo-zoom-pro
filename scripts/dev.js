@@ -86,7 +86,6 @@ function createServer () {
 
 async function run () {
   const plugins = glob.sync('src/plugins/**/*.js')
-  console.log(plugins)
   for (const i of formats) {
     await build(i)
     await buildPlugins(plugins, i)

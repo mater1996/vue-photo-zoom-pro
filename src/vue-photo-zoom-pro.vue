@@ -120,7 +120,7 @@ export default {
       default: true
     },
     outZoomer: {
-      type: Boolean,
+      type: [Boolean, Object],
       default: false
     },
     disabledReactive: {
@@ -253,6 +253,9 @@ export default {
       return {
         top: `${this.outZoomerTop}px`
       }
+    },
+    outZoomerSticky () {
+      return typeof this.outZoomer === 'object' ? this.outZoomer.sticky : false
     }
   },
   watch: {
@@ -302,7 +305,7 @@ export default {
         const { zoomRegionAbsolute } = this
         this.mouse.x = pageX - zoomRegionAbsolute.left
         this.mouse.y = pageY - zoomRegionAbsolute.top
-        if (this.outZoomer) {
+        if (this.outZoomer && this.outZoomerSticky) {
           this.hideOutZoomer = false
           this.outZoomerTop = Math.max(pageY - e.clientY, 0)
         }

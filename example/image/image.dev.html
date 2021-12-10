@@ -29,20 +29,25 @@
         font-size: 16px;
         cursor: pointer;
       }
+
+      .vue-photo-zoom-pro {
+        width: 900px;
+      }
     </style>
   </head>
   <body>
     <div id="demo">
       <vue-photo-zoom-pro
         class="vue-photo-zoom-pro"
-        type="circle"
         :scale="scale"
+        url="./image.jpg"
+        high-url="./image-high.jpg"
       >
-        <canvas-preview url="./image.jpg" width="960" height="480" :rotate="rotate"></canvas-preview>
+        <!-- <canvas-preview url="./image.jpg" width="960" height="480" :rotate="rotate"></canvas-preview>
         <template slot="zoomer">
           <canvas-zoomer url="./image-high.jpg" width="960" height="480" :rotate="rotate"></canvas-zoomer>
         </template>
-        <div class="rotate-icon" @click="handleRotate">🔄</div>
+        <div class="rotate-icon" @click="handleRotate">🔄</div> -->
       </vue-photo-zoom-pro>
     </div>
     <script src="./image.js"></script>
