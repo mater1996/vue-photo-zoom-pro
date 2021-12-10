@@ -8,7 +8,7 @@
 
 [demo](https://mater1996.github.io/vue-photo-zoom-pro/example/)
 
-## 使用
+## 安装
 
 ```js
 
@@ -33,25 +33,34 @@ export default {
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/vue-photo-zoom-pro.global.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css" />
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/style/vue-photo-zoom-pro.css"
+/>
 ```
 
-\*.vue
+## 使用
 
 ### 图片
 
 ```html
-<vue-photo-zoom-pro :high-url="imgSrc">
-  <img :src="imgSrc" />
+<vue-photo-zoom-pro :url="imgUrl" :high-url="imgHighUrl"></vue-photo-zoom-pro>
+```
+
+### 自定义图片
+
+```html
+<vue-photo-zoom-pro :high-url="imgHighUrl">
+  <img :src="imgUrl" style="height:200px" />
 </vue-photo-zoom-pro>
 ```
 
 > Tips: 如果图片在开始没有加载完毕并且设置`disabled-reactive`为 true 的话，组件拿到的默认高度是 0，这时候需要在创建组件前加载图片或者给图片默认的高度
 
 ```html
-<vue-photo-zoom-pro v-if="loaded" :high-url="imgSrc">
-  <img :src="imgSrc" />
-  <!--or  <img :src="imgSrc" style="height:200px" />-->
+<vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl">
+  <img :src="imgUrl" style="height:200px" />
 </vue-photo-zoom-pro>
 ```
 
@@ -60,12 +69,12 @@ export deafult{
   data(){
     return {
       loaded: false,
-      imgSrc: ''
+      imgUrl: ''
     }
   },
   created(){
     const img = new Image()
-    img.src = imgSrc
+    img.src = imgUrl
     img.addEventListener('load', ()=>{
       this.loaded = true
     })
@@ -73,17 +82,17 @@ export deafult{
 }
 ```
 
-### 自定义放大区域
+### 自定义预览区域
 
 使用其它元素来作为放大区域
 
 ```html
-<vue-photo-zoom-pro :high-url="imgSrc">
+<vue-photo-zoom-pro :high-url="imgHighUrl">
   <div style="width:100px; height: 200px"></div>
 </vue-photo-zoom-pro>
 ```
 
-### 自定义被放大的元素
+### 自定义缩放区域
 
 ```html
 <vue-photo-zoom-pro>
@@ -157,6 +166,113 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | Method Name | Note | value |
 | ----------- | ---- | ----- |
 | update      | 更新 |       |
+
+### 插件
+
+`vue-photo-zoom-pro` 使用插件来支持特殊的功能
+
+#### ImgPlugin
+
+使用 img 预览图片以及缩放图片
+
+```js
+import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'
+
+export default {
+  components: {
+    ImgPreview,
+    ImgZoomer
+  }
+}
+```
+
+或者使用 cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/img.global.js"></script>
+```
+
+```js
+export default {
+  components: {
+    ImgPreview: VuePhotoZoomProPluginImg.ImgPreview,
+    ImgZoomer: VuePhotoZoomProPluginImg.ImgZoomer
+  }
+}
+```
+
+```html
+<template>
+  <vue-photo-zoom-pro>
+    <img-preview :url="imgUrl"></img-preview>
+    <template>
+      <img-zoomer :url="imgHighSrc"></img-zoomer>
+    </template>
+  </vue-photo-zoom-pro>
+  <!-- 
+    和 <vue-photo-zoom-pro :url="imgUrl" :high-url="imgHighSrc"> 的效果相同
+  -->
+</template>
+```
+
+#### CanvasPlugin
+
+使用 canvas 预览和缩放图片, 支持旋转图片。
+
+```js
+import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro/canvas'
+
+export default {
+  components: {
+    CanvasPreview,
+    CanvasZoomer
+  }
+}
+```
+
+或者使用 cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/canvas.global.js"></script>
+```
+
+```js
+export default {
+  components: {
+    CanvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
+    CanvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
+  }
+}
+```
+
+```html
+<template>
+  <vue-photo-zoom-pro>
+    <canvas-preview :url="imgUrl" width="960" height="480"></canvas-preview>
+    <template>
+      <canvas-zoomer :url="imgHighSrc" width="960" height="480"></canvas-zoomer>
+    </template>
+  </vue-photo-zoom-pro>
+</template>
+```
+
+##### canvasPreview props
+
+| Prop Name | Type   | Default | Note      |
+| --------- | ------ | ------- | --------- |
+| url       | String | ''      | 图片      |
+| width     | Number | 图片宽  | canvas 宽 |
+| height    | Number | 图片高  | canvas 高 |
+| rotate    | Number | 0       | 旋转角度  |
+
+##### canvasZoom props
+
+| Prop Name | Type   | Default | Note           |
+| --------- | ------ | ------- | -------------- |
+| url       | String | ''      | 更加清晰的图片 |
+| width     | Number | 图片宽  | canvas 宽      |
+| height    | Number | 图片高  | canvas 高      |
+| rotate    | Number | 0       | 旋转角度       |
 
 ## Build Setup
 

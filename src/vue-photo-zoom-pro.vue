@@ -25,7 +25,7 @@
           class="inner-zoomer"
           v-bind="zoomerProps"
         >
-          <ImgZoom
+          <ImgZoomer
             v-if="highUrl || url"
             :url="highUrl || url"
           />

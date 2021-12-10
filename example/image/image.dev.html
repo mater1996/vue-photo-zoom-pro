@@ -17,11 +17,6 @@
         margin: 0;
         padding: 0;
       }
-
-      .img-region {
-        display: block;
-        width: 1000px;
-      }
     </style>
   </head>
   <body>
@@ -30,12 +25,13 @@
         class="vue-photo-zoom-pro"
         type="circle"
         :scale="scale"
-        out-zoomer
+        url="./image.jpg"
+        high-url="./image-high.jpg"
       >
-        <canvas-preview url="./image.jpg" width="960" height="480"></canvas-preview>
+        <!-- <canvas-preview url="./image.jpg" width="960" height="480"></canvas-preview>
         <template slot="zoomer">
           <canvas-zoomer url="./image-high.jpg" width="960" height="480"></canvas-zoomer>
-        </template>
+        </template> -->
       </vue-photo-zoom-pro>
     </div>
     <script src="./image.js"></script>

@@ -1,10 +1,3 @@
-/*
- * @author: Mater
- * @Email: bxh8640@gmail.com
- * @Date: 2021-09-03 16:56:48
- * @Description:
- */
-
 new Vue({
   el: '#demo',
   components: {

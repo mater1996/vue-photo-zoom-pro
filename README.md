@@ -51,27 +51,27 @@ export default {
 }
 ```
 
-## Usage example
+## Usage
 
 ### Image
 
 ```html
-<vue-photo-zoom-pro :url="imgSrc" :high-url="imgHighSrc"> </vue-photo-zoom-pro>
+<vue-photo-zoom-pro :url="imgUrl" :high-url="imgHighUrl"> </vue-photo-zoom-pro>
 ```
 
-### Custom Image
+### Customize Image
 
 ```html
-<vue-photo-zoom-pro :high-url="imgSrc">
-  <img :src="imgSrc" />
+<vue-photo-zoom-pro :high-url="imgHighUrl">
+  <img :src="imgUrl" style="height:200px"/>
 </vue-photo-zoom-pro>
 ```
 
 > Tips: If your image is not loaded at the beginning and set `disabled-reactive`, you must manually listen for the event when the image is loaded before displaying it
 
 ```html
-<vue-photo-zoom-pro v-if="loaded" :high-url="imgSrc">
-  <img :src="imgSrc" />
+<vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl">
+  <img :src="imgUrl" style="height:200px"/>
 </vue-photo-zoom-pro>
 ```
 
@@ -80,12 +80,12 @@ export deafult{
   data(){
     return {
       loaded: false,
-      imgSrc: ''
+      imgUrl: ''
     }
   },
   created(){
     const img = new Image()
-    img.src = imgSrc
+    img.src = imgUrl
     img.addEventListener('load', ()=>{
       this.loaded = true
     })
@@ -98,12 +98,12 @@ export deafult{
 You can use any element to represent the preview area
 
 ```html
-<vue-photo-zoom-pro :high-url="imgSrc">
+<vue-photo-zoom-pro :high-url="imgHighUrl">
   <div style="width:100px; height: 200px"></div>
 </vue-photo-zoom-pro>
 ```
 
-### Customize zoomer
+### Customize zoom area
 
 ```html
 <vue-photo-zoom-pro>
@@ -132,111 +132,6 @@ ctx.fillText('Hello World', 10, 50)
 ctx1.drawImage(offscreenCanvas, 0, 0)
 ctx2.drawImage(offscreenCanvas, 0, 0)
 ```
-
-### Plugins
-
-#### ImgPlugin
-
-Preview and zoom image using img
-
-```js
-import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'
-
-export default {
-  components: {
-    ImgPreview,
-    ImgZoomer
-  }
-}
-```
-
-or cdn
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/img.global.js"></script>
-```
-
-```js
-export default {
-  components: {
-    ImgPreview: VuePhotoZoomProPluginImg.ImgPreview,
-    ImgZoomer: VuePhotoZoomProPluginImg.ImgZoomer
-  }
-}
-```
-
-```html
-<template>
-  <vue-photo-zoom-pro>
-    <img-preview :url="imgSrc"></img-preview>
-    <template>
-      <img-zoomer :url="imgHighSrc"></img-zoomer>
-    </template>
-  </vue-photo-zoom-pro>
-  <!-- 
-    same as <vue-photo-zoom-pro :url="imgSrc" :high-url="imgHighSrc">
-  -->
-</template>
-```
-
-#### CanvasPlugin
-
-Preview and zoom image using canvas
-
-```js
-import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro/canvas'
-
-export default {
-  components: {
-    CanvasPreview,
-    CanvasZoomer
-  }
-}
-```
-
-or cdn
-
-```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/canvas.global.js"></script>
-```
-
-```js
-export default {
-  components: {
-    CanvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
-    CanvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
-  }
-}
-```
-
-```html
-<template>
-  <vue-photo-zoom-pro>
-    <canvas-preview :url="imgSrc" width="960" height="480"></canvas-preview>
-    <template>
-      <canvas-zoomer :url="imgHighSrc" width="960" height="480"></canvas-zoomer>
-    </template>
-  </vue-photo-zoom-pro>
-</template>
-```
-
-##### canvasPreview props
-
-| Prop Name | Type   | Default    | Note           |
-| --------- | ------ | ---------- | -------------- |
-| url       | String | ''         | img url        |
-| width     | Number | Img width  | canvas width   |
-| height    | Number | Img height | canvas height  |
-| rotate    | Number | 0          | Rotation Angle |
-
-##### canvasZoom props
-
-| Prop Name | Type   | Default    | Note           |
-| --------- | ------ | ---------- | -------------- |
-| url       | String | ''         | High img url   |
-| width     | Number | Img width  | Canvas width   |
-| height    | Number | Img height | Canvas height  |
-| rotate    | Number | 0          | Rotation Angle |
 
 ### Settings
 
@@ -280,6 +175,113 @@ export default {
 | Method Name | Note   | value |
 | ----------- | ------ | ----- |
 | update      | update |       |
+
+### Plugins
+
+`vue-photo-zoom-pro` provide plugins to support special functions.
+
+#### ImgPlugin
+
+Preview and zoom image using img
+
+```js
+import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'
+
+export default {
+  components: {
+    ImgPreview,
+    ImgZoomer
+  }
+}
+```
+
+or cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/img.global.js"></script>
+```
+
+```js
+export default {
+  components: {
+    ImgPreview: VuePhotoZoomProPluginImg.ImgPreview,
+    ImgZoomer: VuePhotoZoomProPluginImg.ImgZoomer
+  }
+}
+```
+
+```html
+<template>
+  <vue-photo-zoom-pro>
+    <img-preview :url="imgUrl"></img-preview>
+    <template>
+      <img-zoomer :url="imgHighSrc"></img-zoomer>
+    </template>
+  </vue-photo-zoom-pro>
+  <!-- 
+    same as <vue-photo-zoom-pro :url="imgUrl" :high-url="imgHighSrc">
+  -->
+</template>
+```
+
+#### CanvasPlugin
+
+Preview and zoom image using canvas, this support rotate image.
+
+```js
+import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro/canvas'
+
+export default {
+  components: {
+    CanvasPreview,
+    CanvasZoomer
+  }
+}
+```
+
+or cdn
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/canvas.global.js"></script>
+```
+
+```js
+export default {
+  components: {
+    CanvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
+    CanvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
+  }
+}
+```
+
+```html
+<template>
+  <vue-photo-zoom-pro>
+    <canvas-preview :url="imgUrl" width="960" height="480"></canvas-preview>
+    <template>
+      <canvas-zoomer :url="imgHighSrc" width="960" height="480"></canvas-zoomer>
+    </template>
+  </vue-photo-zoom-pro>
+</template>
+```
+
+##### canvasPreview props
+
+| Prop Name | Type   | Default    | Note           |
+| --------- | ------ | ---------- | -------------- |
+| url       | String | ''         | img url        |
+| width     | Number | Img width  | canvas width   |
+| height    | Number | Img height | canvas height  |
+| rotate    | Number | 0          | Rotation Angle |
+
+##### canvasZoom props
+
+| Prop Name | Type   | Default    | Note           |
+| --------- | ------ | ---------- | -------------- |
+| url       | String | ''         | High img url   |
+| width     | Number | Img width  | Canvas width   |
+| height    | Number | Img height | Canvas height  |
+| rotate    | Number | 0          | Rotation Angle |
 
 ## Build Setup
 
