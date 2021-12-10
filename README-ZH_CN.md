@@ -128,9 +128,9 @@ ctx1.drawImage(offscreenCanvas, 0, 0)
 ctx2.drawImage(offscreenCanvas, 0, 0)
 ```
 
-### 设置
+## 设置
 
-#### 属性
+### 属性
 
 | Prop Name         | Type           | Default         | Note                                       |
 | ----------------- | -------------- | --------------- | ------------------------------------------ |
@@ -149,7 +149,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | leave-event       | Object/UIEvent | null            | 自定义的鼠标移出事件                       |
 | disabled-reactive | Boolean        | false           | 禁用监听子元素宽高变化                     |
 
-#### Slot
+### Slot
 
 | Slot Name | Note         |
 | --------- | ------------ |
@@ -157,7 +157,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | selector  | 选择器       |
 | zoomer    | 内部放大区域 |
 
-#### 事件
+### 事件
 
 | Event Name | Note         | value |
 | ---------- | ------------ | ----- |
@@ -166,17 +166,17 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | mousemove  | 鼠标移动     |       |
 | mouseleave | 鼠标移出     |       |
 
-#### 方法
+### 方法
 
 | Method Name | Note | value |
 | ----------- | ---- | ----- |
 | update      | 更新 |       |
 
-### 插件
+## 插件
 
 `vue-photo-zoom-pro` 使用插件来支持特殊的功能
 
-#### ImgPlugin
+### ImgPlugin
 
 使用 img 预览图片以及缩放图片
 
@@ -220,7 +220,7 @@ export default {
 </template>
 ```
 
-#### CanvasPlugin
+### CanvasPlugin
 
 使用 canvas 预览和缩放图片, 支持旋转图片。
 
@@ -261,7 +261,7 @@ export default {
 </template>
 ```
 
-##### canvasPreview props
+#### canvasPreview props
 
 | Prop Name | Type   | Default | Note      |
 | --------- | ------ | ------- | --------- |
@@ -270,7 +270,7 @@ export default {
 | height    | Number | 图片高  | canvas 高 |
 | rotate    | Number | 0       | 旋转角度  |
 
-##### canvasZoomer props
+#### canvasZoomer props
 
 | Prop Name | Type   | Default | Note           |
 | --------- | ------ | ------- | -------------- |

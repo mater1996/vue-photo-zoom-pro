@@ -50,6 +50,7 @@ new Vue({
 }
 ```
 
+## Usage
 ### Image
 
 ```html
@@ -130,9 +131,9 @@ ctx1.drawImage(offscreenCanvas, 0, 0)
 ctx2.drawImage(offscreenCanvas, 0, 0)
 ```
 
-### Settings
+## Settings
 
-#### props
+### props
 
 | Prop Name         | Type           | Default         | Note                                                |
 | ----------------- | -------------- | --------------- | --------------------------------------------------- |
@@ -151,7 +152,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | leave-event       | Object/UIEvent | null            | custom leave event                                  |
 | disabled-reactive | Boolean        | false           | Disable listening for internal element info changes |
 
-#### Slot
+### Slot
 
 | Slot Name | Note                      |
 | --------- | ------------------------- |
@@ -159,7 +160,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | selector  | selector slot             |
 | zoomer    | inner and out zoomer slot |
 
-#### Event
+### Event
 
 | Event Name | Note              | value |
 | ---------- | ----------------- | ----- |
@@ -168,17 +169,17 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 | mousemove  | mouse move event  |       |
 | mouseleave | mouse leave event |       |
 
-#### Methods
+### Methods
 
 | Method Name | Note   | value |
 | ----------- | ------ | ----- |
 | update      | update |       |
 
-### Plugins
+## Plugins
 
 `vue-photo-zoom-pro` provide plugins to support special functions.
 
-#### ImgPlugin
+### ImgPlugin
 
 Preview and zoom image using img
 
@@ -222,7 +223,7 @@ export default {
 </template>
 ```
 
-#### CanvasPlugin
+### CanvasPlugin
 
 Preview and zoom image using canvas, this support rotate image.
 
@@ -263,7 +264,7 @@ export default {
 </template>
 ```
 
-##### canvasPreview props
+#### canvasPreview props
 
 | Prop Name | Type   | Default    | Note           |
 | --------- | ------ | ---------- | -------------- |
@@ -272,7 +273,7 @@ export default {
 | height    | Number | Img height | canvas height  |
 | rotate    | Number | 0          | Rotation Angle |
 
-##### canvasZoomer props
+#### canvasZoomer props
 
 | Prop Name | Type   | Default    | Note           |
 | --------- | ------ | ---------- | -------------- |
