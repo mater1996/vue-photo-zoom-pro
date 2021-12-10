@@ -265,7 +265,7 @@ export default {
 | height    | Number | 图片高  | canvas 高 |
 | rotate    | Number | 0       | 旋转角度  |
 
-##### canvasZoom props
+##### canvasZoomer props
 
 | Prop Name | Type   | Default | Note           |
 | --------- | ------ | ------- | -------------- |

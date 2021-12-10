@@ -2,8 +2,8 @@ new Vue({
   el: '#demo',
   data: function() {
     return {
-      step: 0,
-      scale: 2
+      scale: 2,
+      rotate: 0
     }
   },
   components: {
@@ -13,7 +13,7 @@ new Vue({
   },
   methods: {
     handleRotate: function() {
-      this.step = this.step + 1 > 3 ? 0 : this.step + 1
+      this.rotate += 90
     }
   },
 })

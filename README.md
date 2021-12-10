@@ -274,7 +274,7 @@ export default {
 | height    | Number | Img height | canvas height  |
 | rotate    | Number | 0          | Rotation Angle |
 
-##### canvasZoom props
+##### canvasZoomer props
 
 | Prop Name | Type   | Default    | Note           |
 | --------- | ------ | ---------- | -------------- |

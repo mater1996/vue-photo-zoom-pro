@@ -11,11 +11,23 @@
       href="../../dist/style/vue-photo-zoom-pro.css"
     />
     <script src="../../dist/canvas.global.js"></script>
-    <link rel="stylesheet" type="text/css" href="../../dist/style/canvas.css" />
     <style>
       body {
         margin: 0;
         padding: 0;
+      }
+
+      .rotate-icon {
+        display: inline-block;
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        z-index: 999;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        font-size: 16px;
+        cursor: pointer;
       }
     </style>
   </head>
@@ -25,13 +37,12 @@
         class="vue-photo-zoom-pro"
         type="circle"
         :scale="scale"
-        url="./image.jpg"
-        high-url="./image-high.jpg"
       >
-        <!-- <canvas-preview url="./image.jpg" width="960" height="480"></canvas-preview>
+        <canvas-preview url="./image.jpg" width="960" height="480" :rotate="rotate"></canvas-preview>
         <template slot="zoomer">
-          <canvas-zoomer url="./image-high.jpg" width="960" height="480"></canvas-zoomer>
-        </template> -->
+          <canvas-zoomer url="./image-high.jpg" width="960" height="480" :rotate="rotate"></canvas-zoomer>
+        </template>
+        <div class="rotate-icon" @click="handleRotate">🔄</div>
       </vue-photo-zoom-pro>
     </div>
     <script src="./image.js"></script>

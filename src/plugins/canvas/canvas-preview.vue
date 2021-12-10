@@ -2,6 +2,8 @@
   <canvas
     ref="canvas"
     class="canvas-area"
+    v-bind="$attrs"
+    v-on="$listeners"
   />
 </template>
 
@@ -15,7 +17,7 @@ export default {
       type: String,
       default: ''
     },
-    step: {
+    rotate: {
       type: Number,
       default: 0
     },
@@ -28,8 +30,14 @@ export default {
       default: 0
     }
   },
+  computed: {
+    step () {
+      return parseInt((this.rotate % 360) / 90, 10)
+    }
+  },
   watch: {
     step (newValue) {
+      console.log(newValue)
       this.handleRotate(newValue)
     },
     url: {

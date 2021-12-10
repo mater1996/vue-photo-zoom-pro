@@ -2,6 +2,8 @@
   <canvas
     ref="canvas"
     class="canvas-zoomer"
+    v-bind="$attrs"
+    v-on="$listeners"
   />
 </template>
 
@@ -15,7 +17,7 @@ export default {
       type: String,
       default: ''
     },
-    step: {
+    rotate: {
       type: Number,
       default: 0
     },
@@ -26,10 +28,11 @@ export default {
     height: {
       type: Number,
       default: 0
-    },
-    scale: {
-      type: Number,
-      default: 2
+    }
+  },
+  computed: {
+    step () {
+      return parseInt((this.rotate % 360) / 90, 10)
     }
   },
   watch: {
