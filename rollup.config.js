@@ -7,14 +7,19 @@ const babel = require('rollup-plugin-babel')
 const postcss = require('rollup-plugin-postcss')
 const { terser } = require('rollup-plugin-terser')
 const replace = require('@rollup/plugin-replace')
-const { name } = require('./package.json')
 
 function parseEnvironment (environment) {
   return Object.fromEntries(environment.split(',').map(v => v.split(':')))
 }
 
 module.exports = ({ environment }) => {
-  const { NODE_ENV, FORMAT } = parseEnvironment(environment)
+  const {
+    NODE_ENV,
+    FORMAT,
+    NAME: name,
+    GLOBAL: global,
+    INPUT: input
+  } = parseEnvironment(environment)
   const isProd = NODE_ENV === 'production'
   const isIIFE = FORMAT === 'iife'
   const resolve = path.resolve
@@ -23,24 +28,23 @@ module.exports = ({ environment }) => {
 
   const FORMAT_OPTIONS = {
     cjs: {
-      name: 'VuePhotoZoomPro',
+      name: global,
       format: 'cjs',
-      file: resolveOutput(`${name}.js`),
-      exports: 'default'
+      file: resolveOutput(`${name}.js`)
     },
     esm: {
-      name: 'VuePhotoZoomPro',
+      name: global,
       format: 'esm',
       file: resolveOutput(`${name}.esm.js`)
     },
     iife: {
-      name: 'VuePhotoZoomPro',
+      name: global,
       format: 'iife',
       file: resolveOutput(`${name}.global.js`)
     }
   }
   return {
-    input: 'src/vue-photo-zoom-pro.vue',
+    input: input,
     output: FORMAT_OPTIONS[FORMAT],
     treeshake: isProd,
     plugins: [

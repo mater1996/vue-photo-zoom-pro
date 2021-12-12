@@ -1,17 +1,19 @@
-/*
- * @author: Mater
- * @Email: bxh8640@gmail.com
- * @Date: 2021-08-25 16:04:13
- * @Description:
- */
 new Vue({
   el: '#demo',
-  components: {
-    vuePhotoZoomPro: VuePhotoZoomPro
-  },
   data: function() {
     return {
-      scale: 2
+      scale: 2,
+      rotate: 0
     }
-  }
+  },
+  components: {
+    vuePhotoZoomPro: VuePhotoZoomPro,
+    canvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
+    canvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
+  },
+  methods: {
+    handleRotate: function() {
+      this.rotate += 90
+    }
+  },
 })

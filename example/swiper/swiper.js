@@ -1,10 +1,3 @@
-/*
- * @author: Mater
- * @Email: bxh8640@gmail.com
- * @Date: 2021-08-25 16:33:15
- * @Description:
- */
-
 const images = [
   'swiper-image-1.jpg',
   'swiper-image-2.jpg',

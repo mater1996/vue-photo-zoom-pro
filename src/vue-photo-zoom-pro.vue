@@ -25,6 +25,10 @@
           class="inner-zoomer"
           v-bind="zoomerProps"
         >
+          <ImgZoomer
+            v-if="highUrl || url"
+            :url="highUrl || url"
+          />
           <slot name="zoomer" />
         </Zoomer>
         <slot name="selector" />
@@ -36,8 +40,16 @@
         v-bind="zoomerProps"
         :style="outZoomerPosition"
       >
-        <slot name="outzoomer" />
+        <ImgZoomer
+          v-if="highUrl || url"
+          :url="highUrl || url"
+        />
+        <slot name="zoomer" />
       </Zoomer>
+      <ImgPreview
+        v-if="url"
+        :url="url"
+      />
       <slot />
     </div>
   </div>
@@ -46,77 +58,88 @@
 import PhotoMask from './components/photo-mask.vue'
 import Zoomer from './components/zoomer.vue'
 import Selector from './components/selector.vue'
-import { getBoundingClientRect, getBoundValue, getScrollInfo, addResizeListener } from './util'
+import { ImgPreview, ImgZoomer } from './plugins/img/index.js'
+import {
+  getBoundingClientRect,
+  getBoundValue,
+  getScrollInfo,
+  addResizeListener
+} from './util'
 
 export default {
   name: 'VuePhotoZoomPro',
   components: {
     PhotoMask,
     Selector,
-    Zoomer
+    Zoomer,
+    ImgPreview,
+    ImgZoomer
   },
-  props:
-    {
-      highUrl: {
-        type: String,
-        default: ''
-      },
-      width: {
-        type: Number,
-        default: 168
-      },
-      height: {
-        type: Number,
-        default: -1
-      },
-      type: {
-        type: String,
-        default: 'square',
-        validator: function (value) {
-          return ['circle', 'square'].indexOf(value) !== -1
-        }
-      },
-      scale: {
-        type: Number,
-        default: 2
-      },
-      enterEvent: {
-        type: [Object, UIEvent],
-        default: null
-      },
-      moveEvent: {
-        type: [Object, UIEvent],
-        default: null
-      },
-      leaveEvent: {
-        type: [Object, UIEvent],
-        default: null
-      },
-      selector: {
-        type: Boolean,
-        default: true
-      },
-      outZoomer: {
-        type: Boolean,
-        default: false
-      },
-      disabledReactive: {
-        type: Boolean,
-        default: false
-      },
-      disabled: {
-        type: Boolean,
-        default: false
-      },
-      mask: {
-        type: Boolean,
-        default: false
-      },
-      maskColor: {
-        type: String,
-        default: ''
+  props: {
+    width: {
+      type: Number,
+      default: 168
+    },
+    height: {
+      type: Number,
+      default: -1
+    },
+    url: {
+      type: String,
+      default: ''
+    },
+    highUrl: {
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String,
+      default: 'square',
+      validator: function (value) {
+        return ['circle', 'square'].indexOf(value) !== -1
       }
     },
+    scale: {
+      type: Number,
+      default: 2
+    },
+    enterEvent: {
+      type: [Object, UIEvent],
+      default: null
+    },
+    moveEvent: {
+      type: [Object, UIEvent],
+      default: null
+    },
+    leaveEvent: {
+      type: [Object, UIEvent],
+      default: null
+    },
+    selector: {
+      type: Boolean,
+      default: true
+    },
+    outZoomer: {
+      type: [Boolean, Object],
+      default: false
+    },
+    disabledReactive: {
+      type: Boolean,
+      default: false
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    mask: {
+      type: Boolean,
+      default: false
+    },
+    maskColor: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       hideSelector: true,
@@ -148,10 +171,14 @@ export default {
       return this.selectorHeight / 2
     },
     zoomerWidth () {
-      return this.outZoomer ? this.selectorWidth * this.scale : this.selectorWidth
+      return this.outZoomer
+        ? this.selectorWidth * this.scale
+        : this.selectorWidth
     },
     zoomerHeight () {
-      return this.outZoomer ? this.selectorHeight * this.scale : this.selectorHeight
+      return this.outZoomer
+        ? this.selectorHeight * this.scale
+        : this.selectorHeight
     },
     zoomerHalfWidth () {
       return this.zoomerWidth / 2
@@ -226,6 +253,9 @@ export default {
       return {
         top: `${this.outZoomerTop}px`
       }
+    },
+    outZoomerSticky () {
+      return typeof this.outZoomer === 'object' ? this.outZoomer.sticky : false
     }
   },
   watch: {
@@ -245,7 +275,10 @@ export default {
   mounted () {
     this.$zoomRegion = this.$refs.zoomRegion
     if (!this.disabledReactive) {
-      this.resizer = addResizeListener(this.$zoomRegion, this.handleZoomRegionResize)
+      this.resizer = addResizeListener(
+        this.$zoomRegion,
+        this.handleZoomRegionResize
+      )
     }
     this.update()
     this.$emit('created')
@@ -272,7 +305,7 @@ export default {
         const { zoomRegionAbsolute } = this
         this.mouse.x = pageX - zoomRegionAbsolute.left
         this.mouse.y = pageY - zoomRegionAbsolute.top
-        if (this.outZoomer) {
+        if (this.outZoomer && this.outZoomerSticky) {
           this.hideOutZoomer = false
           this.outZoomerTop = Math.max(pageY - e.clientY, 0)
         }
