@@ -62,7 +62,7 @@ new Vue({
 </vue-photo-zoom-pro>
 ```
 
-> Tips: 如果图片在开始没有加载完毕并且设置`disabled-reactive`为 true 的话，组件拿到的默认高度是 0，这时候需要在创建组件前加载图片或者给图片默认的高度
+> Tips: 如果图片在开始没有加载完毕并且设置`disabled-reactive`为 true 的话，组件拿到的默认高度是 0，这时候需要在创建组件前加载图片或者给图片默认的高度。
 
 ```html
 <vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl" disabled-reactive>
@@ -90,7 +90,7 @@ export deafult{
 
 ### 自定义预览区域
 
-使用其它元素来作为放大区域
+使用其它元素来作为放大区域。
 
 ```html
 <vue-photo-zoom-pro :high-url="imgHighUrl">
@@ -175,11 +175,11 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 
 ## 插件
 
-`vue-photo-zoom-pro` 使用插件来支持特殊的功能
+`vue-photo-zoom-pro` 使用插件来支持特殊的功能。
 
 ### ImgPlugin
 
-使用 img 预览图片以及缩放图片
+使用 img 预览图片以及缩放图片。
 
 ```js
 import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'

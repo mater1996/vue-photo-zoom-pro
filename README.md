@@ -66,7 +66,7 @@ new Vue({
 </vue-photo-zoom-pro>
 ```
 
-> Tips: If your image is not loaded at the beginning and set `disabled-reactive`, you must manually listen for the event when the image is loaded before displaying it
+> Tips: If your image is not loaded at the beginning and set `disabled-reactive`, you must manually listen for the event when the image is loaded before displaying it.
 
 ```html
 <vue-photo-zoom-pro v-if="loaded" :high-url="imgHighUrl" disabled-reactive>
@@ -94,7 +94,7 @@ export deafult{
 
 ### Customize preview area
 
-You can use any element to represent the preview area
+You can use any element to represent the preview area.
 
 ```html
 <vue-photo-zoom-pro :high-url="imgHighUrl">
@@ -183,7 +183,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 
 ### ImgPlugin
 
-Preview and zoom image using img
+Preview and zoom image using img.
 
 ```js
 import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'
