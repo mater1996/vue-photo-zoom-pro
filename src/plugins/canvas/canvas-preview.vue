@@ -37,7 +37,6 @@ export default {
   },
   watch: {
     step (newValue) {
-      console.log(newValue)
       this.handleRotate(newValue)
     },
     url: {

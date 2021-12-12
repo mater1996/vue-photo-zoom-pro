@@ -54,7 +54,13 @@ export default {
   },
   methods: {
     handleRotate (step) {
-      rotateCanvas(this.$canvas, this.$img, this.width, this.height, step)
+      rotateCanvas(
+        this.$canvas,
+        this.$img,
+        this.width || this.$img.width,
+        this.height || this.$img.height,
+        step
+      )
     }
   }
 }
