@@ -17,7 +17,7 @@ let server
 
 async function build (format) {
   await execaRollup([
-    ['NODE_ENV', 'production'],
+    ['NODE_ENV', 'development'],
     ['FORMAT', format],
     ['NAME', 'vue-photo-zoom-pro'],
     ['GLOBAL', 'VuePhotoZoomPro'],
@@ -32,7 +32,7 @@ async function buildPlugins (plugins, format) {
       .split('/')
       .pop()
     await execaRollup([
-      ['NODE_ENV', 'production'],
+      ['NODE_ENV', 'development'],
       ['FORMAT', format],
       ['NAME', pluginName],
       [
