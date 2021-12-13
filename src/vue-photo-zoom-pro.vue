@@ -3,9 +3,9 @@
     <div
       ref="zoomRegion"
       class="zoom-region"
-      @mouseenter="!disabled && handleMouseEnter($event)"
-      @mousemove="!disabled && handleMouseMove($event)"
-      @mouseleave="!disabled && handleMouseLeave($event)"
+      @mouseenter="!disabled && !enterEvent && handleMouseEnter($event)"
+      @mousemove="!disabled && !moveEvent && handleMouseMove($event)"
+      @mouseleave="!disabled && !leaveEvent && handleMouseLeave($event)"
     >
       <PhotoMask
         v-if="mask"
@@ -64,7 +64,7 @@ import {
   getBoundValue,
   getScrollInfo,
   addResizeListener
-} from './util.js'
+} from './util/index.js'
 
 export default {
   name: 'VuePhotoZoomPro',

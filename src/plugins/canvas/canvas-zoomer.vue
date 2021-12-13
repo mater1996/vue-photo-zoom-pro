@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { loadImg, rotateCanvas } from '../../util.js'
+import { loadImg, rotateCanvas } from '../../util/index.js'
 
 export default {
   name: 'CanvasZoomer',
