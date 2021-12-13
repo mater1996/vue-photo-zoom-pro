@@ -13,7 +13,8 @@
     "url": "git@github.com:mater1996/vue-photo-zoom-pro.git"
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "scripts": {
     "dev": "node scripts/dev.js",

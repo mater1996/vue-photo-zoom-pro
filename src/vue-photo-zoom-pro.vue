@@ -64,7 +64,7 @@ import {
   getBoundValue,
   getScrollInfo,
   addResizeListener
-} from './util'
+} from './util.js'
 
 export default {
   name: 'VuePhotoZoomPro',

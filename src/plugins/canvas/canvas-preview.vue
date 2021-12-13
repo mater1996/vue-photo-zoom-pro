@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { loadImg, rotateCanvas } from '../../util'
+import { loadImg, rotateCanvas } from '../../util.js'
 
 export default {
   name: 'CanvasRegion',
