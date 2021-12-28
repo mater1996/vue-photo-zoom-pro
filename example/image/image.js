@@ -15,6 +15,7 @@ new Vue({
         selector: true,
         outZoomer: false,
         disabled: false,
+        disabledReactive: false,
         mask: false,
         maskColor: 'rgba(0,0,0,0.4)'
       }
@@ -32,6 +33,7 @@ new Vue({
     gui.add(props, 'selector')
     gui.add(props, 'outZoomer')
     gui.add(props, 'disabled')
+    gui.add(props, 'disabledReactive')
     gui.add(props, 'mask')
     gui.addColor(props, 'maskColor')
   }
