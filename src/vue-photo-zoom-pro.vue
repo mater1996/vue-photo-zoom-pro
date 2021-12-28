@@ -293,9 +293,11 @@ export default {
         const { zoomRegionAbsolute } = this
         this.mouse.x = pageX - zoomRegionAbsolute.left
         this.mouse.y = pageY - zoomRegionAbsolute.top
-        if (this.outZoomer && this.outZoomerSticky) {
+        if (this.outZoomer) {
           this.hideOutZoomer = false
-          this.outZoomerTop = Math.max(pageY - e.clientY, 0)
+          if (this.outZoomerSticky) {
+            this.outZoomerTop = Math.max(pageY - e.clientY, 0)
+          }
         }
       }
       this.$emit('mousemove', e)
