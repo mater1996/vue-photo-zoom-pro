@@ -62,8 +62,7 @@ import { ImgPreview, ImgZoomer } from './plugins/img/index.js'
 import {
   getBoundingClientRect,
   getBoundValue,
-  getScrollInfo,
-  addResizeListener
+  getScrollInfo
 } from './util/index.js'
 
 export default {
@@ -274,23 +273,12 @@ export default {
   },
   mounted () {
     this.$zoomRegion = this.$refs.zoomRegion
-    if (!this.disabledReactive) {
-      this.resizer = addResizeListener(
-        this.$zoomRegion,
-        this.handleZoomRegionResize
-      )
-    }
     this.update()
     this.$emit('created')
   },
   methods: {
-    handleZoomRegionResize (rect) {
-      this.zoomRegionRect = {
-        ...rect
-      }
-    },
     handleMouseEnter (e) {
-      this.resizer && this.resizer.valid()
+      !this.disabledReactive && this.update()
       this.hideSelector = false
       if (this.outZoomer) this.hideOutZoomer = false
       this.$emit('mouseenter', e)
@@ -299,7 +287,7 @@ export default {
       if (this.hideSelector) return
       e = this.pointerInfo = e || this.pointerInfo
       if (e) {
-        this.resizer && this.resizer.valid()
+        !this.disabledReactive && this.update()
         this.hideSelector = false
         const { pageX, pageY } = e
         const { zoomRegionAbsolute } = this
@@ -318,7 +306,10 @@ export default {
       this.$emit('mouseleave', e)
     },
     update () {
-      this.handleZoomRegionResize(getBoundingClientRect(this.$zoomRegion))
+      Object.assign(
+        this.zoomRegionRect,
+        getBoundingClientRect(this.$zoomRegion)
+      )
     }
   }
 }

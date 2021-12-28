@@ -48,33 +48,6 @@ export const loadImg = url => {
   })
 }
 
-const beforeReactivateMoveFns = []
-let rect = {}
-
-const isResize = newRect => {
-  return (
-    rect.width !== newRect.width ||
-    rect.height !== newRect.height ||
-    rect.left !== newRect.left ||
-    rect.top !== newRect.top
-  )
-}
-
-export const addResizeListener = (dom, cb) => {
-  beforeReactivateMoveFns.push(() => {
-    const newRect = getBoundingClientRect(dom)
-    if (isResize(newRect)) {
-      rect = newRect
-      cb && cb(rect)
-    }
-  })
-  return {
-    valid () {
-      beforeReactivateMoveFns.forEach(fn => fn())
-    }
-  }
-}
-
 export function rotateCanvas (canvas, img, width, height, step) {
   const ctx = canvas.getContext('2d')
   const degree = (step * 90 * Math.PI) / 180

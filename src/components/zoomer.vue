@@ -15,7 +15,7 @@
     >
       <div
         v-if="$slots.default"
-        class="region custom-zoomer"
+        class="custom-zoomer"
         :style="zoomedStyle"
       >
         <slot />
@@ -84,7 +84,7 @@ export default {
 <style lang="scss" scoped>
 .zoomer {
   overflow: hidden;
-  .region {
+  .custom-zoomer {
     transform-origin: left top;
   }
 }
