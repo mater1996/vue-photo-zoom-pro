@@ -1,5 +1,3 @@
-console.log(window)
-
 new Vue({
   el: '#demo',
   components: {
