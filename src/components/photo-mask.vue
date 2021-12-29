@@ -77,7 +77,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .mask {
   position: absolute;
   top: 0;
@@ -85,7 +85,7 @@ export default {
   right: 0;
   bottom: 0;
   font-size: 0;
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   z-index: 1;
 }
 
@@ -93,14 +93,17 @@ export default {
   width: 30%;
   height: 50px;
   background: inherit;
-  &.left {
-    float: left;
-  }
-  &.right {
-    float: right;
-  }
-  &.bottom {
-    clear: both;
-  }
+}
+
+.block.left {
+  float: left;
+}
+
+.block.right {
+  float: right;
+}
+
+.block.bottom {
+  clear: both;
 }
 </style>

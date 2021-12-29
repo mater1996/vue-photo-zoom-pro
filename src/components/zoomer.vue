@@ -81,11 +81,12 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .zoomer {
   overflow: hidden;
-  .custom-zoomer {
-    transform-origin: left top;
-  }
+}
+
+.zoomer .custom-zoomer {
+  transform-origin: left top;
 }
 </style>

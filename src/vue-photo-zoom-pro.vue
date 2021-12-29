@@ -317,22 +317,22 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .vue-photo-zoom-pro {
   font-size: 0;
+}
 
-  .zoom-region {
-    position: relative;
-    display: inline-block;
-  }
+.vue-photo-zoom-pro .zoom-region {
+  position: relative;
+  display: inline-block;
+}
 
-  .out-zoomer {
-    position: absolute;
-    right: -8px;
-    background-repeat: no-repeat;
-    transform: translate(100%, 0);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    box-sizing: border-box;
-  }
+.vue-photo-zoom-pro .out-zoomer {
+  position: absolute;
+  right: -8px;
+  background-repeat: no-repeat;
+  transform: translate(100%, 0);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 </style>

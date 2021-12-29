@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .selector {
   position: absolute;
   overflow: hidden;
@@ -58,9 +58,10 @@ export default {
   cursor: crosshair;
   pointer-events: none;
   z-index: 1;
+  background-color: rgba(0, 0, 0, 0.4);
+}
 
-  &.circle {
-    border-radius: 50%;
-  }
+.selector .circle {
+  border-radius: 50%;
 }
 </style>

@@ -41,7 +41,8 @@ export default {
     },
     url: {
       handler (url) {
-        loadImg(url).then((img) => {
+        loadImg(url, (err, img) => {
+          if (err) return console.error(err)
           this.$img = img
           this.handleRotate(this.step)
         })

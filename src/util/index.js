@@ -39,13 +39,11 @@ export const getScrollInfo = () => {
  * @param {String} img url
  * @return {Promise}
  */
-export const loadImg = url => {
-  return new Promise((resolve, reject) => {
-    const img = document.createElement('img')
-    img.addEventListener('load', () => resolve(img))
-    img.addEventListener('error', reject)
-    img.src = url
-  })
+export const loadImg = (url, callback) => {
+  const img = document.createElement('img')
+  img.addEventListener('load', () => callback(null, img))
+  img.addEventListener('error', callback)
+  img.src = url
 }
 
 export function rotateCanvas (canvas, img, width, height, step) {
