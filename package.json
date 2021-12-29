@@ -20,7 +20,9 @@
     "dev": "node scripts/dev.js",
     "build": "node scripts/build.js",
     "release": "npm run build && release-it",
-    "serve": "serve"
+    "serve": "serve",
+    "prepare": "husky install",
+    "lint:fix": "npx eslint --fix . --ext .js,.vue"
   },
   "lint-staged": {
     "*.{js,vue}": [
@@ -29,6 +31,7 @@
     ]
   },
   "peerDependencies": {
+    "core-js": "^3.0.0",
     "vue": "^2.5.11"
   },
   "devDependencies": {
@@ -49,7 +52,7 @@
     "autoprefixer": "^9.0.0",
     "babel-eslint": "^10.1.0",
     "commitizen": "^4.2.4",
-    "core-js": "^3.16.1",
+    "core-js": "^3.0.0",
     "eslint": "^7.32.0",
     "eslint-plugin-cypress": "^2.11.3",
     "eslint-plugin-import": "^2.24.0",
@@ -60,19 +63,16 @@
     "execa": "^5.1.1",
     "husky": "^7.0.1",
     "lint-staged": "^11.1.2",
-    "node-sass": "^6.0.1",
     "postcss": "^8.3.9",
     "release-it": "^14.11.5",
     "rollup": "^2.56.1",
     "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.0",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-vue": "^5.0.0",
     "serve": "^12.0.0",
-    "vue-template-compiler": "^2.6.14",
-    "yorkie": "^2.0.0"
+    "vue-template-compiler": "^2.6.14"
   },
   "keywords": [
     "vue",

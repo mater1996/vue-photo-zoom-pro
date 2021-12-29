@@ -48,7 +48,10 @@ module.exports = ({ environment }) => {
     output: FORMAT_OPTIONS[FORMAT],
     treeshake: isProd,
     plugins: [
-      peerDepsExternal(),
+      !isIIFE &&
+        peerDepsExternal({
+          includeDependencies: true
+        }),
       replace({
         preventAssignment: true,
         values: { 'process.env.NODE_ENV': JSON.stringify(NODE_ENV) }
