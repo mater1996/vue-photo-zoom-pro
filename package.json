@@ -80,10 +80,5 @@
     "magnifying glass",
     "maginfer",
     "zoom"
-  ],
-  "release-it": {
-    "github": {
-      "release": true
-    }
-  }
+  ]
 }
