@@ -9,14 +9,14 @@
     >
       <PhotoMask
         v-if="mask"
-        v-show="!hideSelector"
+        v-show="mouseEnter"
         :mask-color="maskColor"
         :selector="selectorProps"
         :zoom-region="zoomRegionRect"
       />
       <Selector
         v-if="selector"
-        v-show="!hideSelector"
+        v-show="mouseEnter"
         v-bind="selectorProps"
         :type="type"
       >
@@ -35,7 +35,7 @@
       </Selector>
       <Zoomer
         v-if="outZoomer"
-        v-show="!hideOutZoomer"
+        v-show="mouseEnter"
         class="out-zoomer"
         v-bind="zoomerProps"
         :style="outZoomerPosition"
@@ -141,8 +141,7 @@ export default {
   },
   data () {
     return {
-      hideSelector: true,
-      hideOutZoomer: true,
+      mouseEnter: false,
       outZoomerTop: 0,
       mouse: {
         x: 0,
@@ -279,32 +278,23 @@ export default {
   methods: {
     handleMouseEnter (e) {
       !this.disabledReactive && this.update()
-      this.hideSelector = false
-      if (this.outZoomer) this.hideOutZoomer = false
+      this.mouseEnter = true
       this.$emit('mouseenter', e)
     },
     handleMouseMove (e) {
-      if (this.hideSelector) return
+      !this.disabledReactive && this.update()
       e = this.pointerInfo = e || this.pointerInfo
-      if (e) {
-        !this.disabledReactive && this.update()
-        this.hideSelector = false
-        const { pageX, pageY } = e
-        const { zoomRegionAbsolute } = this
-        this.mouse.x = pageX - zoomRegionAbsolute.left
-        this.mouse.y = pageY - zoomRegionAbsolute.top
-        if (this.outZoomer) {
-          this.hideOutZoomer = false
-          if (this.outZoomerSticky) {
-            this.outZoomerTop = Math.max(pageY - e.clientY, 0)
-          }
-        }
+      const { pageX, pageY } = e
+      const { mouse, zoomRegionAbsolute } = this
+      mouse.x = pageX - zoomRegionAbsolute.left
+      mouse.y = pageY - zoomRegionAbsolute.top
+      if (this.outZoomer && this.outZoomerSticky) {
+        this.outZoomerTop = Math.max(pageY - e.clientY, 0)
       }
       this.$emit('mousemove', e)
     },
     handleMouseLeave (e) {
-      this.hideSelector = true
-      if (this.outZoomer) this.hideOutZoomer = true
+      this.mouseEnter = false
       this.$emit('mouseleave', e)
     },
     update () {
