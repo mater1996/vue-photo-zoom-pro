@@ -4,7 +4,6 @@
  * @Date: 2021-08-09 16:56:22
  * @Description:
  */
-const glob = require('glob')
 const loadConfigFile = require('rollup/dist/loadConfigFile')
 const path = require('path')
 const rollup = require('rollup')
@@ -23,26 +22,6 @@ async function build (format) {
     ['GLOBAL', 'VuePhotoZoomPro'],
     ['INPUT', 'src/vue-photo-zoom-pro.vue']
   ])
-}
-
-async function buildPlugins (plugins, format) {
-  for (const plugin of plugins) {
-    const pluginName = path
-      .dirname(plugin)
-      .split('/')
-      .pop()
-    await execaRollup([
-      ['NODE_ENV', 'development'],
-      ['FORMAT', format],
-      ['NAME', pluginName],
-      [
-        'GLOBAL',
-        `VuePhotoZoomProPlugin${pluginName[0].toUpperCase() +
-          pluginName.substr(1)}`
-      ],
-      ['INPUT', plugin]
-    ])
-  }
 }
 
 const execaRollup = environment => {
@@ -85,10 +64,8 @@ function createServer () {
 }
 
 async function run () {
-  const plugins = glob.sync('src/plugins/**/*.js')
   for (const i of formats) {
     await build(i)
-    await buildPlugins(plugins, i)
   }
 }
 

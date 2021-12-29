@@ -43,7 +43,7 @@ export default {
 new Vue({
   el: '#app',
   components: {
-    vuePhotoZoomPro: VuePhotoZoomPro
+    vuePhotoZoomPro: VuePhotoZoomPro.default
   }
 }
 ```
@@ -182,7 +182,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 使用 img 预览图片以及缩放图片。
 
 ```js
-import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'
+import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro'
 
 export default {
   components: {
@@ -194,16 +194,12 @@ export default {
 
 或者使用 cdn
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/img.global.js"></script>
-```
-
 ```js
 new Vue({
   el: '#app',
   components: {
-    ImgPreview: VuePhotoZoomProPluginImg.ImgPreview,
-    ImgZoomer: VuePhotoZoomProPluginImg.ImgZoomer
+    ImgPreview: VuePhotoZoomPro.ImgPreview,
+    ImgZoomer: VuePhotoZoomPro.ImgZoomer
   }
 })
 ```
@@ -227,7 +223,7 @@ new Vue({
 使用 canvas 预览和缩放图片, 支持旋转图片。
 
 ```js
-import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro/canvas'
+import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro'
 
 export default {
   components: {
@@ -239,16 +235,12 @@ export default {
 
 或者使用 cdn
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/canvas.global.js"></script>
-```
-
 ```js
 new Vue({
   el: '#app',
   components: {
-    CanvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
-    CanvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
+    CanvasPreview: VuePhotoZoomPro.CanvasPreview,
+    CanvasZoomer: VuePhotoZoomPro.CanvasZoomer
   }
 })
 ```
@@ -258,7 +250,7 @@ new Vue({
   <vue-photo-zoom-pro>
     <canvas-preview :url="imgUrl" width="960" height="480"></canvas-preview>
     <template slot="zoomer">
-      <canvas-zoomer :url="imgHighSrc" width="960" height="480"></canvas-zoomer>
+      <canvas-zoomer :url="imgHighUrl" width="960" height="480"></canvas-zoomer>
     </template>
   </vue-photo-zoom-pro>
 </template>

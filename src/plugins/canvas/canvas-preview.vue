@@ -11,7 +11,7 @@
 import { loadImg, rotateCanvas } from '../../util/index.js'
 
 export default {
-  name: 'CanvasRegion',
+  name: 'CanvasPreview',
   props: {
     url: {
       type: String,

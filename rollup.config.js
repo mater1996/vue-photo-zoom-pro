@@ -30,7 +30,8 @@ module.exports = ({ environment }) => {
     cjs: {
       name: global,
       format: 'cjs',
-      file: resolveOutput(`${name}.js`)
+      file: resolveOutput(`${name}.js`),
+      exports: 'named'
     },
     esm: {
       name: global,
@@ -40,7 +41,8 @@ module.exports = ({ environment }) => {
     iife: {
       name: global,
       format: 'iife',
-      file: resolveOutput(`${name}.global.js`)
+      file: resolveOutput(`${name}.global.js`),
+      exports: 'named'
     }
   }
   return {

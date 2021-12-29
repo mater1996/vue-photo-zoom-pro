@@ -45,7 +45,7 @@ or cdn
 new Vue({
   el: '#app',
   components: {
-    vuePhotoZoomPro: VuePhotoZoomPro
+    vuePhotoZoomPro: VuePhotoZoomPro.default
   }
 }
 ```
@@ -186,7 +186,7 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 Preview and zoom image using img.
 
 ```js
-import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro/img'
+import { ImgZoomer, ImgPreview } from 'vue-photo-zoom-pro'
 
 export default {
   components: {
@@ -198,16 +198,12 @@ export default {
 
 or cdn
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/img.global.js"></script>
-```
-
 ```js
 new Vue({
   el: '#app',
   components: {
-    ImgPreview: VuePhotoZoomProPluginImg.ImgPreview,
-    ImgZoomer: VuePhotoZoomProPluginImg.ImgZoomer
+    ImgPreview: VuePhotoZoomPro.ImgPreview,
+    ImgZoomer: VuePhotoZoomPro.ImgZoomer
   }
 })
 ```
@@ -231,7 +227,7 @@ new Vue({
 Preview and zoom image using canvas, this support rotate image.
 
 ```js
-import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro/canvas'
+import { CanvasZoomer, CanvasPreview } from 'vue-photo-zoom-pro'
 
 export default {
   components: {
@@ -243,16 +239,12 @@ export default {
 
 or cdn
 
-```html
-<script src="https://cdn.jsdelivr.net/npm/vue-photo-zoom-pro/dist/canvas.global.js"></script>
-```
-
 ```js
 new Vue({
   el: '#app',
   components: {
-    CanvasPreview: VuePhotoZoomProPluginCanvas.CanvasPreview,
-    CanvasZoomer: VuePhotoZoomProPluginCanvas.CanvasZoomer
+    CanvasPreview: VuePhotoZoomPro.CanvasPreview,
+    CanvasZoomer: VuePhotoZoomPro.CanvasZoomer
   }
 })
 ```

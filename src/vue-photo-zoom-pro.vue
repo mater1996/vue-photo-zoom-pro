@@ -59,11 +59,16 @@ import PhotoMask from './components/photo-mask.vue'
 import Zoomer from './components/zoomer.vue'
 import Selector from './components/selector.vue'
 import { ImgPreview, ImgZoomer } from './plugins/img/index.js'
+import { CanvasPreview, CanvasZoomer } from './plugins/canvas/index.js'
 import {
   getBoundingClientRect,
   getBoundValue,
   getScrollInfo
 } from './util/index.js'
+
+export { ImgPreview, ImgZoomer }
+
+export { CanvasPreview, CanvasZoomer }
 
 export default {
   name: 'VuePhotoZoomPro',

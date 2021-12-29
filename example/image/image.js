@@ -1,7 +1,7 @@
 new Vue({
   el: '#demo',
   components: {
-    vuePhotoZoomPro: VuePhotoZoomPro
+    vuePhotoZoomPro: VuePhotoZoomPro.default
   },
   data: function() {
     return {
