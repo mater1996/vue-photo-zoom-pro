@@ -61,7 +61,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.selector .circle {
+.selector.circle {
   border-radius: 50%;
 }
 </style>
