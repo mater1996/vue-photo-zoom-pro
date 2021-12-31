@@ -136,23 +136,23 @@ ctx2.drawImage(offscreenCanvas, 0, 0)
 
 ### props
 
-| Prop Name         | Type                                        | Default         | Note                                                |
-| ----------------- | ------------------------------------------- | --------------- | --------------------------------------------------- |
-| url               | String                                      | ''              | picture url                                         |
-| high-url          | String                                      | ''              | Clearer picture url                                 |
-| scale             | Number                                      | 2               | magnification                                       |
-| disabled          | Boolean                                     | false           | disabled move                                       |
-| width             | Number                                      | 166             | The width of the selector or zoomer                 |
-| height            | Number                                      | -1              | The height of the selector or zoomer                |
-| type              | String                                      | square          | magnifying glass type (circle,square)               |
-| selector          | Boolean / { release: Boolean }                                     | true            | show or remove selector                             |
-| out-zoomer        | Boolean / { sticky: Boolean } | false           | zoom region will be displayed on the outside        |
-| mask              | Boolean                                     | false           | show mask                                           |
-| mask-color        | Color                                       | rgba(0,0,0,0.4) | mask color                                          |
-| enter-event       | Object/UIEvent                              | null            | custom enter event                                  |
-| move-event        | Object/UIEvent                              | null            | custom move event                                   |
-| leave-event       | Object/UIEvent                              | null            | custom leave event                                  |
-| disabled-reactive | Boolean                                     | false           | Disable listening for internal element info changes |
+| Prop Name         | Type                           | Default         | Note                                                                                     |
+| ----------------- | ------------------------------ | --------------- | ---------------------------------------------------------------------------------------- |
+| url               | String                         | ''              | picture url                                                                              |
+| high-url          | String                         | ''              | Clearer picture url                                                                      |
+| scale             | Number                         | 2               | magnification                                                                            |
+| disabled          | Boolean                        | false           | disabled move                                                                            |
+| width             | Number                         | 166             | The width of the selector or zoomer                                                      |
+| height            | Number                         | -1              | The height of the selector or zoomer                                                     |
+| type              | String                         | square          | magnifying glass type (circle,square)                                                    |
+| selector          | Boolean / { release: Boolean } | true            | show or remove selector, release: Whether the selector is restricted to the preview area |
+| out-zoomer        | Boolean / { sticky: Boolean }  | false           | zoom region will be displayed on the outside                                             |
+| mask              | Boolean                        | false           | show mask                                                                                |
+| mask-color        | Color                          | rgba(0,0,0,0.4) | mask color                                                                               |
+| enter-event       | Object/UIEvent                 | null            | custom enter event                                                                       |
+| move-event        | Object/UIEvent                 | null            | custom move event                                                                        |
+| leave-event       | Object/UIEvent                 | null            | custom leave event                                                                       |
+| disabled-reactive | Boolean                        | false           | Disable listening for internal element info changes                                      |
 
 ### Slot
 
