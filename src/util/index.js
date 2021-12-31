@@ -1,4 +1,4 @@
-export const getBoundingClientRect = element => {
+export const getBoundingClientRect = (element) => {
   const rect = element.getBoundingClientRect()
 
   // whether the IE version is lower than 11
@@ -18,8 +18,26 @@ export const getBoundingClientRect = element => {
   }
 }
 
-export const getBoundValue = (value, min, max) => {
-  return value > min ? Math.min(value, max) : min
+export function clamp (num, min, max) {
+  const MIN = min
+  const MAX = max
+  return Math.min(Math.max(num, MIN), MAX)
+}
+
+export const getBoundValue = (value, bound) => {
+  return {
+    x: clamp(value.x, bound.left, bound.right),
+    y: clamp(value.y, bound.top, bound.bottom)
+  }
+}
+
+export const generateBound = (width, height, boundWidth, boundHeight) => {
+  return {
+    left: boundWidth,
+    top: boundHeight,
+    right: width - boundWidth,
+    bottom: height - boundHeight
+  }
 }
 
 export const getScrollInfo = () => {

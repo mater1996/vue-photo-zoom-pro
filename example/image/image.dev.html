@@ -14,7 +14,6 @@
       type="text/css"
       href="../../dist/style/vue-photo-zoom-pro.css"
     />
-    <script src="../../dist/canvas.global.js"></script>
     <style>
       body {
         margin: 0;
@@ -41,13 +40,7 @@
   </head>
   <body>
     <div id="demo">
-      {{props}}
       <vue-photo-zoom-pro class="vue-photo-zoom-pro" v-bind="props">
-        <!-- <canvas-preview url="./image.jpg" width="960" height="480" :rotate="rotate"></canvas-preview>
-        <template slot="zoomer">
-          <canvas-zoomer url="./image-high.jpg" width="960" height="480" :rotate="rotate"></canvas-zoomer>
-        </template>
-        <div class="rotate-icon" @click="handleRotate">🔄</div> -->
       </vue-photo-zoom-pro>
     </div>
     <script src="./image.js"></script>
