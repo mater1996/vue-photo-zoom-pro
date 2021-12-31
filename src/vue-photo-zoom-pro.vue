@@ -143,10 +143,6 @@ export default {
     maskColor: {
       type: String,
       default: ''
-    },
-    release: {
-      type: Boolean,
-      default: false
     }
   },
   data () {
