@@ -142,6 +142,10 @@ export default {
     maskColor: {
       type: String,
       default: ''
+    },
+    reverse: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
@@ -162,10 +166,11 @@ export default {
   },
   computed: {
     selectorWidth () {
-      return this.width
+      return !this.reverse ? this.width : this.width / this.scale
     },
     selectorHeight () {
-      return this.height > -1 ? this.height : this.width
+      const height = this.height > -1 ? this.height : this.width
+      return !this.reverse ? height : height / this.scale
     },
     selectorHalfWidth () {
       return this.selectorWidth / 2
