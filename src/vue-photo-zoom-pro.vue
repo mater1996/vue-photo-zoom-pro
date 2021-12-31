@@ -63,7 +63,8 @@ import { CanvasPreview, CanvasZoomer } from './plugins/canvas/index.js'
 import {
   getBoundingClientRect,
   getBoundValue,
-  getScrollInfo
+  getScrollInfo,
+  generateBound
 } from './util/index.js'
 
 export { ImgPreview, ImgZoomer }
@@ -120,7 +121,7 @@ export default {
       default: null
     },
     selector: {
-      type: Boolean,
+      type: [Boolean, Object],
       default: true
     },
     outZoomer: {
@@ -143,9 +144,9 @@ export default {
       type: String,
       default: ''
     },
-    reverse: {
+    release: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   data () {
@@ -165,12 +166,21 @@ export default {
     }
   },
   computed: {
+    selectorOptions () {
+      return typeof this.selector === 'object'
+        ? this.selector
+        : { release: false }
+    },
+    outZoomerOptions () {
+      return typeof this.outZoomer === 'object'
+        ? this.outZoomer
+        : { sticky: false }
+    },
     selectorWidth () {
-      return !this.reverse ? this.width : this.width / this.scale
+      return this.width
     },
     selectorHeight () {
-      const height = this.height > -1 ? this.height : this.width
-      return !this.reverse ? height : height / this.scale
+      return this.height > -1 ? this.height : this.width
     },
     selectorHalfWidth () {
       return this.selectorWidth / 2
@@ -203,46 +213,43 @@ export default {
       }
     },
     pointBound () {
-      const { selectorHalfWidth, selectorHalfHeight, zoomRegionRect } = this
-      return {
-        leftBound: selectorHalfWidth,
-        topBound: selectorHalfHeight,
-        rightBound: zoomRegionRect.width - selectorHalfWidth,
-        bottomBound: zoomRegionRect.height - selectorHalfHeight
-      }
+      const { zoomRegionRect } = this
+      return generateBound(
+        zoomRegionRect.width,
+        zoomRegionRect.height,
+        this.selectorHalfWidth,
+        this.selectorHalfHeight
+      )
     },
     vPointBound () {
-      const { zoomerHalfWidth, zoomerHalfHeight, zoomRegionRect, scale } = this
-      return {
-        leftBound: zoomerHalfWidth,
-        topBound: zoomerHalfHeight,
-        rightBound: zoomRegionRect.width * scale - zoomerHalfWidth,
-        bottomBound: zoomRegionRect.height * scale - zoomerHalfHeight
-      }
+      const { zoomRegionRect, scale } = this
+      return generateBound(
+        zoomRegionRect.width * scale,
+        zoomRegionRect.height * scale,
+        this.zoomerHalfWidth,
+        this.zoomerHalfHeight
+      )
     },
     point () {
-      const { mouse, pointBound } = this
-      const { leftBound, topBound, rightBound, bottomBound } = pointBound
-      return {
-        left: getBoundValue(mouse.x, leftBound, rightBound),
-        top: getBoundValue(mouse.y, topBound, bottomBound)
-      }
+      const { mouse, selectorOptions } = this
+      return !selectorOptions.release
+        ? getBoundValue(mouse, this.pointBound)
+        : mouse
     },
     vPoint () {
-      const { mouse, scale, vPointBound } = this
-      const { leftBound, topBound, rightBound, bottomBound } = vPointBound
-      return {
-        left: getBoundValue(mouse.x * scale, leftBound, rightBound),
-        top: getBoundValue(mouse.y * scale, topBound, bottomBound)
-      }
+      const { mouse, scale, selectorOptions } = this
+      const scaleMouse = { x: mouse.x * scale, y: mouse.y * scale }
+      return !selectorOptions.release
+        ? getBoundValue(scaleMouse, this.vPointBound)
+        : scaleMouse
     },
     selectorProps () {
       const { point } = this
       return {
         width: this.selectorWidth,
         height: this.selectorHeight,
-        left: point.left - this.selectorHalfWidth,
-        top: point.top - this.selectorHalfHeight
+        left: point.x - this.selectorHalfWidth,
+        top: point.y - this.selectorHalfHeight
       }
     },
     zoomerProps () {
@@ -250,20 +257,16 @@ export default {
       return {
         scale: this.scale,
         zoomRegion: this.zoomRegionRect,
-        url: this.highUrl,
         width: this.zoomerWidth,
         height: this.zoomerHeight,
-        left: vPoint.left - this.zoomerHalfWidth,
-        top: vPoint.top - this.zoomerHalfHeight
+        left: vPoint.x - this.zoomerHalfWidth,
+        top: vPoint.y - this.zoomerHalfHeight
       }
     },
     outZoomerPosition () {
       return {
         top: `${this.outZoomerTop}px`
       }
-    },
-    outZoomerSticky () {
-      return typeof this.outZoomer === 'object' ? this.outZoomer.sticky : false
     }
   },
   watch: {
@@ -298,7 +301,7 @@ export default {
       const { mouse, zoomRegionAbsolute } = this
       mouse.x = pageX - zoomRegionAbsolute.left
       mouse.y = pageY - zoomRegionAbsolute.top
-      if (this.outZoomer && this.outZoomerSticky) {
+      if (this.outZoomer && this.outZoomerOptions.sticky) {
         this.outZoomerTop = Math.max(pageY - e.clientY, 0)
       }
       this.$emit('mousemove', e)

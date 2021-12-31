@@ -39,12 +39,12 @@
   </head>
   <body>
     <div id="demo">
-      <vue-photo-zoom-pro :scale="scale">
-        <canvas id="canvas1"></canvas>
+      <vue-photo-zoom-pro>
+        <canvas-preview url="./image.jpg" width="960" height="480" :rotate="rotate"></canvas-preview>
         <template slot="zoomer">
-          <canvas id="canvas2"></canvas>
+          <canvas-zoomer url="./image-high.jpg" width="960" height="480" :rotate="rotate"></canvas-zoomer>
         </template>
-        <div class="rotate-icon" @click="rotate">🔄</div>
+        <div class="rotate-icon" @click="handleRotate">🔄</div>
       </vue-photo-zoom-pro>
     </div>
     <script src="./rotate.js"></script>

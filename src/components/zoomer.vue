@@ -28,10 +28,6 @@
 export default {
   name: 'VuePhotoZoomProZoomer',
   props: {
-    url: {
-      type: String,
-      default: ''
-    },
     left: {
       type: Number,
       default: 0
