@@ -209,11 +209,11 @@ new Vue({
   <vue-photo-zoom-pro>
     <img-preview :url="imgUrl"></img-preview>
     <template slot="zoomer">
-      <img-zoomer :url="imgHighSrc"></img-zoomer>
+      <img-zoomer :url="imgHighUrl"></img-zoomer>
     </template>
   </vue-photo-zoom-pro>
   <!-- 
-    和 <vue-photo-zoom-pro :url="imgUrl" :high-url="imgHighSrc"> 的效果相同
+    和 <vue-photo-zoom-pro :url="imgUrl" :high-url="imgHighUrl"> 的效果相同
   -->
 </template>
 ```
