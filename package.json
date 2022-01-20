@@ -29,8 +29,10 @@
       "npm run lint:fix"
     ]
   },
+  "dependencies": {
+    "core-js": "^3.0.0"
+  },
   "peerDependencies": {
-    "core-js": "^3.0.0",
     "vue": "^2.5.11"
   },
   "devDependencies": {
