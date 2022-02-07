@@ -1,44 +1,29 @@
 <template>
-  <div class="vue-photo-zoom-pro">
-    <div
-      ref="zoomRegion"
-      class="zoom-region"
-      @mouseenter="!disabled && !enterEvent && handleMouseEnter($event)"
-      @mousemove="!disabled && !moveEvent && handleMouseMove($event)"
-      @mouseleave="!disabled && !leaveEvent && handleMouseLeave($event)"
+  <div
+    ref="zoomRegion"
+    class="vue-photo-zoom-pro"
+    @mouseenter="!disabled && !enterEvent && handleMouseEnter($event)"
+    @mousemove="!disabled && !moveEvent && handleMouseMove($event)"
+    @mouseleave="!disabled && !leaveEvent && handleMouseLeave($event)"
+  >
+    <PhotoMask
+      v-if="mask"
+      v-show="mouseEnter"
+      :width="zoomRegionRect.width"
+      :height="zoomRegionRect.height"
+      :mask-color="maskColor"
+      :selector="selectorProps"
+    />
+    <Selector
+      v-if="selector"
+      v-show="mouseEnter"
+      v-bind="selectorProps"
+      :type="type"
     >
-      <PhotoMask
-        v-if="mask"
-        v-show="mouseEnter"
-        :mask-color="maskColor"
-        :selector="selectorProps"
-        :zoom-region="zoomRegionRect"
-      />
-      <Selector
-        v-if="selector"
-        v-show="mouseEnter"
-        v-bind="selectorProps"
-        :type="type"
-      >
-        <Zoomer
-          v-if="!outZoomer"
-          class="inner-zoomer"
-          v-bind="zoomerProps"
-        >
-          <ImgZoomer
-            v-if="highUrl || url"
-            :url="highUrl || url"
-          />
-          <slot name="zoomer" />
-        </Zoomer>
-        <slot name="selector" />
-      </Selector>
       <Zoomer
-        v-if="outZoomer"
-        v-show="mouseEnter"
-        class="out-zoomer"
+        v-if="!outZoomer"
+        class="inner-zoomer"
         v-bind="zoomerProps"
-        :style="outZoomerPosition"
       >
         <ImgZoomer
           v-if="highUrl || url"
@@ -46,12 +31,26 @@
         />
         <slot name="zoomer" />
       </Zoomer>
-      <ImgPreview
-        v-if="url"
-        :url="url"
+      <slot name="selector" />
+    </Selector>
+    <Zoomer
+      v-if="outZoomer"
+      v-show="mouseEnter"
+      class="out-zoomer"
+      v-bind="zoomerProps"
+      :style="outZoomerPosition"
+    >
+      <ImgZoomer
+        v-if="highUrl || url"
+        :url="highUrl || url"
       />
-      <slot />
-    </div>
+      <slot name="zoomer" />
+    </Zoomer>
+    <ImgPreview
+      v-if="url"
+      :url="url"
+    />
+    <slot />
   </div>
 </template>
 <script>
@@ -318,10 +317,6 @@ export default {
 
 <style scoped>
 .vue-photo-zoom-pro {
-  font-size: 0;
-}
-
-.vue-photo-zoom-pro .zoom-region {
   position: relative;
   display: inline-block;
 }

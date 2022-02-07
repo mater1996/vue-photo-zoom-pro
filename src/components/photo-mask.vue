@@ -26,9 +26,13 @@
 export default {
   name: 'VuePhotoZoomProMask',
   props: {
-    zoomRegion: {
-      type: Object,
-      default: () => ({ width: 0, height: 0 })
+    width: {
+      type: Number,
+      default: 0
+    },
+    height: {
+      type: Number,
+      default: 0
     },
     selector: {
       type: Object,
@@ -41,9 +45,9 @@ export default {
   },
   computed: {
     topStyle () {
-      const { selector, zoomRegion } = this
+      const { selector } = this
       return {
-        width: `${zoomRegion.width}px`,
+        width: `${this.width}px`,
         height: `${selector.top}px`
       }
     },
@@ -55,17 +59,17 @@ export default {
       }
     },
     rightStyle () {
-      const { selector, zoomRegion } = this
+      const { selector } = this
       return {
-        width: `${zoomRegion.width - selector.left - selector.width}px`,
+        width: `${this.width - selector.left - selector.width}px`,
         height: `${selector.height}px`
       }
     },
     bottomStyle () {
-      const { selector, zoomRegion } = this
+      const { selector } = this
       return {
-        width: `${zoomRegion.width}px`,
-        height: `${zoomRegion.height - selector.top - selector.height}px`
+        width: `${this.width}px`,
+        height: `${this.height - selector.top - selector.height}px`
       }
     },
     maskStyle () {
