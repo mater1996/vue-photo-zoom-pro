@@ -108,15 +108,15 @@ export default {
       default: 2
     },
     enterEvent: {
-      type: [Object, UIEvent],
+      type: Object,
       default: null
     },
     moveEvent: {
-      type: [Object, UIEvent],
+      type: Object,
       default: null
     },
     leaveEvent: {
-      type: [Object, UIEvent],
+      type: UIEvent,
       default: null
     },
     selector: {
@@ -319,6 +319,7 @@ export default {
 .vue-photo-zoom-pro {
   position: relative;
   display: inline-block;
+  font-size: 0;
 }
 
 .vue-photo-zoom-pro .out-zoomer {
