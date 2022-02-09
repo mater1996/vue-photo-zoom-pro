@@ -7,7 +7,10 @@
     </div>
     <template slot="zoomer">
       <div class="star-sky">
-        <div class="landscape"></div>
+        <div
+          class="landscape"
+          :style="{'background-image': $withBase('/Trees-Landscape-Silhouette.png')}"
+        ></div>
         <div class="filter"></div>
         <canvas id="canvas2"></canvas>
       </div>
@@ -240,7 +243,6 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('/Trees-Landscape-Silhouette.png');
   background-size: 400px 162.5px;
   background-repeat: repeat-x;
   background-position: right bottom;
