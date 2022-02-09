@@ -1,7 +1,10 @@
 <template>
   <vue-photo-zoom-pro type="circle" :scale="scale">
     <div class="star-sky">
-      <div class="landscape"></div>
+      <div
+        class="landscape"
+        :style="{'background-image': `url('${$withBase('/Trees-Landscape-Silhouette.png')}')`}"
+      ></div>
       <div class="filter"></div>
       <canvas id="canvas1"></canvas>
     </div>
