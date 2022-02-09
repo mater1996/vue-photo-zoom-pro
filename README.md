@@ -33,7 +33,7 @@ export default {
 
 ## Documentation
 
-Check out our docs at [https://mater1996.github.io/vue-photo-zoom-pro/docs/guide/](https://mater1996.github.io/vue-photo-zoom-pro/docs/guide/).
+Check out our docs at [https://mater1996.github.io/vue-photo-zoom-pro/guide/](https://mater1996.github.io/vue-photo-zoom-pro/guide/).
 
 ## License
 
