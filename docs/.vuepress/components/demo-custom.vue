@@ -9,7 +9,7 @@
       <div class="star-sky">
         <div
           class="landscape"
-          :style="{'background-image': url(`'${$withBase('/Trees-Landscape-Silhouette.png')}'`)}"
+          :style="{'background-image': `url('${$withBase('/Trees-Landscape-Silhouette.png')}')`}"
         ></div>
         <div class="filter"></div>
         <canvas id="canvas2"></canvas>
