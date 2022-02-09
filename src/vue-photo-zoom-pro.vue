@@ -116,7 +116,7 @@ export default {
       default: null
     },
     leaveEvent: {
-      type: UIEvent,
+      type: Object,
       default: null
     },
     selector: {
