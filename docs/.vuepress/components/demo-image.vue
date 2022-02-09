@@ -1,5 +1,5 @@
 <template>
-  <vue-photo-zoom-pro url="/image.jpg" highUrl="/image-high.jpg"></vue-photo-zoom-pro>
+  <vue-photo-zoom-pro :url="$withBase('/image.jpg')" :highUrl="$withBase('/image-high.jpg')"></vue-photo-zoom-pro>
 </template>
 
 <script>

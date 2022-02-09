@@ -1,15 +1,15 @@
 <template>
-  <vue-photo-zoom-pro type="circle" :high-url="url">
+  <vue-photo-zoom-pro type="circle" :high-url="$withBase(url)">
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
-          <img class="image" src="/swiper-image-1.jpg" />
+          <img class="image" :src="$withBase('/swiper-image-1.jpg')" />
         </div>
         <div class="swiper-slide">
-          <img class="image" src="/swiper-image-2.jpg" />
+          <img class="image" :src="$withBase('/swiper-image-2.jpg')" />
         </div>
         <div class="swiper-slide">
-          <img class="image" src="/swiper-image-3.jpg" />
+          <img class="image" :src="$withBase('/swiper-image-3.jpg')" />
         </div>
       </div>
     </div>
