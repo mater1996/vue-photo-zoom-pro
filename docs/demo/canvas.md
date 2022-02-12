@@ -1,5 +1,9 @@
 # Canvas
 
+<ClientOnly>
+  <demo-canvas></demo-canvas>
+</ClientOnly>
+
 ```vue
 <template>
   <vue-photo-zoom-pro>
@@ -46,7 +50,3 @@ export default {
 }
 </script>
 ```
-
-<ClientOnly>
-  <demo-canvas></demo-canvas>
-</ClientOnly>

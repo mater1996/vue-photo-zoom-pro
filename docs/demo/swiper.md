@@ -1,5 +1,9 @@
 # Swiper
 
+<ClientOnly>
+  <demo-swiper></demo-swiper>
+</ClientOnly>
+
 ```vue
 <template>
   <vue-photo-zoom-pro type="circle" :high-url="url">
@@ -62,7 +66,3 @@ export default {
 }
 </style>
 ```
-
-<ClientOnly>
-  <demo-swiper></demo-swiper>
-</ClientOnly>

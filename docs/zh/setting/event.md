@@ -4,8 +4,6 @@
 
 组件初始化完成。
 
-## mouseenter
+## update(e: DOMRect)
 
-## mousemove
-
-## mouseleave
+放大区域大小或者位置更新。

@@ -1,6 +1,11 @@
 <template>
   <vue-photo-zoom-pro>
-    <canvas-preview :url="$withBase('/image.jpg')" :width="720" :height="360" :rotate="rotate"></canvas-preview>
+    <canvas-preview
+      :url="$withBase('/image.jpg')"
+      :width="720"
+      :height="360"
+      :rotate="rotate"
+    ></canvas-preview>
     <template slot="zoomer">
       <canvas-zoomer
         :url="$withBase('/image-high.jpg')"

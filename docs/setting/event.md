@@ -4,8 +4,6 @@
 
 The component initialization is complete.
 
-## mouseenter
+## update(e: DOMRect)
 
-## mousemove
-
-## mouseleave
+The preview area resize.

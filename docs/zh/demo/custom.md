@@ -1,5 +1,9 @@
 # Custom
 
+<ClientOnly>
+  <demo-custom></demo-custom>
+</ClientOnly>
+
 ```vue
 <template>
   <vue-photo-zoom-pro type="circle" :scale="scale">
@@ -27,7 +31,3 @@ export default {
 }
 </script>
 ```
-
-<ClientOnly>
-  <demo-custom></demo-custom>
-</ClientOnly>

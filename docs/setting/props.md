@@ -21,13 +21,6 @@ The magnification.
 - Type: `number`
 - Default: `2`
 
-## disabled
-
-Disabled all event.
-
-- Type: `boolean`
-- Default: `false`
-
 ## width
 
 The width of the selector.
@@ -77,31 +70,16 @@ Mask color
 - Type: `color string`
 - Default: `rgba(0,0,0,0.4)`
 
-## enter-event
-
-custom enter event
-
-- Type: `object/UIEvent`
-- Default: `null`
-
-
-## move-event
-
-custom move event
-
-- Type: `object/UIEvent`
-- Default: `null`
-
-## leave-event
-
-custom leave event
-
-- Type: `object/UIEvent`
-- Default: `null`
-
 ## disabled-reactive
 
 Disable listening for preview area changes.
+
+- Type: `boolean`
+- Default: `false`
+
+## disabled-event
+
+Disable internal listening events, this way you can manually trigger events.
 
 - Type: `boolean`
 - Default: `false`

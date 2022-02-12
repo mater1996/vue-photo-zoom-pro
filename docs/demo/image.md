@@ -1,5 +1,9 @@
 # Image
 
+<ClientOnly>
+  <demo-image></demo-image>
+</ClientOnly>
+
 ```vue
 <template>
   <vue-photo-zoom-pro url="/image.jpg" highUrl="/image-high.jpg"></vue-photo-zoom-pro>
@@ -14,7 +18,3 @@ export default {
 }
 </script>
 ```
-
-<ClientOnly>
-  <demo-image></demo-image>
-</ClientOnly>

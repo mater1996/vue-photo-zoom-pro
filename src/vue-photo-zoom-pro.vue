@@ -2,13 +2,13 @@
   <div
     ref="zoomRegion"
     class="vue-photo-zoom-pro"
-    @mouseenter="!disabled && !enterEvent && handleMouseEnter($event)"
-    @mousemove="!disabled && !moveEvent && handleMouseMove($event)"
-    @mouseleave="!disabled && !leaveEvent && handleMouseLeave($event)"
+    @mouseenter="!disabledEvent && handleMouseEnter($event)"
+    @mousemove="!disabledEvent && handleMouseMove($event)"
+    @mouseleave="!disabledEvent && handleMouseLeave($event)"
   >
     <PhotoMask
       v-if="mask"
-      v-show="mouseEnter"
+      v-show="mouseEnterFlag"
       :width="zoomRegionRect.width"
       :height="zoomRegionRect.height"
       :mask-color="maskColor"
@@ -16,7 +16,7 @@
     />
     <Selector
       v-if="selector"
-      v-show="mouseEnter"
+      v-show="mouseEnterFlag"
       v-bind="selectorProps"
       :type="type"
     >
@@ -35,7 +35,7 @@
     </Selector>
     <Zoomer
       v-if="outZoomer"
-      v-show="mouseEnter"
+      v-show="mouseEnterFlag"
       class="out-zoomer"
       v-bind="zoomerProps"
       :style="outZoomerPosition"
@@ -107,18 +107,6 @@ export default {
       type: Number,
       default: 2
     },
-    enterEvent: {
-      type: Object,
-      default: null
-    },
-    moveEvent: {
-      type: Object,
-      default: null
-    },
-    leaveEvent: {
-      type: Object,
-      default: null
-    },
     selector: {
       type: [Boolean, Object],
       default: true
@@ -131,7 +119,7 @@ export default {
       type: Boolean,
       default: false
     },
-    disabled: {
+    disabledEvent: {
       type: Boolean,
       default: false
     },
@@ -146,7 +134,7 @@ export default {
   },
   data () {
     return {
-      mouseEnter: false,
+      mouseEnterFlag: false,
       outZoomerTop: 0,
       mouse: {
         x: 0,
@@ -268,14 +256,11 @@ export default {
     scale () {
       this.handleMouseMove(this.pointerInfo)
     },
-    enterEvent (v) {
-      !this.disabled && this.handleMouseEnter(v)
-    },
-    moveEvent (v) {
-      !this.disabled && this.handleMouseMove(v)
-    },
-    leaveEvent (v) {
-      !this.disabled && this.handleMouseLeave(v)
+    zoomRegionRect: {
+      handler () {
+        this.$emit('update', this.zoomRegionRect)
+      },
+      deep: true
     }
   },
   mounted () {
@@ -284,26 +269,36 @@ export default {
     this.$emit('created')
   },
   methods: {
-    handleMouseEnter (e) {
-      !this.disabledReactive && this.update()
-      this.mouseEnter = true
-      this.$emit('mouseenter', e)
+    handleMouseEnter () {
+      this.mouseEnter()
     },
     handleMouseMove (e) {
-      !this.disabledReactive && this.update()
       e = this.pointerInfo = e || this.pointerInfo
       const { pageX, pageY } = e
-      const { mouse, zoomRegionAbsolute } = this
-      mouse.x = pageX - zoomRegionAbsolute.left
-      mouse.y = pageY - zoomRegionAbsolute.top
+      const { zoomRegionAbsolute } = this
+      this.mouseMove(
+        pageX - zoomRegionAbsolute.left,
+        pageY - zoomRegionAbsolute.top
+      )
       if (this.outZoomer && this.outZoomerOptions.sticky) {
         this.outZoomerTop = Math.max(pageY - e.clientY, 0)
       }
-      this.$emit('mousemove', e)
     },
-    handleMouseLeave (e) {
-      this.mouseEnter = false
-      this.$emit('mouseleave', e)
+    handleMouseLeave () {
+      this.mouseLeave()
+    },
+    mouseEnter () {
+      !this.disabledReactive && this.update()
+      this.mouseEnterFlag = true
+    },
+    mouseMove (x, y) {
+      !this.disabledReactive && this.update()
+      const { mouse } = this
+      mouse.x = x
+      mouse.y = y
+    },
+    mouseLeave () {
+      this.mouseEnterFlag = false
     },
     update () {
       Object.assign(

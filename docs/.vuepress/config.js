@@ -35,7 +35,7 @@ module.exports = {
     '/zh/': {
       lang: 'zh-CN',
       title: 'VuePhotoZoomPro',
-      description: 'Vue图片放大镜'
+      description: 'Vue图片放大镜',
     },
   },
   themeConfig: {
@@ -61,7 +61,14 @@ module.exports = {
             {
               title: 'Demo',
               collapsable: false,
-              children: ['image', 'canvas', 'swiper', 'custom'],
+              children: [
+                'image',
+                'canvas',
+                'swiper',
+                'custom',
+                'full',
+                'mini-map',
+              ],
             },
           ],
           '/setting/': [
@@ -69,8 +76,8 @@ module.exports = {
               title: 'Setting',
               collapsable: false,
               children: ['props', 'event', 'methods', 'slot', 'plugins'],
-            }
-          ]
+            },
+          ],
         },
       },
       '/zh/': {
@@ -94,7 +101,14 @@ module.exports = {
             {
               title: '示例',
               collapsable: false,
-              children: ['image', 'canvas', 'swiper', 'custom'],
+              children: [
+                'image',
+                'canvas',
+                'swiper',
+                'custom',
+                'full',
+                'mini-map',
+              ],
             },
           ],
           '/zh/setting/': [
@@ -102,8 +116,8 @@ module.exports = {
               title: '配置',
               collapsable: false,
               children: ['props', 'event', 'methods', 'slot', 'plugins'],
-            }
-          ]
+            },
+          ],
         },
       },
     },
@@ -111,7 +125,7 @@ module.exports = {
     editLinks: false,
     docsDir: 'https://github.com/mater1996/vue-photo-zoom-pro',
     editLinkText: '',
-    lastUpdated: false
+    lastUpdated: false,
   },
   plugins: ['@vuepress/plugin-back-to-top', '@vuepress/plugin-medium-zoom'],
 }

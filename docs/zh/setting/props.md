@@ -77,31 +77,16 @@
 - Type: `color string`
 - Default: `rgba(0,0,0,0.4)`
 
-## enter-event
-
-自定义进入事件。
-
-- Type: `object/UIEvent`
-- Default: `null`
-
-
-## move-event
-
-自定义移动事件。
-
-- Type: `object/UIEvent`
-- Default: `null`
-
-## leave-event
-
-自定义离开事件。
-
-- Type: `object/UIEvent`
-- Default: `null`
-
 ## disabled-reactive
 
 禁用响应式。
+
+- Type: `boolean`
+- Default: `false`
+
+## disabled-event
+
+禁用内部的事件监听，通过这样你可以手动触发事件。
 
 - Type: `boolean`
 - Default: `false`
