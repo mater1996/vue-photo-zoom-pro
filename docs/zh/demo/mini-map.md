@@ -9,8 +9,8 @@
   <vue-photo-zoom-pro
     ref="vuePhotoZoomPro"
     style="width: 100%"
-    :url="$withBase('/image.jpg')"
-    :highUrl="$withBase('/image-high.jpg')"
+    url="/image.jpg"
+    highUrl="/image-high.jpg"
     :width="selectWidth"
     :height="selectHeight"
     :disabledEvent="true"
@@ -24,7 +24,7 @@
       @mousemove="handleMouseMove"
       @mouseleave="handleMouseLeave"
     >
-      <img :src="$withBase('/image.jpg')" @load="update" />
+      <img src="/image.jpg" @load="update" />
     </div>
   </vue-photo-zoom-pro>
 </template>

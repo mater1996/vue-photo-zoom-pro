@@ -25,6 +25,12 @@ module.exports = {
         src: 'https://cdn.jsdelivr.net/npm/swiper@4.5.1/dist/js/swiper.min.js',
       },
     ],
+    [
+      'script',
+      {
+        src: 'https://cdn.jsdelivr.net/npm/dat.gui@0.7.7/build/dat.gui.min.js',
+      },
+    ],
   ],
   locales: {
     '/': {
@@ -54,6 +60,10 @@ module.exports = {
           {
             text: 'Demo',
             link: '/demo/image',
+          },
+          {
+            text: 'Playground',
+            link: '/playground/',
           },
         ],
         sidebar: {
