@@ -274,14 +274,16 @@ export default {
     },
     handleMouseMove (e) {
       e = this.pointerInfo = e || this.pointerInfo
-      const { pageX, pageY } = e
-      const { zoomRegionAbsolute } = this
-      this.mouseMove(
-        pageX - zoomRegionAbsolute.left,
-        pageY - zoomRegionAbsolute.top
-      )
-      if (this.outZoomer && this.outZoomerOptions.sticky) {
-        this.outZoomerTop = Math.max(pageY - e.clientY, 0)
+      if (e) {
+        const { pageX, pageY } = e
+        const { zoomRegionAbsolute } = this
+        this.mouseMove(
+          pageX - zoomRegionAbsolute.left,
+          pageY - zoomRegionAbsolute.top
+        )
+        if (this.outZoomer && this.outZoomerOptions.sticky) {
+          this.outZoomerTop = Math.max(pageY - e.clientY, 0)
+        }
       }
     },
     handleMouseLeave () {
