@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import VuePhotoZoomPro from '../../../src/vue-photo-zoom-pro.vue'
+import VuePhotoZoomPro from 'vue-photo-zoom-pro'
 
 const getScrollInfo = () => {
   const { documentElement, body } = document
