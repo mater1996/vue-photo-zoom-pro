@@ -7,8 +7,8 @@
 ```vue
 <template>
   <vue-photo-zoom-pro
-    :url="$withBase('/image.jpg')"
-    :highUrl="$withBase('/image-high.jpg')"
+    url="/image.jpg"
+    highUrl="/image-high.jpg"
     :width="selectWidth"
     :height="selectHeight"
     @update="handleUpdate"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import VuePhotoZoomPro from '../../../src/vue-photo-zoom-pro.vue'
+import VuePhotoZoomPro from 'vue-photo-zoom-pro'
 export default {
   components: {
     VuePhotoZoomPro,
