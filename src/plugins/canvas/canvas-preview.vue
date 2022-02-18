@@ -1,7 +1,7 @@
 <template>
   <canvas
     ref="canvas"
-    class="canvas-area"
+    class="canvas-preview"
     v-bind="$attrs"
     v-on="$listeners"
   />
