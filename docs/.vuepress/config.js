@@ -105,6 +105,10 @@ module.exports = {
             text: '示例',
             link: '/zh/demo/image',
           },
+          {
+            text: 'Playground',
+            link: '/playground/',
+          },
         ],
         sidebar: {
           '/zh/demo/': [
