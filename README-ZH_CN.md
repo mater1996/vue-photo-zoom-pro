@@ -9,8 +9,14 @@
 ```js
 npm install vue-photo-zoom-pro
 
+# In Vue 2 project
+npm i vue-photo-zoom-pro@2.x
+
 # or
 yarn add vue-photo-zoom-pro
+
+# In Vue 2 project
+yarn add vue-photo-zoom-pro@2.x
 ```
 
 ## 使用
