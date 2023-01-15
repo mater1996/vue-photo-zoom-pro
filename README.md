@@ -1,6 +1,6 @@
 # vue-photo-zoom-pro
 
-> Vue picture magnifier
+> Vue picture magnifier(Vue 2 & Vue 3)
 
 ![example](https://raw.githubusercontent.com/Mater1996/vue-photo-zoom-pro/master/example.png)
 
@@ -9,8 +9,14 @@
 ```js
 npm install vue-photo-zoom-pro
 
+# In Vue 2 project
+npm i vue-photo-zoom-pro@2.x
+
 # or
 yarn add vue-photo-zoom-pro
+
+# In Vue 2 project
+yarn add vue-photo-zoom-pro@2.x
 ```
 ## Usage
 

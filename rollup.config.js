@@ -1,7 +1,6 @@
 const path = require('path')
 const peerDepsExternal = require('rollup-plugin-peer-deps-external')
 const { nodeResolve } = require('@rollup/plugin-node-resolve')
-const commonjs = require('@rollup/plugin-commonjs')
 const vue = require('rollup-plugin-vue')
 const babel = require('rollup-plugin-babel')
 const postcss = require('rollup-plugin-postcss')
@@ -58,7 +57,6 @@ module.exports = ({ environment }) => {
         preventAssignment: true,
         values: { 'process.env.NODE_ENV': JSON.stringify(NODE_ENV) }
       }),
-      commonjs(),
       vue({
         css: !isProd,
         normalizer: '~vue-runtime-helpers/dist/normalize-component.js'
@@ -67,7 +65,7 @@ module.exports = ({ environment }) => {
         browser: true,
         preferBuiltins: true
       }),
-      babel({
+      isIIFE && babel({
         babelrc: true,
         runtimeHelpers: true,
         extensions: ['.js', '.jsx', '.es6', '.es', '.mjs', '.vue']
