@@ -3,7 +3,6 @@
     ref="canvas"
     class="canvas-zoomer"
     v-bind="$attrs"
-    v-on="$listeners"
   />
 </template>
 

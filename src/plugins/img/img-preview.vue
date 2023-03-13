@@ -4,7 +4,6 @@
     style="display: block;width: 100%"
     :src="url"
     v-bind="$attrs"
-    v-on="$listeners"
   >
 </template>
 

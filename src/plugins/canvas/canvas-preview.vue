@@ -3,7 +3,6 @@
     ref="canvas"
     class="canvas-preview"
     v-bind="$attrs"
-    v-on="$listeners"
   />
 </template>
 
